@@ -1,0 +1,60 @@
+scalar Point
+scalar DateTime
+scalar PointInput
+
+type Person {
+  name: String
+}
+
+type Email {
+  email_address: String
+}
+
+type Crime {
+  type: String
+  officer: Officer @relationship(type: "INVESTIGATED_BY", direction: OUT)
+  date: String
+  id: ID!
+  last_outcome: String
+}
+
+type Object {
+  description: String
+}
+
+type Vehicle {
+  model: String
+}
+
+type Officer {
+  name: String
+  surname: String
+}
+
+type Phone {
+  phoneNo: String
+}
+
+type PhoneCall {
+  call_type: String
+}
+
+type Location {
+  address: String
+}
+
+type Area {
+  areaCode: String
+}
+
+type PostCode {
+  code: String
+}
+
+type Query {
+  num_related_people: Int @cypher(statement: "MATCH ()-[:KNOWS]->(p:Person) RETURN COUNT(p)")
+}
+
+type PersonCount {
+  personCount: Int @cypher(statement: "MATCH (p:Person) RETURN COUNT(p)")
+}
