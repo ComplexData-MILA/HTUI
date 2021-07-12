@@ -3,6 +3,7 @@ import React from 'react'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 
 import UserList from './components/UserList'
+import GraphDisplay from './components/Graph'
 
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
@@ -28,6 +29,7 @@ import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
   People as PeopleIcon,
+  Timeline as GraphIcon,
 } from '@material-ui/icons'
 import Dashboard from './components/Dashboard'
 
@@ -211,6 +213,15 @@ export default function App() {
                 <ListItemText primary="Users" />
               </ListItem>
             </Link>
+
+            <Link to="/graph" className={classes.navLink}>
+              <ListItem button>
+                <ListItemIcon>
+                  <GraphIcon />
+                </ListItemIcon>
+                <ListItemText primary="Graph" />
+              </ListItem>
+            </Link>
           </List>
           <Divider />
         </Drawer>
@@ -221,6 +232,7 @@ export default function App() {
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/businesses" component={UserList} />
               <Route exact path="/users" component={UserList} />
+              <Route exact path="/graph" component={GraphDisplay} />
             </Switch>
 
             <Box pt={4}>

@@ -13,10 +13,10 @@ import Title from './Title'
 
 const GET_DATA_QUERY = gql`
   {
-    persons(options: { limit: 5 }) {
+    people(options: { limit: 5, sort: [{ nhs_no: DESC }] }) {
       name
+      num_related_people
     }
-    num_related_people
   }
 `
 
@@ -32,7 +32,7 @@ export default function RatingsChart() {
       <Title>Connections Distribution</Title>
       <ResponsiveContainer>
         <BarChart
-          data={data.persons}
+          data={data.people}
           margin={{
             top: 16,
             right: 16,

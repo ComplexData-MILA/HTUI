@@ -20,7 +20,7 @@ const GET_COUNT_QUERY = gql`
   }
 `
 
-export default function Deposits() {
+export default function PersonCount() {
   const classes = useStyles()
 
   const { loading, error, data } = useQuery(GET_COUNT_QUERY)

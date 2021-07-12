@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 
 import RatingsChart from './RatingsChart'
-import PersonCount from './UserCount'
+import PersonCount from './PersonCount'
 import RecentCrimes from './RecentReviews'
 export default function Dashboard() {
   const theme = useTheme()

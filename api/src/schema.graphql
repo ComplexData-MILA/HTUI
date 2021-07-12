@@ -4,6 +4,8 @@ scalar PointInput
 
 type Person {
   name: String
+  nhs_no: String
+  num_related_people: Int @cypher(statement: "MATCH (this)-[:KNOWS|:KNOWS_LW|:KNOWS_PHONE|:KNOWS_SN]->() RETURN COUNT(*)")
 }
 
 type Email {
@@ -52,9 +54,5 @@ type PostCode {
 }
 
 type Query {
-  num_related_people: Int @cypher(statement: "MATCH ()-[:KNOWS]->(p:Person) RETURN COUNT(p)")
-}
-
-type PersonCount {
   personCount: Int @cypher(statement: "MATCH (p:Person) RETURN COUNT(p)")
 }
