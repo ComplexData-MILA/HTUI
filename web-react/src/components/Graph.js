@@ -1,17 +1,56 @@
-import React from 'react'
-import Graphin, { Utils } from '@antv/graphin'
+import React, { useEffect } from 'react'
 
-import '@antv/graphin/dist/index.css'
+import Graphin from '@antv/graphin'
 
-const data = Utils.mock(13).circle().graphin()
+// const walk = (node, callback) => {
+//   callback(node)
+//   if (node.children && node.children.length !== 0) {
+//     node.children.forEach((n) => {
+//       walk(n, callback)
+//     })
+//   }
+// }
 
-export default function GraphDisplay() {
+function addStyles(node) {
+  node.style = {
+    label: {
+      value: node.name + ' ' + node.surname,
+    },
+  }
+}
+
+const GraphDisplay = () => {
+  const [state, setState] = React.useState({
+    data: null,
+  })
+  useEffect(
+    () =>
+      // eslint-disable-next-line no-undef
+      fetch(
+        // 'https://gw.alipayobjects.com/os/antvdemo/assets/data/algorithm-category.json'
+        'Amanda_Alexander.json'
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          console.log('data', res)
+          res.nodes.forEach(addStyles)
+          setState({
+            data: res,
+          })
+        }),
+    []
+  )
+
+  const { data } = state
   console.log(data)
+
+  // data.node = data.node.forEach(addStyles)
+
   return (
-    <React.Fragment>
-      <div className="App">
-        <Graphin data={data} layout={{ name: 'concentric' }} />
-      </div>
-    </React.Fragment>
+    <div>
+      {data && <Graphin data={data} layout={{ type: 'concentric' }}></Graphin>}
+    </div>
   )
 }
+
+export default GraphDisplay
