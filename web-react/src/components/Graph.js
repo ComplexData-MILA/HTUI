@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 // import React, { useEffect } from 'react'
 import { useQuery, gql } from '@apollo/client'
 // import Graphin from '@antv/graphin'
@@ -42,7 +42,10 @@ const GET_FILE = gql`
 function GraphDisplay(props) {
   // first get the person's name we want to filter with
   const { classes } = props
-  const [filterState, setFilterState] = React.useState({ nameFilter: '' })
+  const [filterState, setFilterState] = useState({ nameFilter: '' })
+  const [graphState, setGraphState] = useState({
+    graphStateData: Utils.mock(13).circle().graphin(),
+  })
 
   const getFilter = () => {
     return filterState.nameFilter.length > 0
@@ -68,42 +71,47 @@ function GraphDisplay(props) {
     error: errorPerson,
   } = useQuery(GET_PERSON, { variables: { filter: getFilter() } })
 
-  console.log(dataPerson)
-
   const { loading, data, error } = useQuery(GET_FILE, {
     variables: {
       nameInput: dataPerson
-        ? dataPerson[0]
-          ? dataPerson[0].name
+        ? dataPerson.people[0]
+          ? dataPerson.people[0].name
           : defaultFirstName
         : defaultFirstName,
       surnameInput: dataPerson
-        ? dataPerson[0]
-          ? dataPerson[0].surname
+        ? dataPerson.people[0]
+          ? dataPerson.people[0].surname
           : defaultLastName
         : defaultLastName,
     },
   })
+  if (error || errorPerson) return <p>Error</p>
+  if (loading || loadingPerson) return <p>Loading</p>
+  let graphData = JSON.parse(data.jsonFile)
+  graphData.nodes.forEach(addNodeStyles)
+  graphData.edges.forEach(addEdgeStyles)
+  Utils.processEdges(graphData.edges, { poly: 50 })
+  console.log(dataPerson)
+  console.log(graphData)
+  // useEffect(() => {
+  //   setGraphState((oldGraphState) => ({
+  //     ...oldGraphState,
+  //     [graphData]: data,
+  //   }))
+  // }, [filterState])
 
-  if (errorPerson) return <p>Error Person</p>
-  if (error) return <p>Error</p>
-  if (loading) return <p>Loading</p>
-  if (loadingPerson) return <p>Loading Person</p>
-
-  const handleFilterChange = (filterName) => (event) => {
+  const handleFilterChange = (filterName, graphDataName) => (event) => {
     const val = event.target.value
 
     setFilterState((oldFilterState) => ({
       ...oldFilterState,
       [filterName]: val,
     }))
-    console.log(val)
+    setGraphState((oldGraphState) => ({
+      ...oldGraphState,
+      [graphDataName]: graphData,
+    }))
   }
-
-  let graphData = JSON.parse(data.jsonFile)
-  graphData.nodes.forEach(addNodeStyles)
-  graphData.edges.forEach(addEdgeStyles)
-  Utils.processEdges(graphData.edges, { poly: 50 })
 
   return (
     <React.Fragment>
@@ -113,7 +121,7 @@ function GraphDisplay(props) {
         label="Person Name Contains"
         className={classes.textField}
         value={filterState.nameFilter}
-        onChange={handleFilterChange('nameFilter')}
+        onChange={handleFilterChange('nameFilter', 'graphStateData')}
         margin="normal"
         variant="outlined"
         type="text"
@@ -124,7 +132,10 @@ function GraphDisplay(props) {
       <div>
         <Title>Graph</Title>
         <div className="App">
-          <Graphin data={graphData} layout={{ type: 'concentric' }}></Graphin>
+          <Graphin
+            data={graphState.graphStateData}
+            layout={{ type: 'concentric' }}
+          ></Graphin>
         </div>
       </div>
     </React.Fragment>
