@@ -35,6 +35,7 @@
   "dependencies": {
     "@antv/graphin": "^2.0.7",
     "@antv/graphin-components": "^2.0.7",
-    "@antv/graphin-icons": "^1.0.0"
+    "@antv/graphin-icons": "^1.0.0",
+    "graphql-type-json": "^0.3.2"
   }
 }

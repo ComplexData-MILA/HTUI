@@ -3,9 +3,12 @@ scalar DateTime
 scalar PointInput
 
 type Person {
+  nhs_no: String @id(autogenerate: false)
   name: String
+  surname: String
   nhs_no: String
   num_related_people: Int @cypher(statement: "MATCH (this)-[:KNOWS|:KNOWS_LW|:KNOWS_PHONE|:KNOWS_SN]->() RETURN COUNT(*)")
+  num_crimes: Int @cypher(statement: "MATCH (this)-[:PARTY_TO]->() RETURN COUNT(*)")
 }
 
 type Email {
@@ -55,4 +58,15 @@ type PostCode {
 
 type Query {
   personCount: Int @cypher(statement: "MATCH (p:Person) RETURN COUNT(p)")
+  jsonFile(name: String, surname: String): String
+    @cypher(
+      statement: """
+        MATCH (n)
+        WHERE n.name=$name AND n.surname=$surname
+        CALL apoc.path.subgraphAll(n, {maxLevel:2}) YIELD nodes, relationships
+        WITH [node in nodes | node {.*, label:labels(node)[0], id: toString(id(node))}] as nodes, 
+             [rel in relationships | rel {.*, source:toString(id(startNode(rel))), target:toString(id(endNode(rel))), label:type(rel)}] as edges
+        WITH {nodes: nodes, edges: edges} as json
+        RETURN apoc.convert.toJson(json)
+      """)
 }

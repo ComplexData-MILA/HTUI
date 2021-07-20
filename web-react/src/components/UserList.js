@@ -33,20 +33,21 @@ const styles = (theme) => ({
 })
 
 const GET_USER = gql`
-  query usersPaginateQuery(
+  query peoplePaginateQuery(
     $first: Int
     $offset: Int
-    $orderBy: [UserSort]
-    $filter: UserWhere
+    $orderBy: [PersonSort]
+    $filter: PersonWhere
   ) {
-    users(
+    people(
       options: { limit: $first, skip: $offset, sort: $orderBy }
       where: $filter
     ) {
-      id: userId
+      id: nhs_no
       name
-      avgStars
-      numReviews
+      surname
+      num_related_people
+      num_crimes
     }
   }
 `
@@ -61,7 +62,12 @@ function UserList(props) {
 
   const getFilter = () => {
     return filterState.usernameFilter.length > 0
-      ? { name_CONTAINS: filterState.usernameFilter }
+      ? {
+          OR: [
+            { name_CONTAINS: filterState.usernameFilter },
+            { surname_CONTAINS: filterState.usernameFilter },
+          ],
+        }
       : {}
   }
 
@@ -97,10 +103,10 @@ function UserList(props) {
 
   return (
     <Paper className={classes.root}>
-      <Title>User List</Title>
+      <Title>Person List</Title>
       <TextField
         id="search"
-        label="User Name Contains"
+        label="Person Name Contains"
         className={classes.textField}
         value={filterState.usernameFilter}
         onChange={handleFilterChange('usernameFilter')}
@@ -131,21 +137,40 @@ function UserList(props) {
                   </TableSortLabel>
                 </Tooltip>
               </TableCell>
-              <TableCell key="avgStars">Average Stars</TableCell>
-              <TableCell key="numReviews">Number of Reviews</TableCell>
+              <TableCell
+                key="surname"
+                sortDirection={
+                  orderBy === 'surname' ? order.toLowerCase() : false
+                }
+              >
+                <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
+                  <TableSortLabel
+                    active={orderBy === 'surname'}
+                    direction={order.toLowerCase()}
+                    onClick={() => handleSortRequest('surname')}
+                  >
+                    Surname
+                  </TableSortLabel>
+                </Tooltip>
+              </TableCell>
+              <TableCell key="num_related_people">Related People</TableCell>
+              <TableCell key="num_crimes">Number of Crimes</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.users.map((n) => {
+            {data.people.map((n) => {
               return (
                 <TableRow key={n.id}>
                   <TableCell component="th" scope="row">
                     {n.name}
                   </TableCell>
-                  <TableCell>
-                    {n.avgStars ? n.avgStars.toFixed(2) : '-'}
+                  <TableCell component="th" scope="row">
+                    {n.surname}
                   </TableCell>
-                  <TableCell>{n.numReviews}</TableCell>
+                  <TableCell>
+                    {n.num_related_people ? n.num_related_people : '-'}
+                  </TableCell>
+                  <TableCell>{n.num_crimes ? n.num_crimes : '-'}</TableCell>
                 </TableRow>
               )
             })}
