@@ -5,7 +5,7 @@ import { useQuery, gql } from '@apollo/client'
 import Graphin, { Utils } from '@antv/graphin'
 import '@antv/graphin/dist/index.css'
 import { withStyles, TextField } from '@material-ui/core'
-// import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import Title from './Title'
 
 // const walk = (node, callback) => {
@@ -47,6 +47,10 @@ function GraphDisplay(props) {
   const [filterState, setFilterState] = useState({ nameFilter: '' })
   const [graphState, setGraphState] = useState({
     graphStateData: Utils.mock(13).circle().graphin(),
+  })
+
+  const { data: allPeople } = useQuery(GET_PERSON, {
+    variables: { name_CONTAINS: '' },
   })
 
   const getFilter = () => {
@@ -102,6 +106,7 @@ function GraphDisplay(props) {
 
   const handleFilterChange = (filterName, graphDataName) => (event) => {
     const val = event.target.value
+    console.log(val)
 
     setFilterState((oldFilterState) => ({
       ...oldFilterState,
@@ -115,21 +120,39 @@ function GraphDisplay(props) {
     console.log('changed graph state')
   }
 
+  const checkEnter = (event) => {
+    if (event.keyCode == 13) {
+      console.log('enter')
+      handleFilterChange('nameFilter', 'graphStateData')(event)
+    }
+  }
+
   return (
     <React.Fragment>
       <Title>Person List</Title>
-      <TextField
-        id="search"
-        label="Person Name Contains"
-        className={classes.textField}
-        value={filterState.nameFilter}
-        onChange={handleFilterChange('nameFilter', 'graphStateData')}
-        margin="normal"
-        variant="outlined"
-        type="text"
-        InputProps={{
-          className: classes.input,
-        }}
+      <Autocomplete
+        id="combo-box-input"
+        options={allPeople.people.map(
+          (option) => option.name + ' ' + option.surname
+        )}
+        disableClearable
+        renderInput={(params) => (
+          <TextField
+            id="search"
+            className={classes.textField}
+            {...params}
+            label="Search for a person"
+            margin="normal"
+            variant="outlined"
+            value={filterState.nameFilter}
+            onKeyUp={checkEnter}
+            InputProps={{
+              ...params.InputProps,
+              type: 'search',
+              className: classes.input,
+            }}
+          />
+        )}
       />
       <div>
         <Title>Graph</Title>
