@@ -5,6 +5,7 @@ import { useQuery, gql } from '@apollo/client'
 import Graphin, { Utils } from '@antv/graphin'
 import '@antv/graphin/dist/index.css'
 import { withStyles, TextField } from '@material-ui/core'
+// import Autocomplete from '@material-ui/lab/Autocomplete'
 import Title from './Title'
 
 // const walk = (node, callback) => {
@@ -24,6 +25,7 @@ const styles = (theme) => ({
   },
 })
 
+//graphql queries
 const GET_PERSON = gql`
   query peoplePaginateQuery($filter: PersonWhere) {
     people(where: $filter) {
@@ -33,14 +35,14 @@ const GET_PERSON = gql`
   }
 `
 
-const GET_FILE = gql`
+const GET_GRAPH = gql`
   query fileQuery($nameInput: String, $surnameInput: String) {
-    jsonFile(name: $nameInput, surname: $surnameInput)
+    response(name: $nameInput, surname: $surnameInput)
   }
 `
 
 function GraphDisplay(props) {
-  // first get the person's name we want to filter with
+  // declare useState hooks
   const { classes } = props
   const [filterState, setFilterState] = useState({ nameFilter: '' })
   const [graphState, setGraphState] = useState({
@@ -48,6 +50,7 @@ function GraphDisplay(props) {
   })
 
   const getFilter = () => {
+    console.log('in getFilter()')
     return filterState.nameFilter.length > 0
       ? {
           OR: [
@@ -58,47 +61,44 @@ function GraphDisplay(props) {
       : {}
   }
 
-  // can't use below otherwise will render different order of hooks
-  // if (errorPerson) return <p>Error with GET_PERSON query</p>
-  // if (loadingPerson) return <p>Loading GET_PERSON query</p>
+  //graphql cyphers
+  var name = 'Amanda',
+    surname = 'Alexander'
 
-  const defaultFirstName = 'Amanda'
-  const defaultLastName = 'Alexander'
-
+  console.log('getting personData')
   const {
     loading: loadingPerson,
-    data: dataPerson,
+    data: personData,
     error: errorPerson,
   } = useQuery(GET_PERSON, { variables: { filter: getFilter() } })
 
-  const { loading, data, error } = useQuery(GET_FILE, {
+  if (!loadingPerson && !errorPerson && personData && personData.people[0]) {
+    var currentPerson = (({ name, surname }) => ({ name, surname }))(
+      personData.people[0]
+    )
+    name = currentPerson.name
+    surname = currentPerson.surname
+    // { name, surname } = {...dataPerson.people[0]}
+  }
+
+  console.log('getting file data')
+
+  const { loading, data, error } = useQuery(GET_GRAPH, {
     variables: {
-      nameInput: dataPerson
-        ? dataPerson.people[0]
-          ? dataPerson.people[0].name
-          : defaultFirstName
-        : defaultFirstName,
-      surnameInput: dataPerson
-        ? dataPerson.people[0]
-          ? dataPerson.people[0].surname
-          : defaultLastName
-        : defaultLastName,
+      nameInput: name,
+      surnameInput: surname,
     },
   })
-  if (error || errorPerson) return <p>Error</p>
-  if (loading || loadingPerson) return <p>Loading</p>
-  let graphData = JSON.parse(data.jsonFile)
+  if (error) return <p>Error</p>
+  if (loading) return <p>Loading</p>
+
+  //manipulate json data for Graphin requirements
+  let graphData = JSON.parse(data.response)
   graphData.nodes.forEach(addNodeStyles)
   graphData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphData.edges, { poly: 50 })
-  console.log(dataPerson)
+  console.log(personData)
   console.log(graphData)
-  // useEffect(() => {
-  //   setGraphState((oldGraphState) => ({
-  //     ...oldGraphState,
-  //     [graphData]: data,
-  //   }))
-  // }, [filterState])
 
   const handleFilterChange = (filterName, graphDataName) => (event) => {
     const val = event.target.value
@@ -107,10 +107,12 @@ function GraphDisplay(props) {
       ...oldFilterState,
       [filterName]: val,
     }))
+    console.log('changed filter state')
     setGraphState((oldGraphState) => ({
       ...oldGraphState,
       [graphDataName]: graphData,
     }))
+    console.log('changed graph state')
   }
 
   return (

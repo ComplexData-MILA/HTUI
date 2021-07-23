@@ -58,7 +58,7 @@ type PostCode {
 
 type Query {
   personCount: Int @cypher(statement: "MATCH (p:Person) RETURN COUNT(p)")
-  jsonFile(name: String, surname: String): String
+  response(name: String, surname: String): String
     @cypher(
       statement: """
         MATCH (n)
