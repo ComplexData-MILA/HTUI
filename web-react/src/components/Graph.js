@@ -44,7 +44,6 @@ const GET_GRAPH = gql`
 function GraphDisplay(props) {
   // declare useState hooks
   const { classes } = props
-  // const [filterState, setFilterState] = useState({ nameFilter: '' })
   const [graphState, setGraphState] = useState({
     graphStateData: Utils.mock(13).circle().graphin(),
   })
@@ -55,97 +54,63 @@ function GraphDisplay(props) {
     loading: loadingAll,
   } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
 
-  const [getGraph, { loading, data, error }] = useLazyQuery(GET_GRAPH)
+  const [getGraph, { loading, data, error }] = useLazyQuery(GET_GRAPH, {
+    onCompleted: (data) => doStuff(data),
+  })
   if (errorAll) return <p>ERROR</p>
   if (loadingAll) return <p>LOADING</p>
   if (error) return <p>Error</p>
   if (loading) return <p>Loading</p>
 
-  // const getFilter = () => {
-  //   console.log('in getFilter()')
-  //   return filterState.nameFilter.length > 0
-  //     ? {
-  //         OR: [
-  //           { name_CONTAINS: filterState.nameFilter },
-  //           { surname_CONTAINS: filterState.nameFilter },
-  //         ],
-  //       }
-  //     : {}
-  // }
+  const checkEnter = (event) => {
+    if (event.keyCode == 13) {
+      console.log('enter')
+      const val = event.target.value
+      console.log(val)
 
-  //graphql cyphers
-  // var name = 'Amanda',
-  //   surname = 'Alexander'
-
-  // console.log('getting personData')
-  // const {
-  //   loading: loadingPerson,
-  //   data: personData,
-  //   error: errorPerson,
-  // } = useQuery(GET_PERSON, { variables: { filter: getFilter() } })
-
-  // if (!loadingPerson && !errorPerson && personData && personData.people[0]) {
-  //   var currentPerson = (({ name, surname }) => ({ name, surname }))(
-  //     personData.people[0]
-  //   )
-  //   name = currentPerson.name
-  //   surname = currentPerson.surname
-  //   // { name, surname } = {...dataPerson.people[0]}
-  // }
-
-  const handleFilterChange = (event) => {
-    const val = event.target.value
-    console.log(val)
-
-    // setFilterState((oldFilterState) => ({
-    //   ...oldFilterState,
-    //   [filterName]: val,
-    // }))
-    const nameArr = val.split(' ', 2)
-    console.log(nameArr)
-    getGraph({ variables: { nameInput: nameArr[0], surnameInput: nameArr[1] } })
-    console.log(data)
-
-    //manipulate json data for Graphin requirements
-    let graphData
-    if (data) {
-      graphData = JSON.parse(data.response)
-      graphData.nodes.forEach(addNodeStyles)
-      graphData.edges.forEach(addEdgeStyles)
-      Utils.processEdges(graphData.edges, { poly: 50 })
-    } else {
-      graphData = Utils.mock(13).circle().graphin()
+      const nameArr = val.split(' ', 2)
+      getGraph({
+        variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
+      })
+      // if (loading) {
+      //   console.log('loading')
+      // }
+      console.log('before')
+      console.log(data)
     }
-    console.log(graphData)
+  }
+  const doStuff = (inputData) => {
+    let graphData = JSON.parse(inputData.response)
+    graphData.nodes.forEach(addNodeStyles)
+    graphData.edges.forEach(addEdgeStyles)
+    Utils.processEdges(graphData.edges, { poly: 50 })
     setGraphState((oldGraphState) => ({
       ...oldGraphState,
       graphStateData: graphData,
     }))
   }
-
-  // useEffect(() => {
+  // const handleFilterChange = () => {
+  //   console.log('in filter change')
+  //   // let graphData
+  //   // console.log(data)
   //   // if (data) {
-  //   //manipulate json data for Graphin requirements
-  //   let graphData = JSON.parse(data.response)
-  //   graphData.nodes.forEach(addNodeStyles)
-  //   graphData.edges.forEach(addEdgeStyles)
-  //   Utils.processEdges(graphData.edges, { poly: 50 })
-  //   console.log(graphData)
-
-  //   setGraphState((oldGraphState) => ({
-  //     ...oldGraphState,
-  //     graphStateData: graphData,
-  //   }))
-  //   console.log('changed graph state')
+  //   //   graphData = JSON.parse(data.response)
+  //   //   graphData.nodes.forEach(addNodeStyles)
+  //   //   graphData.edges.forEach(addEdgeStyles)
+  //   //   Utils.processEdges(graphData.edges, { poly: 50 })
+  //   // } else {
+  //   //   graphData = Utils.mock(13).circle().graphin()
   //   // }
-  // }, [data])
+  //   // console.log(graphData)
+  //   // setGraphState((oldGraphState) => ({
+  //   //   ...oldGraphState,
+  //   //   graphStateData: gd,
+  //   // }))
+  //   //manipulate json data for Graphin requirements
+  // }
 
-  const checkEnter = (event) => {
-    if (event.keyCode == 13) {
-      console.log('enter')
-      handleFilterChange(event)
-    }
-  }
+  console.log('outside')
+  console.log(data)
 
   return (
     <React.Fragment>
@@ -164,8 +129,7 @@ function GraphDisplay(props) {
             label="Search for a person"
             margin="normal"
             variant="outlined"
-            // value={filterState.nameFilter}
-            onKeyUp={checkEnter}
+            onKeyUp={(e) => checkEnter(e)}
             InputProps={{
               ...params.InputProps,
               type: 'search',
