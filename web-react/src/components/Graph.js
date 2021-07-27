@@ -4,7 +4,7 @@ import { useQuery, useLazyQuery, gql } from '@apollo/client'
 // import Graphin from '@antv/graphin'
 import Graphin, { Utils } from '@antv/graphin'
 import '@antv/graphin/dist/index.css'
-import { withStyles, TextField } from '@material-ui/core'
+import { withStyles, TextField, Paper, Button, Grid } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import Title from './Title'
 
@@ -17,11 +17,19 @@ import Title from './Title'
 //   }
 // }
 
+//written in JSS not CSS
 const styles = (theme) => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     minWidth: 300,
+  },
+  getNextNodesButton: {
+    // position: 'relative',
+    // right: 0,
+    // top: 0,
+    marginRight: 8,
+    marginTop: 8,
   },
 })
 
@@ -54,9 +62,10 @@ function GraphDisplay(props) {
     loading: loadingAll,
   } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
 
-  const [getGraph, { loading, data, error }] = useLazyQuery(GET_GRAPH, {
-    onCompleted: (data) => doStuff(data),
+  const [getGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
+    onCompleted: (data) => manipulateData(data),
   })
+
   if (errorAll) return <p>ERROR</p>
   if (loadingAll) return <p>LOADING</p>
   if (error) return <p>Error</p>
@@ -64,22 +73,15 @@ function GraphDisplay(props) {
 
   const checkEnter = (event) => {
     if (event.keyCode == 13) {
-      console.log('enter')
       const val = event.target.value
-      console.log(val)
 
       const nameArr = val.split(' ', 2)
       getGraph({
         variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
       })
-      // if (loading) {
-      //   console.log('loading')
-      // }
-      console.log('before')
-      console.log(data)
     }
   }
-  const doStuff = (inputData) => {
+  const manipulateData = (inputData) => {
     let graphData = JSON.parse(inputData.response)
     graphData.nodes.forEach(addNodeStyles)
     graphData.edges.forEach(addEdgeStyles)
@@ -89,28 +91,6 @@ function GraphDisplay(props) {
       graphStateData: graphData,
     }))
   }
-  // const handleFilterChange = () => {
-  //   console.log('in filter change')
-  //   // let graphData
-  //   // console.log(data)
-  //   // if (data) {
-  //   //   graphData = JSON.parse(data.response)
-  //   //   graphData.nodes.forEach(addNodeStyles)
-  //   //   graphData.edges.forEach(addEdgeStyles)
-  //   //   Utils.processEdges(graphData.edges, { poly: 50 })
-  //   // } else {
-  //   //   graphData = Utils.mock(13).circle().graphin()
-  //   // }
-  //   // console.log(graphData)
-  //   // setGraphState((oldGraphState) => ({
-  //   //   ...oldGraphState,
-  //   //   graphStateData: gd,
-  //   // }))
-  //   //manipulate json data for Graphin requirements
-  // }
-
-  console.log('outside')
-  console.log(data)
 
   return (
     <React.Fragment>
@@ -140,18 +120,39 @@ function GraphDisplay(props) {
       />
       <div>
         <Title>Graph</Title>
-        <div className="App">
+        <Paper>
+          <Grid container justify="flex-end">
+            <Button variant="contained" onClick={toggleVisibilityAC}>
+              Get Next Ad and Next Evidence Nodes
+            </Button>
+          </Grid>
           <Graphin
             data={graphState.graphStateData}
             layout={{ type: 'concentric' }}
           ></Graphin>
-        </div>
+          <div id="AcceptAndReject" style={{ display: 'none' }}>
+            <Grid container justify="flex-end">
+              <Button variant="contained">Accept</Button>
+              <Button variant="contained">Reject</Button>
+            </Grid>
+          </div>
+        </Paper>
       </div>
     </React.Fragment>
   )
 }
 
 export default withStyles(styles)(GraphDisplay)
+
+function toggleVisibilityAC() {
+  const feedbackArea = document.getElementById('AcceptAndReject')
+  const currentVisibility = feedbackArea.style.display
+  if (currentVisibility == 'none') {
+    feedbackArea.style.display = 'block'
+  } else if (currentVisibility == 'block') {
+    feedbackArea.style.display = 'none'
+  }
+}
 
 function addNodeStyles(node) {
   let value = ''
