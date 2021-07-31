@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
-// import React, { useEffect } from 'react'
 import { useQuery, useLazyQuery, gql } from '@apollo/client'
-// import Graphin from '@antv/graphin'
 import Graphin, { Utils } from '@antv/graphin'
+import PersonIcon from '~/../../img/person_black_24dp.svg'
+import EmailIcon from '~/../../img/alternate_email_black_24dp.svg'
+import VehicleIcon from '~/../../img/directions_car_black_24dp.svg'
+import AddressIcon from '~/../../img/home_black_24dp.svg'
+import PhoneIcon from '~/../../img/phone_black_24dp.svg'
+import PhoneCallIcon from '~/../../img/phone_in_talk_black_24dp.svg'
+import AreaIcon from '~/../../img/place_black_24dp.svg'
 import '@antv/graphin/dist/index.css'
 import { withStyles, TextField, Paper, Button, Grid } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -17,6 +22,7 @@ import Title from './Title'
 //   }
 // }
 
+// const icons = Graphin.registerFontFamily(IconLoader)
 //written in JSS not CSS
 const styles = (theme) => ({
   textField: {
@@ -24,12 +30,16 @@ const styles = (theme) => ({
     marginRight: theme.spacing(1),
     minWidth: 300,
   },
-  getNextNodesButton: {
-    // position: 'relative',
-    // right: 0,
-    // top: 0,
-    marginRight: 8,
-    marginTop: 8,
+  whiteText: {
+    color: 'white',
+  },
+  acceptButton: {
+    background: 'green',
+    color: 'white',
+  },
+  rejectButton: {
+    background: 'red',
+    color: 'white',
   },
 })
 
@@ -57,17 +67,28 @@ function GraphDisplay(props) {
   })
 
   const {
-    error: errorAll,
+    error: errorPeople,
     data: allPeople,
-    loading: loadingAll,
+    loading: loadingPeople,
   } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
 
   const [getGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
     onCompleted: (data) => manipulateData(data),
   })
 
-  if (errorAll) return <p>ERROR</p>
-  if (loadingAll) return <p>LOADING</p>
+  const manipulateData = (inputData) => {
+    let graphData = JSON.parse(inputData.response)
+    graphData.nodes.forEach(addNodeStyles)
+    graphData.edges.forEach(addEdgeStyles)
+    Utils.processEdges(graphData.edges, { poly: 50 })
+    setGraphState((oldGraphState) => ({
+      ...oldGraphState,
+      graphStateData: graphData,
+    }))
+  }
+
+  if (errorPeople) return <p>ERROR</p>
+  if (loadingPeople) return <p>LOADING</p>
   if (error) return <p>Error</p>
   if (loading) return <p>Loading</p>
 
@@ -81,15 +102,25 @@ function GraphDisplay(props) {
       })
     }
   }
-  const manipulateData = (inputData) => {
-    let graphData = JSON.parse(inputData.response)
-    graphData.nodes.forEach(addNodeStyles)
-    graphData.edges.forEach(addEdgeStyles)
-    Utils.processEdges(graphData.edges, { poly: 50 })
+
+  const toggleVisibility = () => {
+    const feedbackArea = document.getElementById('AcceptAndReject')
+    const currentVisibility = feedbackArea.style.display
+    if (currentVisibility == 'none') {
+      feedbackArea.style.display = 'block'
+    } else if (currentVisibility == 'block') {
+      feedbackArea.style.display = 'none'
+    }
+    console.log('1')
+    const newData = graphState.graphStateData
+    newData.nodes.forEach(makeNodesInactive)
+    console.log('2')
     setGraphState((oldGraphState) => ({
       ...oldGraphState,
-      graphStateData: graphData,
+      graphStateData: newData,
     }))
+    console.log('3')
+    console.log(graphState.graphStateData)
   }
 
   return (
@@ -122,7 +153,7 @@ function GraphDisplay(props) {
         <Title>Graph</Title>
         <Paper>
           <Grid container justify="flex-end">
-            <Button variant="contained" onClick={toggleVisibilityAC}>
+            <Button variant="contained" onClick={toggleVisibility}>
               Get Next Ad and Next Evidence Nodes
             </Button>
           </Grid>
@@ -132,8 +163,12 @@ function GraphDisplay(props) {
           ></Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>
             <Grid container justify="flex-end">
-              <Button variant="contained">Accept</Button>
-              <Button variant="contained">Reject</Button>
+              <Button variant="contained" className={classes.acceptButton}>
+                Accept
+              </Button>
+              <Button variant="contained" className={classes.rejectButton}>
+                Reject
+              </Button>
             </Grid>
           </div>
         </Paper>
@@ -144,39 +179,59 @@ function GraphDisplay(props) {
 
 export default withStyles(styles)(GraphDisplay)
 
-function toggleVisibilityAC() {
-  const feedbackArea = document.getElementById('AcceptAndReject')
-  const currentVisibility = feedbackArea.style.display
-  if (currentVisibility == 'none') {
-    feedbackArea.style.display = 'block'
-  } else if (currentVisibility == 'block') {
-    feedbackArea.style.display = 'none'
-  }
-}
-
 function addNodeStyles(node) {
-  let value = ''
+  let labelValue = ''
+  let iconValue
+  let color = ''
   if (node.label == 'Person') {
-    value = node.name + ' ' + node.surname
+    labelValue = node.name + ' ' + node.surname
+    iconValue = PersonIcon
+    color = 'orange'
   } else if (node.label == 'Email') {
-    value = node.email_address
+    labelValue = node.email_address
+    iconValue = EmailIcon
+    color = 'red'
   } else if (node.label == 'Location') {
-    value = node.address
+    labelValue = node.address
+    iconValue = AddressIcon
+    color = 'green'
   } else if (node.label == 'Phone') {
-    value = node.phoneNo
+    labelValue = node.phoneNo
+    iconValue = PhoneIcon
+    color = 'purple'
   } else if (node.label == 'Area') {
-    value = node.areaCode
+    labelValue = node.areaCode
+    iconValue = AreaIcon
+    color = 'pink'
   } else if (node.label == 'Crime') {
-    value = 'crime: ' + node.type
+    labelValue = 'crime: ' + node.type
   } else if (node.label == 'PostCode') {
-    value = 'postcode: ' + node.code
+    labelValue = 'postcode: ' + node.code
+    iconValue = AreaIcon
+    color = 'pink'
   } else if (node.label == 'PhoneCall') {
-    value = 'Phone Call'
+    labelValue = 'Phone Call'
+    iconValue = PhoneCallIcon
+    color = 'purple'
+  } else if (node.label == 'Vehicle') {
+    labelValue = node.make + ' ' + node.model
+    iconValue = VehicleIcon
+    color = 'white'
   }
 
   node.style = {
     label: {
-      value: [value],
+      value: labelValue,
+    },
+    icon: {
+      type: 'image',
+      value: iconValue,
+      size: [20, 20],
+    },
+    keyshape: {
+      fill: color,
+      stroke: color,
+      opacity: 1,
     },
   }
 }
@@ -185,6 +240,17 @@ function addEdgeStyles(edge) {
   edge.style = {
     label: {
       value: edge.label,
+    },
+  }
+}
+
+function makeNodesInactive(node) {
+  // node.status = {
+  //   disabled: true,
+  // }
+  node.style = {
+    keyshape: {
+      fill: 'red',
     },
   }
 }
