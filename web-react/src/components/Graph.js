@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery, useLazyQuery, gql } from '@apollo/client'
-import Graphin, { Utils } from '@antv/graphin'
+import Graphin, { Utils, Behaviors } from '@antv/graphin'
 import PersonIcon from '~/../../img/person_black_24dp.svg'
 import EmailIcon from '~/../../img/alternate_email_black_24dp.svg'
 import VehicleIcon from '~/../../img/directions_car_black_24dp.svg'
@@ -9,9 +9,20 @@ import PhoneIcon from '~/../../img/phone_black_24dp.svg'
 import PhoneCallIcon from '~/../../img/phone_in_talk_black_24dp.svg'
 import AreaIcon from '~/../../img/place_black_24dp.svg'
 import '@antv/graphin/dist/index.css'
-import { withStyles, TextField, Paper, Button, Grid } from '@material-ui/core'
+import {
+  withStyles,
+  TextField,
+  Paper,
+  Button,
+  Grid,
+  Box,
+} from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import Title from './Title'
+import getNextRecommended from './../actions/getNextRecommended'
+import acceptNodes from './../actions/acceptNodes'
+import rejectNodes from './../actions/rejectNodes'
+// import { display } from '@material-ui/system'
 
 // const walk = (node, callback) => {
 //   callback(node)
@@ -21,6 +32,8 @@ import Title from './Title'
 //     })
 //   }
 // }
+
+const { ClickSelect } = Behaviors
 
 // const icons = Graphin.registerFontFamily(IconLoader)
 //written in JSS not CSS
@@ -108,19 +121,11 @@ function GraphDisplay(props) {
     const currentVisibility = feedbackArea.style.display
     if (currentVisibility == 'none') {
       feedbackArea.style.display = 'block'
+      document.getElementById('GetNextButton').display = 'none'
     } else if (currentVisibility == 'block') {
       feedbackArea.style.display = 'none'
     }
-    console.log('1')
-    const newData = graphState.graphStateData
-    newData.nodes.forEach(makeNodesInactive)
-    console.log('2')
-    setGraphState((oldGraphState) => ({
-      ...oldGraphState,
-      graphStateData: newData,
-    }))
-    console.log('3')
-    console.log(graphState.graphStateData)
+    getNextRecommended()
   }
 
   return (
@@ -152,7 +157,13 @@ function GraphDisplay(props) {
       <div>
         <Title>Graph</Title>
         <Paper>
-          <Grid container justify="flex-end">
+          <Grid
+            component={Box}
+            container
+            justify="flex-end"
+            display="block"
+            id="GetNextButton"
+          >
             <Button variant="contained" onClick={toggleVisibility}>
               Get Next Ad and Next Evidence Nodes
             </Button>
@@ -160,13 +171,23 @@ function GraphDisplay(props) {
           <Graphin
             data={graphState.graphStateData}
             layout={{ type: 'concentric' }}
-          ></Graphin>
+          >
+            <ClickSelect onClick={getID}></ClickSelect>
+          </Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>
             <Grid container justify="flex-end">
-              <Button variant="contained" className={classes.acceptButton}>
+              <Button
+                variant="contained"
+                className={classes.acceptButton}
+                onClick={acceptNodes}
+              >
                 Accept
               </Button>
-              <Button variant="contained" className={classes.rejectButton}>
+              <Button
+                variant="contained"
+                className={classes.rejectButton}
+                onClick={rejectNodes}
+              >
                 Reject
               </Button>
             </Grid>
@@ -244,13 +265,8 @@ function addEdgeStyles(edge) {
   }
 }
 
-function makeNodesInactive(node) {
-  // node.status = {
-  //   disabled: true,
-  // }
-  node.style = {
-    keyshape: {
-      fill: 'red',
-    },
-  }
+function getID(event) {
+  console.log('left click works')
+  const id = event.item._cfg.id
+  console.log(id)
 }
