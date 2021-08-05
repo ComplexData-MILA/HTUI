@@ -73,8 +73,8 @@ const GET_GRAPH = gql`
 `
 
 const GET_COMBINED_GRAPH = gql`
-  {
-    combinedGraph
+  query subgraphQuery($listInput: [Int]) {
+    combinedGraph(list: $listInput)
   }
 `
 
@@ -84,14 +84,15 @@ function GraphDisplay(props) {
   const [graphState, setGraphState] = useState({
     graphStateData: Utils.mock(13).circle().graphin(),
   })
+  const [subgraphNodes, setNodes] = useState([])
 
   const {
     error: errorPeople,
     data: allPeople,
     loading: loadingPeople,
   } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
-  //NOTE: deleted getGraph below, should add it back
-  const [{ loading, error }] = useLazyQuery(GET_GRAPH, {
+
+  const [getGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
     onCompleted: (data) => manipulateData(data),
   })
 
@@ -99,7 +100,9 @@ function GraphDisplay(props) {
     data: combinedData,
     loading: combinedLoading,
     error: combinedError,
-  } = useQuery(GET_COMBINED_GRAPH)
+  } = useQuery(GET_COMBINED_GRAPH, {
+    variables: { listInput: subgraphNodes },
+  })
 
   const manipulateData = (inputData) => {
     let graphData = JSON.parse(inputData.response)
@@ -126,18 +129,27 @@ function GraphDisplay(props) {
 
   const checkEnter = (event) => {
     if (event.keyCode == 13) {
-      // const val = event.target.value
+      const val = event.target.value
 
-      // const nameArr = val.split(' ', 2)
-      // getGraph({
-      //   variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
-      // })
+      const nameArr = val.split(' ', 2)
+      getGraph({
+        variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
+      })
       // getCombinedGraph()
       setGraphState((oldGraphState) => ({
         ...oldGraphState,
         graphStateData: newData,
       }))
     }
+  }
+
+  const getID = (event) => {
+    const id = event.item._cfg.id
+    console.log(id)
+    const arr = subgraphNodes
+    arr.push(id)
+    setNodes(arr)
+    console.log(arr)
   }
 
   const toggleVisibility = () => {
@@ -194,7 +206,7 @@ function GraphDisplay(props) {
           </Grid>
           <Graphin
             data={graphState.graphStateData}
-            layout={{ type: 'graphin-force' }}
+            layout={{ type: 'concentric' }}
           >
             <ClickSelect onClick={getID}></ClickSelect>
           </Graphin>
@@ -287,10 +299,4 @@ function addEdgeStyles(edge) {
       value: edge.label,
     },
   }
-}
-
-function getID(event) {
-  console.log('left click works')
-  const id = event.item._cfg.id
-  console.log(id)
 }

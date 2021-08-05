@@ -69,10 +69,10 @@ type Query {
         WITH {nodes: nodes, edges: edges} as json
         RETURN apoc.convert.toJson(json)
       """)
-    combinedGraph: String
+    combinedGraph(list: [Int]): String
       @cypher(
         statement: """
-          CALL apoc.path.subgraphAll([431, 1198, 828, 59, 1206], {maxLevel:1}) YIELD nodes, relationships
+          CALL apoc.path.subgraphAll($list, {maxLevel:1}) YIELD nodes, relationships
           WITH [node in nodes | node {.*, label:labels(node)[0], id: toString(id(node))}] as nodes, 
              [rel in relationships | rel {.*, source:toString(id(startNode(rel))), target:toString(id(endNode(rel))), label:type(rel)}] as edges
           WITH {nodes: nodes, edges: edges} as json
@@ -80,8 +80,8 @@ type Query {
         """
       )
 }
-# param list should be an array of id's of the nodes; this gets subgraph containing the ndoes in the param and their immediate neighbors
-# CALL apoc.path.subgraphAll($list, {maxLevel:1}) YIELD nodes, relationships
+# param list should be an array of id's of the nodes; this gets subgraph containing the nodes in the param and their immediate neighbors
+# CALL apoc.path.subgraphAll([431, 1198, 828, 59, 1206], {maxLevel:1}) YIELD nodes, relationships
 #         WITH [node in nodes | node {.*, label:labels(node)[0], id: toString(id(node))}] as nodes, 
 #              [rel in relationships | rel {.*, source:toString(id(startNode(rel))), target:toString(id(endNode(rel))), label:type(rel)}] as edges
 #         WITH {nodes: nodes, edges: edges} as json
