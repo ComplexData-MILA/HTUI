@@ -72,6 +72,12 @@ const GET_GRAPH = gql`
   }
 `
 
+const GET_COMBINED_GRAPH = gql`
+  {
+    combinedGraph
+  }
+`
+
 function GraphDisplay(props) {
   // declare useState hooks
   const { classes } = props
@@ -84,10 +90,16 @@ function GraphDisplay(props) {
     data: allPeople,
     loading: loadingPeople,
   } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
-
-  const [getGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
+  //NOTE: deleted getGraph below, should add it back
+  const [{ loading, error }] = useLazyQuery(GET_GRAPH, {
     onCompleted: (data) => manipulateData(data),
   })
+
+  const {
+    data: combinedData,
+    loading: combinedLoading,
+    error: combinedError,
+  } = useQuery(GET_COMBINED_GRAPH)
 
   const manipulateData = (inputData) => {
     let graphData = JSON.parse(inputData.response)
@@ -104,15 +116,27 @@ function GraphDisplay(props) {
   if (loadingPeople) return <p>LOADING</p>
   if (error) return <p>Error</p>
   if (loading) return <p>Loading</p>
+  if (combinedError) return <p>Error</p>
+  if (combinedLoading) return <p>Loading</p>
+
+  let newData = JSON.parse(combinedData.combinedGraph)
+  newData.nodes.forEach(addNodeStyles)
+  newData.edges.forEach(addEdgeStyles)
+  Utils.processEdges(newData.edges, { poly: 50 })
 
   const checkEnter = (event) => {
     if (event.keyCode == 13) {
-      const val = event.target.value
+      // const val = event.target.value
 
-      const nameArr = val.split(' ', 2)
-      getGraph({
-        variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
-      })
+      // const nameArr = val.split(' ', 2)
+      // getGraph({
+      //   variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
+      // })
+      // getCombinedGraph()
+      setGraphState((oldGraphState) => ({
+        ...oldGraphState,
+        graphStateData: newData,
+      }))
     }
   }
 
@@ -170,7 +194,7 @@ function GraphDisplay(props) {
           </Grid>
           <Graphin
             data={graphState.graphStateData}
-            layout={{ type: 'concentric' }}
+            layout={{ type: 'graphin-force' }}
           >
             <ClickSelect onClick={getID}></ClickSelect>
           </Graphin>
