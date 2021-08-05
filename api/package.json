@@ -22,7 +22,8 @@
     "dotenv": "^7.0.0",
     "neo4j-driver": "^4.2.2",
     "node-fetch": "^2.6.0",
-    "react": "^16.13.1"
+    "react": "^16.13.1",
+    "graphql": "^14.5.8"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
