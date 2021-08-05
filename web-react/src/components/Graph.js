@@ -60,6 +60,7 @@ const styles = (theme) => ({
 const GET_PERSON = gql`
   query peoplePaginateQuery($filter: PersonWhere) {
     people(where: $filter) {
+      id
       name
       surname
     }
@@ -81,9 +82,10 @@ const GET_COMBINED_GRAPH = gql`
 function GraphDisplay(props) {
   // declare useState hooks
   const { classes } = props
-  const [graphState, setGraphState] = useState({
-    graphStateData: Utils.mock(13).circle().graphin(),
-  })
+  // const [graphState, setGraphState] = useState({
+  //   graphStateData: Utils.mock(0).circle().graphin(),
+  // })
+  let graphDisplayData = {}
   const [subgraphNodes, setNodes] = useState([])
 
   const {
@@ -92,27 +94,27 @@ function GraphDisplay(props) {
     loading: loadingPeople,
   } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
 
-  const [getGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
-    onCompleted: (data) => manipulateData(data),
+  const [getNeighborsGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
+    onCompleted: (data) => manipulateData(JSON.parse(data.response)),
   })
 
-  const {
-    data: combinedData,
-    loading: combinedLoading,
-    error: combinedError,
-  } = useQuery(GET_COMBINED_GRAPH, {
-    variables: { listInput: subgraphNodes },
+  const [
+    getSubgraph,
+    { loading: combinedLoading, error: combinedError },
+  ] = useLazyQuery(GET_COMBINED_GRAPH, {
+    onCompleted: (data) => manipulateData(JSON.parse(data.combinedGraph)),
   })
 
   const manipulateData = (inputData) => {
-    let graphData = JSON.parse(inputData.response)
-    graphData.nodes.forEach(addNodeStyles)
-    graphData.edges.forEach(addEdgeStyles)
-    Utils.processEdges(graphData.edges, { poly: 50 })
-    setGraphState((oldGraphState) => ({
-      ...oldGraphState,
-      graphStateData: graphData,
-    }))
+    inputData.nodes.forEach(addNodeStyles)
+    inputData.edges.forEach(addEdgeStyles)
+    Utils.processEdges(inputData.edges, { poly: 50 })
+    // setGraphState((oldGraphState) => ({
+    //   ...oldGraphState,
+    //   graphStateData: inputData,
+    // }))
+    graphDisplayData = inputData
+    console.log(graphDisplayData)
   }
 
   if (errorPeople) return <p>ERROR</p>
@@ -122,34 +124,36 @@ function GraphDisplay(props) {
   if (combinedError) return <p>Error</p>
   if (combinedLoading) return <p>Loading</p>
 
-  let newData = JSON.parse(combinedData.combinedGraph)
-  newData.nodes.forEach(addNodeStyles)
-  newData.edges.forEach(addEdgeStyles)
-  Utils.processEdges(newData.edges, { poly: 50 })
-
   const checkEnter = (event) => {
+    // console.log(event)
     if (event.keyCode == 13) {
       const val = event.target.value
 
       const nameArr = val.split(' ', 2)
-      getGraph({
+
+      getNeighborsGraph({
         variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
       })
-      // getCombinedGraph()
-      setGraphState((oldGraphState) => ({
-        ...oldGraphState,
-        graphStateData: newData,
-      }))
+
+      const clickedNodeID = parseInt(event.target.id)
+      // console.log(clickedNodeID)
+      const newArr = []
+      newArr.push(clickedNodeID)
+      // console.log(newArr)
+      setNodes(newArr)
     }
   }
 
   const getID = (event) => {
-    const id = event.item._cfg.id
+    const id = parseInt(event.item._cfg.id)
     console.log(id)
     const arr = subgraphNodes
     arr.push(id)
     setNodes(arr)
-    console.log(arr)
+    console.log(subgraphNodes)
+    getSubgraph({
+      variables: { listInput: subgraphNodes },
+    })
   }
 
   const toggleVisibility = () => {
@@ -168,7 +172,7 @@ function GraphDisplay(props) {
     <React.Fragment>
       <Title>Person List</Title>
       <Autocomplete
-        id="combo-box-input"
+        id="1073"
         options={allPeople.people.map(
           (option) => option.name + ' ' + option.surname
         )}
@@ -204,10 +208,8 @@ function GraphDisplay(props) {
               Get Next Ad and Next Evidence Nodes
             </Button>
           </Grid>
-          <Graphin
-            data={graphState.graphStateData}
-            layout={{ type: 'concentric' }}
-          >
+          {/* previously, data={graphState.graphStateData} */}
+          <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
             <ClickSelect onClick={getID}></ClickSelect>
           </Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>

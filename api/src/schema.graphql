@@ -3,7 +3,7 @@ scalar DateTime
 scalar PointInput
 
 type Person {
-  nhs_no: String @id(autogenerate: false)
+  id: Int @cypher(statement: "RETURN id(this)")
   name: String
   surname: String
   nhs_no: String
@@ -63,7 +63,7 @@ type Query {
       statement: """
         MATCH (n)
         WHERE n.name=$name AND n.surname=$surname
-        CALL apoc.path.subgraphAll(n, {maxLevel:2}) YIELD nodes, relationships
+        CALL apoc.path.subgraphAll(n, {maxLevel:1}) YIELD nodes, relationships
         WITH [node in nodes | node {.*, label:labels(node)[0], id: toString(id(node))}] as nodes, 
              [rel in relationships | rel {.*, source:toString(id(startNode(rel))), target:toString(id(endNode(rel))), label:type(rel)}] as edges
         WITH {nodes: nodes, edges: edges} as json
