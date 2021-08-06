@@ -3,6 +3,10 @@ version: '3'
 services:
   neo4j:
     build: ./neo4j
+    # build: 
+    #   context: ./neo4j
+    #   args:
+    #     NEO4JLABS_PLUGINS: '["apoc"]'
     ports:
       - 7474:7474
       - 7687:7687
@@ -13,6 +17,7 @@ services:
       - NEO4J_apoc_import_file_enabled=true
       - NEO4J_apoc_export_file_enabled=true
       - NEO4J_AUTH=neo4j/letmein
+      - NEO4JLABS_PLUGINS='["graph-data-science"]'
 
   api:
     build: ./api
@@ -29,6 +34,8 @@ services:
       - neo4j
     depends_on:
       - neo4j
+    volumes:
+      - ./api:/app
 
   ui:
     build: ./web-react
@@ -41,7 +48,7 @@ services:
       - PROXY=http://api:4001/graphql
     links:
       - api
-    depends_on:
-      - api
+    # depends_on:
+    #   - api
     volumes:
       - ./web-react:/app

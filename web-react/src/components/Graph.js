@@ -73,117 +73,68 @@ const GET_PERSON = gql`
 //   }
 // `
 
-const GET_COMBINED_GRAPH = gql`
-  query subgraphQuery($listInput: [Int]) {
-    combinedGraph(list: $listInput)
+const GET_SUBGRAPH = gql`
+  query subgraphQuery($seedNodes: [Int]) {
+    Subgraph(seeds: $seedNodes)
   }
 `
+
+const toggleVisibility = () => {
+  const feedbackArea = document.getElementById('AcceptAndReject')
+  const currentVisibility = feedbackArea.style.display
+  if (currentVisibility == 'none') {
+    feedbackArea.style.display = 'block'
+    document.getElementById('GetNextButton').display = 'none'
+  } else if (currentVisibility == 'block') {
+    feedbackArea.style.display = 'none'
+  }
+  getNextRecommended()
+}
 
 function GraphDisplay(props) {
   // declare useState hooks
   const { classes } = props
-  // const [graphState, setGraphState] = useState({
-  //   graphStateData: Utils.mock(0).circle().graphin(),
-  // })
-  let graphDisplayData = {}
   const [subgraphNodes, setNodes] = useState([])
 
-  const {
-    error: errorPeople,
-    data: allPeople,
-    loading: loadingPeople,
-  } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
-
-  // const [getNeighborsGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
-  //   onCompleted: (data) => manipulateData(JSON.parse(data.response)),
-  // })
-
-  const [
-    getSubgraph,
-    { data: combinedData, loading: combinedLoading, error: combinedError },
-  ] = useLazyQuery(GET_COMBINED_GRAPH)
-
-  // const manipulateData = (inputData) => {
-  //   inputData.nodes.forEach(addNodeStyles)
-  //   inputData.edges.forEach(addEdgeStyles)
-  //   Utils.processEdges(inputData.edges, { poly: 50 })
-  //   // setGraphState((oldGraphState) => ({
-  //   //   ...oldGraphState,
-  //   //   graphStateData: inputData,
-  //   // }))
-  //   graphDisplayData = inputData
-  //   console.log(graphDisplayData)
-  // }
-
-  if (errorPeople || combinedError) return <p>Error</p>
-  if (loadingPeople || combinedLoading) return <p>Loading</p>
-  console.log('graphDisplayData')
-  console.log(graphDisplayData)
-  console.log('combinedData')
-  console.log(combinedData)
-  if (combinedData) {
-    let parsedObject = JSON.parse(combinedData.combinedGraph)
-    parsedObject.nodes.forEach(addNodeStyles)
-    parsedObject.edges.forEach(addEdgeStyles)
-    Utils.processEdges(parsedObject.edges, { poly: 50 })
-    graphDisplayData = parsedObject
-    console.log(graphDisplayData)
+  const addSeedNode = (id) => {
+    console.log(`Adding node ${id} to the visualization with existing nodes ${subgraphNodes}.`)
+    setNodes([...subgraphNodes, parseInt(id)])
   }
 
-  const checkEnter = (event) => {
-    // console.log(event)
-    if (event.keyCode == 13) {
-      // const val = event.target.value
+  // const {
+  //   error: errorPeople,
+  //   data: allPeople,
+  //   loading: loadingPeople,
+  // } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
 
-      // const nameArr = val.split(' ', 2)
+  // const {
+  //   data: combinedData, 
+  //   loading: combinedLoading, 
+  //   error: combinedError 
+  // } = useQuery(GET_SUBGRAPH, { variables: { seedNodes: subgraphNodes } })
 
-      // getNeighborsGraph({
-      //   variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
-      // })
+  const people = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
+  const subgraph = useQuery(GET_SUBGRAPH, { variables: { seedNodes: subgraphNodes } })
 
-      const clickedNodeID = parseInt(event.target.id)
-      // console.log(clickedNodeID)
-      const newArr = []
-      newArr.push(clickedNodeID)
-      console.log(newArr)
-      setNodes(newArr)
-      console.log(subgraphNodes)
-      getSubgraph({ variables: { listInput: newArr } })
-    }
+  let err = people.error || subgraph.error
+  if (err) {
+    console.log(err)
+    return <p>Error</p>
   }
+  if (people.loading || subgraph.loading) return <p>Loading</p>
 
-  const getID = (event) => {
-    const id = parseInt(event.item._cfg.id)
-    console.log(id)
-    const arr = subgraphNodes
-    arr.push(id)
-    setNodes(arr)
-    console.log(subgraphNodes)
-    getSubgraph({
-      variables: { listInput: subgraphNodes },
-    })
-  }
-
-  const toggleVisibility = () => {
-    const feedbackArea = document.getElementById('AcceptAndReject')
-    const currentVisibility = feedbackArea.style.display
-    if (currentVisibility == 'none') {
-      feedbackArea.style.display = 'block'
-      document.getElementById('GetNextButton').display = 'none'
-    } else if (currentVisibility == 'block') {
-      feedbackArea.style.display = 'none'
-    }
-    getNextRecommended()
-  }
+  let graphDisplayData = JSON.parse(subgraph.data.Subgraph)
+  graphDisplayData.nodes.forEach(addNodeStyles)
+  graphDisplayData.edges.forEach(addEdgeStyles)
+  Utils.processEdges(graphDisplayData.edges, { poly: 50 })
 
   return (
     <React.Fragment>
       <Title>Person List</Title>
       <Autocomplete
-        id="1073"
-        options={allPeople.people.map(
-          (option) => option.name + ' ' + option.surname
-        )}
+        options={people.data.people}
+        getOptionLabel={(option) => option.name + ' ' + option.surname}
+        onChange={(event, value) => addSeedNode(value.id)}
         disableClearable
         renderInput={(params) => (
           <TextField
@@ -193,7 +144,6 @@ function GraphDisplay(props) {
             label="Search for a person"
             margin="normal"
             variant="outlined"
-            onKeyUp={(e) => checkEnter(e)}
             InputProps={{
               ...params.InputProps,
               type: 'search',
@@ -217,8 +167,8 @@ function GraphDisplay(props) {
             </Button>
           </Grid>
           {/* previously, data={graphState.graphStateData} */}
-          <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
-            <ClickSelect onClick={getID}></ClickSelect>
+          <Graphin data={graphDisplayData} layout={{ type: 'graphin-force' }}> {/* concentric */}
+            <ClickSelect onClick={(e) => addSeedNode(e.item._cfg.id)}></ClickSelect>
           </Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>
             <Grid container justify="flex-end">

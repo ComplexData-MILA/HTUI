@@ -1,17 +1,15 @@
 ARG NEO4J_VERSION=4.2.0
 FROM neo4j:${NEO4J_VERSION}
 
-
 ARG NEO4J_AUTH=neo4j/letmein \
-    NEO4JLABS_PLUGINS='["apoc", "graph-data-science"]' \
-    APOC_VERSION=4.2.0.2 \
-    GRAPHQL_VERSION=3.5.21.5
+    APOC_VERSION=4.2.0.0
+
+ADD --chown=neo4j:neo4j https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/${APOC_VERSION}/apoc-${APOC_VERSION}-all.jar ./plugins
+ADD --chown=neo4j:neo4j https://raw.githubusercontent.com/neo4j-graph-examples/pole/main/data/pole-40.dump .
 
 ENV NEO4J_AUTH=${NEO4J_AUTH} \
-    NEO4J_dbms_allow_upgrade=true \
-    NEO4JLABS_PLUGINS=${NEO4JLABS_PLUGINS}
+    NEO4J_dbms_allow_upgrade=true
 
-ADD --chown=neo4j:neo4j https://raw.githubusercontent.com/neo4j-graph-examples/pole/main/data/pole-40.dump .
 COPY ./entrypoint.sh ./
 RUN chmod +x entrypoint.sh
 
