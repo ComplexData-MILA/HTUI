@@ -110,16 +110,6 @@ function GraphDisplay(props) {
   graphDisplayData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphDisplayData.edges, { poly: 50 })
 
-  const addSeedNode = (id) => {
-    console.log('in addSeedNode')
-    // console.log('event')
-    console.log('id')
-    console.log(id)
-    const newArr = []
-    newArr.push(id)
-    setNodes(newArr)
-  }
-
   return (
     <React.Fragment>
       <Title>Person List</Title>
