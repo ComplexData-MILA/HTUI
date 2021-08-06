@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import Graphin, { Utils, Behaviors } from '@antv/graphin'
+import { Tooltip } from '@antv/graphin-components'
 import PersonIcon from '../img/person_black_24dp.svg'
 import EmailIcon from '../img/alternate_email_black_24dp.svg'
 import VehicleIcon from '../img/directions_car_black_24dp.svg'
@@ -8,7 +9,7 @@ import AddressIcon from '../img/home_black_24dp.svg'
 import PhoneIcon from '../img/phone_black_24dp.svg'
 import PhoneCallIcon from '../img/phone_in_talk_black_24dp.svg'
 import AreaIcon from '../img/place_black_24dp.svg'
-import '@antv/graphin/dist/index.css'
+import '@antv/graphin/dist/index.css' // may be removed in the future by antv
 import {
   withStyles,
   TextField,
@@ -16,13 +17,15 @@ import {
   Button,
   Grid,
   Box,
+  Card,
+  CardContent,
+  Typography,
 } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import Title from './Title'
 import getNextRecommended from './../actions/getNextRecommended'
 import acceptNodes from './../actions/acceptNodes'
 import rejectNodes from './../actions/rejectNodes'
-// import { display } from '@material-ui/system'
 
 // const walk = (node, callback) => {
 //   callback(node)
@@ -35,7 +38,6 @@ import rejectNodes from './../actions/rejectNodes'
 
 const { ClickSelect } = Behaviors
 
-// const icons = Graphin.registerFontFamily(IconLoader)
 //written in JSS not CSS
 const styles = (theme) => ({
   textField: {
@@ -162,6 +164,24 @@ function GraphDisplay(props) {
             <ClickSelect
               onClick={(e) => addSeedNode(e.item._cfg.id)}
             ></ClickSelect>
+            <Tooltip bindType="node" placement="top">
+              <Tooltip.Node>
+                {(node) => {
+                  return (
+                    <Card variant="outlined">
+                      <CardContent>
+                        <Typography color="textSecondary" gutterBottom>
+                          {node.label}
+                        </Typography>
+                        <Typography variant="h5" component="h2">
+                          {node.id}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  )
+                }}
+              </Tooltip.Node>
+            </Tooltip>
           </Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>
             <Grid container justify="flex-end">
@@ -227,7 +247,7 @@ function addNodeStyles(node, selectedNodes) {
   } else if (node.label == 'Vehicle') {
     labelValue = node.make + ' ' + node.model
     iconValue = VehicleIcon
-    color = 'white'
+    color = 'gray'
   }
 
   node.style = {
@@ -248,8 +268,9 @@ function addNodeStyles(node, selectedNodes) {
 
   // add highlight to seed nodes
   if (selectedNodes.includes(parseInt(node.id))) {
-    node.status = {
-      selected: true,
+    node.style.keyshape = {
+      ...node.style.keyshape,
+      lineWidth: 5,
     }
   }
 }
