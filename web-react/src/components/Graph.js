@@ -122,8 +122,11 @@ function GraphDisplay(props) {
   console.log('combinedData')
   console.log(combinedData)
   if (combinedData) {
+    console.log(subgraphNodes)
     let parsedObject = JSON.parse(combinedData.combinedGraph)
-    parsedObject.nodes.forEach(addNodeStyles)
+    parsedObject.nodes.forEach(function (node) {
+      addNodeStyles(node, subgraphNodes)
+    })
     parsedObject.edges.forEach(addEdgeStyles)
     Utils.processEdges(parsedObject.edges, { poly: 50 })
     graphDisplayData = parsedObject
@@ -226,7 +229,7 @@ function GraphDisplay(props) {
             </Button>
           </Grid>
           {/* previously, data={graphState.graphStateData} */}
-          <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
+          <Graphin data={graphDisplayData} layout={{ type: 'graphin-force' }}>
             <ClickSelect onClick={getID}></ClickSelect>
           </Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>
@@ -255,7 +258,8 @@ function GraphDisplay(props) {
 
 export default withStyles(styles)(GraphDisplay)
 
-function addNodeStyles(node) {
+function addNodeStyles(node, selectedNodes) {
+  // adding styles
   let labelValue = ''
   let iconValue
   let color = ''
@@ -309,6 +313,13 @@ function addNodeStyles(node) {
       stroke: color,
       opacity: 1,
     },
+  }
+
+  // add highlight to seed nodes
+  if (selectedNodes.includes(parseInt(node.id))) {
+    node.status = {
+      selected: true,
+    }
   }
 }
 
