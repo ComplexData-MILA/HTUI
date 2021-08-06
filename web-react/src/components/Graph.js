@@ -67,11 +67,11 @@ const GET_PERSON = gql`
   }
 `
 
-const GET_GRAPH = gql`
-  query fileQuery($nameInput: String, $surnameInput: String) {
-    response(name: $nameInput, surname: $surnameInput)
-  }
-`
+// const GET_GRAPH = gql`
+//   query fileQuery($nameInput: String, $surnameInput: String) {
+//     response(name: $nameInput, surname: $surnameInput)
+//   }
+// `
 
 const GET_COMBINED_GRAPH = gql`
   query subgraphQuery($listInput: [Int]) {
@@ -94,53 +94,61 @@ function GraphDisplay(props) {
     loading: loadingPeople,
   } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
 
-  const [getNeighborsGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
-    onCompleted: (data) => manipulateData(JSON.parse(data.response)),
-  })
+  // const [getNeighborsGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
+  //   onCompleted: (data) => manipulateData(JSON.parse(data.response)),
+  // })
 
   const [
     getSubgraph,
-    { loading: combinedLoading, error: combinedError },
-  ] = useLazyQuery(GET_COMBINED_GRAPH, {
-    onCompleted: (data) => manipulateData(JSON.parse(data.combinedGraph)),
-  })
+    { data: combinedData, loading: combinedLoading, error: combinedError },
+  ] = useLazyQuery(GET_COMBINED_GRAPH)
 
-  const manipulateData = (inputData) => {
-    inputData.nodes.forEach(addNodeStyles)
-    inputData.edges.forEach(addEdgeStyles)
-    Utils.processEdges(inputData.edges, { poly: 50 })
-    // setGraphState((oldGraphState) => ({
-    //   ...oldGraphState,
-    //   graphStateData: inputData,
-    // }))
-    graphDisplayData = inputData
+  // const manipulateData = (inputData) => {
+  //   inputData.nodes.forEach(addNodeStyles)
+  //   inputData.edges.forEach(addEdgeStyles)
+  //   Utils.processEdges(inputData.edges, { poly: 50 })
+  //   // setGraphState((oldGraphState) => ({
+  //   //   ...oldGraphState,
+  //   //   graphStateData: inputData,
+  //   // }))
+  //   graphDisplayData = inputData
+  //   console.log(graphDisplayData)
+  // }
+
+  if (errorPeople || combinedError) return <p>Error</p>
+  if (loadingPeople || combinedLoading) return <p>Loading</p>
+  console.log('graphDisplayData')
+  console.log(graphDisplayData)
+  console.log('combinedData')
+  console.log(combinedData)
+  if (combinedData) {
+    let parsedObject = JSON.parse(combinedData.combinedGraph)
+    parsedObject.nodes.forEach(addNodeStyles)
+    parsedObject.edges.forEach(addEdgeStyles)
+    Utils.processEdges(parsedObject.edges, { poly: 50 })
+    graphDisplayData = parsedObject
     console.log(graphDisplayData)
   }
-
-  if (errorPeople) return <p>ERROR</p>
-  if (loadingPeople) return <p>LOADING</p>
-  if (error) return <p>Error</p>
-  if (loading) return <p>Loading</p>
-  if (combinedError) return <p>Error</p>
-  if (combinedLoading) return <p>Loading</p>
 
   const checkEnter = (event) => {
     // console.log(event)
     if (event.keyCode == 13) {
-      const val = event.target.value
+      // const val = event.target.value
 
-      const nameArr = val.split(' ', 2)
+      // const nameArr = val.split(' ', 2)
 
-      getNeighborsGraph({
-        variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
-      })
+      // getNeighborsGraph({
+      //   variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
+      // })
 
       const clickedNodeID = parseInt(event.target.id)
       // console.log(clickedNodeID)
       const newArr = []
       newArr.push(clickedNodeID)
-      // console.log(newArr)
+      console.log(newArr)
       setNodes(newArr)
+      console.log(subgraphNodes)
+      getSubgraph({ variables: { listInput: newArr } })
     }
   }
 
