@@ -140,15 +140,15 @@ function GraphDisplay(props) {
       // getNeighborsGraph({
       //   variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
       // })
-
-      const clickedNodeID = parseInt(event.target.id)
+      // console.log(event.target.id)
+      // const clickedNodeID = parseInt(event.target.id)
       // console.log(clickedNodeID)
-      const newArr = []
-      newArr.push(clickedNodeID)
-      console.log(newArr)
-      setNodes(newArr)
-      console.log(subgraphNodes)
-      getSubgraph({ variables: { listInput: newArr } })
+      // const newArr = []
+      // newArr.push(clickedNodeID)
+      // console.log(newArr)
+      // setNodes(newArr)
+      // console.log(subgraphNodes)
+      getSubgraph({ variables: { listInput: subgraphNodes } })
     }
   }
 
@@ -176,14 +176,23 @@ function GraphDisplay(props) {
     getNextRecommended()
   }
 
+  const addSeedNode = (id) => {
+    console.log('in addSeedNode')
+    // console.log('event')
+    console.log('id')
+    console.log(id)
+    const newArr = []
+    newArr.push(id)
+    setNodes(newArr)
+  }
+
   return (
     <React.Fragment>
       <Title>Person List</Title>
       <Autocomplete
-        id="1073"
-        options={allPeople.people.map(
-          (option) => option.name + ' ' + option.surname
-        )}
+        options={allPeople.people}
+        getOptionLabel={(option) => option.name + ' ' + option.surname}
+        onChange={(event, value) => addSeedNode(value.id)}
         disableClearable
         renderInput={(params) => (
           <TextField
