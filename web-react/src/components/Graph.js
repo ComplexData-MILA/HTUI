@@ -67,12 +67,6 @@ const GET_PERSON = gql`
   }
 `
 
-// const GET_GRAPH = gql`
-//   query fileQuery($nameInput: String, $surnameInput: String) {
-//     response(name: $nameInput, surname: $surnameInput)
-//   }
-// `
-
 const GET_SUBGRAPH = gql`
   query subgraphQuery($seedNodes: [Int]) {
     Subgraph(seeds: $seedNodes)
@@ -101,18 +95,6 @@ function GraphDisplay(props) {
     setNodes([...subgraphNodes, parseInt(id)])
   }
 
-  // const {
-  //   error: errorPeople,
-  //   data: allPeople,
-  //   loading: loadingPeople,
-  // } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
-
-  // const {
-  //   data: combinedData, 
-  //   loading: combinedLoading, 
-  //   error: combinedError 
-  // } = useQuery(GET_SUBGRAPH, { variables: { seedNodes: subgraphNodes } })
-
   const people = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
   const subgraph = useQuery(GET_SUBGRAPH, { variables: { seedNodes: subgraphNodes } })
 
@@ -127,6 +109,16 @@ function GraphDisplay(props) {
   graphDisplayData.nodes.forEach(addNodeStyles)
   graphDisplayData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphDisplayData.edges, { poly: 50 })
+
+  const addSeedNode = (id) => {
+    console.log('in addSeedNode')
+    // console.log('event')
+    console.log('id')
+    console.log(id)
+    const newArr = []
+    newArr.push(id)
+    setNodes(newArr)
+  }
 
   return (
     <React.Fragment>
