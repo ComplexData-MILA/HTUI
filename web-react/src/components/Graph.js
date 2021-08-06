@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useQuery, useLazyQuery, gql } from '@apollo/client'
+import { useQuery, gql } from '@apollo/client'
 import Graphin, { Utils, Behaviors } from '@antv/graphin'
 import PersonIcon from '../img/person_black_24dp.svg'
 import EmailIcon from '../img/alternate_email_black_24dp.svg'
@@ -67,133 +67,62 @@ const GET_PERSON = gql`
   }
 `
 
-// const GET_GRAPH = gql`
-//   query fileQuery($nameInput: String, $surnameInput: String) {
-//     response(name: $nameInput, surname: $surnameInput)
-//   }
-// `
-
-const GET_COMBINED_GRAPH = gql`
-  query subgraphQuery($listInput: [Int]) {
-    combinedGraph(list: $listInput)
+const GET_SUBGRAPH = gql`
+  query subgraphQuery($seedNodes: [Int]) {
+    Subgraph(seeds: $seedNodes)
   }
 `
+
+const toggleVisibility = () => {
+  const feedbackArea = document.getElementById('AcceptAndReject')
+  const currentVisibility = feedbackArea.style.display
+  if (currentVisibility == 'none') {
+    feedbackArea.style.display = 'block'
+    document.getElementById('GetNextButton').display = 'none'
+  } else if (currentVisibility == 'block') {
+    feedbackArea.style.display = 'none'
+  }
+  getNextRecommended()
+}
 
 function GraphDisplay(props) {
   // declare useState hooks
   const { classes } = props
-  // const [graphState, setGraphState] = useState({
-  //   graphStateData: Utils.mock(0).circle().graphin(),
-  // })
-  let graphDisplayData = {}
   const [subgraphNodes, setNodes] = useState([])
 
-  const {
-    error: errorPeople,
-    data: allPeople,
-    loading: loadingPeople,
-  } = useQuery(GET_PERSON, { variables: { filter: { name_CONTAINS: '' } } })
-
-  // const [getNeighborsGraph, { loading, error }] = useLazyQuery(GET_GRAPH, {
-  //   onCompleted: (data) => manipulateData(JSON.parse(data.response)),
-  // })
-
-  const [
-    getSubgraph,
-    { data: combinedData, loading: combinedLoading, error: combinedError },
-  ] = useLazyQuery(GET_COMBINED_GRAPH)
-
-  // const manipulateData = (inputData) => {
-  //   inputData.nodes.forEach(addNodeStyles)
-  //   inputData.edges.forEach(addEdgeStyles)
-  //   Utils.processEdges(inputData.edges, { poly: 50 })
-  //   // setGraphState((oldGraphState) => ({
-  //   //   ...oldGraphState,
-  //   //   graphStateData: inputData,
-  //   // }))
-  //   graphDisplayData = inputData
-  //   console.log(graphDisplayData)
-  // }
-
-  if (errorPeople || combinedError) return <p>Error</p>
-  if (loadingPeople || combinedLoading) return <p>Loading</p>
-  console.log('graphDisplayData')
-  console.log(graphDisplayData)
-  console.log('combinedData')
-  console.log(combinedData)
-  if (combinedData) {
-    console.log(subgraphNodes)
-    let parsedObject = JSON.parse(combinedData.combinedGraph)
-    parsedObject.nodes.forEach(function (node) {
-      addNodeStyles(node, subgraphNodes)
-    })
-    parsedObject.edges.forEach(addEdgeStyles)
-    Utils.processEdges(parsedObject.edges, { poly: 50 })
-    graphDisplayData = parsedObject
-    console.log(graphDisplayData)
-  }
-
-  const checkEnter = (event) => {
-    // console.log(event)
-    if (event.keyCode == 13) {
-      // const val = event.target.value
-
-      // const nameArr = val.split(' ', 2)
-
-      // getNeighborsGraph({
-      //   variables: { nameInput: nameArr[0], surnameInput: nameArr[1] },
-      // })
-      // console.log(event.target.id)
-      // const clickedNodeID = parseInt(event.target.id)
-      // console.log(clickedNodeID)
-      // const newArr = []
-      // newArr.push(clickedNodeID)
-      // console.log(newArr)
-      // setNodes(newArr)
-      // console.log(subgraphNodes)
-      getSubgraph({ variables: { listInput: subgraphNodes } })
-    }
-  }
-
-  const getID = (event) => {
-    const id = parseInt(event.item._cfg.id)
-    console.log(id)
-    const arr = subgraphNodes
-    arr.push(id)
-    setNodes(arr)
-    console.log(subgraphNodes)
-    getSubgraph({
-      variables: { listInput: subgraphNodes },
-    })
-  }
-
-  const toggleVisibility = () => {
-    const feedbackArea = document.getElementById('AcceptAndReject')
-    const currentVisibility = feedbackArea.style.display
-    if (currentVisibility == 'none') {
-      feedbackArea.style.display = 'block'
-      document.getElementById('GetNextButton').display = 'none'
-    } else if (currentVisibility == 'block') {
-      feedbackArea.style.display = 'none'
-    }
-    getNextRecommended()
-  }
-
   const addSeedNode = (id) => {
-    console.log('in addSeedNode')
-    // console.log('event')
-    console.log('id')
-    console.log(id)
-    const newArr = []
-    newArr.push(id)
-    setNodes(newArr)
+    console.log(
+      `Adding node ${id} to the visualization with existing nodes ${subgraphNodes}.`
+    )
+    setNodes([...subgraphNodes, parseInt(id)])
   }
+
+  const people = useQuery(GET_PERSON, {
+    variables: { filter: { name_CONTAINS: '' } },
+  })
+  const subgraph = useQuery(GET_SUBGRAPH, {
+    variables: { seedNodes: subgraphNodes },
+  })
+
+  let err = people.error || subgraph.error
+  if (err) {
+    console.log(err)
+    return <p>Error</p>
+  }
+  if (people.loading || subgraph.loading) return <p>Loading</p>
+
+  let graphDisplayData = JSON.parse(subgraph.data.Subgraph)
+  graphDisplayData.nodes.forEach(function (node) {
+    addNodeStyles(node, subgraphNodes)
+  })
+  graphDisplayData.edges.forEach(addEdgeStyles)
+  Utils.processEdges(graphDisplayData.edges, { poly: 50 })
 
   return (
     <React.Fragment>
       <Title>Person List</Title>
       <Autocomplete
-        options={allPeople.people}
+        options={people.data.people}
         getOptionLabel={(option) => option.name + ' ' + option.surname}
         onChange={(event, value) => addSeedNode(value.id)}
         disableClearable
@@ -205,7 +134,6 @@ function GraphDisplay(props) {
             label="Search for a person"
             margin="normal"
             variant="outlined"
-            onKeyUp={(e) => checkEnter(e)}
             InputProps={{
               ...params.InputProps,
               type: 'search',
@@ -229,8 +157,11 @@ function GraphDisplay(props) {
             </Button>
           </Grid>
           {/* previously, data={graphState.graphStateData} */}
+          {/* concentric */}
           <Graphin data={graphDisplayData} layout={{ type: 'graphin-force' }}>
-            <ClickSelect onClick={getID}></ClickSelect>
+            <ClickSelect
+              onClick={(e) => addSeedNode(e.item._cfg.id)}
+            ></ClickSelect>
           </Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>
             <Grid container justify="flex-end">
