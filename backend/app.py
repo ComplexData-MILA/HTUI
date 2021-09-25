@@ -1,8 +1,21 @@
 from neo4j import GraphDatabase
 import json
+import uvicorn
+from fastapi import FastAPI
 
-uri = "neo4j://localhost:7687"
-driver = GraphDatabase.driver(uri, auth=("neo4j", "RedThread"))
+from typing import NewType, Optional, List
+from uuid import UUID
+
+import sqlalchemy as sa
+from fastapi import Depends, Header, HTTPException
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session
+from starlette.status import HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
+
+from fastapi_utils.api_model import APIMessage, APIModel
+from fastapi_utils.cbv import cbv
+from fastapi_utils.guid_type import GUID
+from fastapi_utils.inferring_router import InferringRouter
 
 def get_friends_of(tx, name):
     friends = []
@@ -24,14 +37,23 @@ def get_subgraph_json(tx, seeds):
         subgraphs.append(json.loads(sg["subgraph"]))
     return subgraphs
 
-with driver.session() as session:
-    friends = session.read_transaction(get_friends_of, "Alice")
-    print("friends: ")
-    for friend in friends:
-        print(friend)
-    
-    print("subgraph json: ")
-    subgraph = session.read_transaction(get_subgraph_json, [431, 1198, 828, 59, 1206])
-    print(subgraph[0])
+app = FastAPI()
+router = InferringRouter()
+@cbv(router)
+class App:
+    def __init__(self, uri: str = "neo4j://localhost:7687"):
+        self.driver = GraphDatabase.driver(uri, auth=("neo4j", "RedThread"))
+        self.session = self.driver.session()
 
-driver.close()
+    @router.get('/friends/{person}')
+    def get_friends(self, person: str):
+        friends = self.session.read_transaction(get_friends_of, person)
+        return friends
+    
+    # seeds should be of form string "431 1198 828 59 1206" for [431, 1198, 828, 59, 1206]
+    @router.get('/subgraph/{seeds}')
+    def subgraph(self, seeds: str): 
+        intList = list(map(int, seeds.split(" ")))
+        return self.session.read_transaction(get_subgraph_json, intList)
+
+app.include_router(router)
