@@ -17,6 +17,9 @@ from fastapi_utils.cbv import cbv
 from fastapi_utils.guid_type import GUID
 from fastapi_utils.inferring_router import InferringRouter
 
+# CORS stuff
+from fastapi.middleware.cors import CORSMiddleware
+
 def get_friends_of(tx, name):
     friends = []
     result = tx.run("MATCH (a:Person)-[:KNOWS]->(f) "
@@ -38,7 +41,25 @@ def get_subgraph_json(tx, seeds):
     return subgraphs
 
 app = FastAPI()
+
+# origins = [
+#     "http://localhost.tiangolo.com",
+#     "https://localhost.tiangolo.com",
+#     "http://localhost",
+#     "http://localhost:8080",
+# ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 router = InferringRouter()
+
+
 @cbv(router)
 class App:
     def __init__(self, uri: str = "neo4j://localhost:7687"):
@@ -56,4 +77,11 @@ class App:
         intList = list(map(int, seeds.split(" ")))
         return self.session.read_transaction(get_subgraph_json, intList)
 
+    # @router.post('/subgraph/{seeds}')
+    # def subgraph(self, seeds: str): 
+    #     intList = list(map(int, seeds.split(" ")))
+    #     return self.session.read_transaction(get_subgraph_json, intList)
+
 app.include_router(router)
+
+# run with uvicorn app:app

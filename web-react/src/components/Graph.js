@@ -92,6 +92,13 @@ function GraphDisplay(props) {
   const { classes } = props
   const [subgraphNodes, setNodes] = useState([])
 
+  // adding fetch HTTP request
+  const tryFetch = () => {
+    fetch('http://127.0.0.1:8000/friends/Alice')
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+  }
+
   const addSeedNode = (id) => {
     console.log(
       `Adding node ${id} to the visualization with existing nodes ${subgraphNodes}.`
@@ -119,6 +126,7 @@ function GraphDisplay(props) {
   })
   graphDisplayData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphDisplayData.edges, { poly: 50 })
+  tryFetch()
 
   return (
     <React.Fragment>
@@ -158,7 +166,6 @@ function GraphDisplay(props) {
               Get Next Ad and Next Evidence Nodes
             </Button>
           </Grid>
-          {/* previously, data={graphState.graphStateData} */}
           {/* concentric */}
           <Graphin data={graphDisplayData} layout={{ type: 'graphin-force' }}>
             <ClickSelect
