@@ -1,3 +1,4 @@
+import os
 from neo4j import GraphDatabase
 import json
 import uvicorn
@@ -62,8 +63,10 @@ router = InferringRouter()
 
 @cbv(router)
 class App:
-    def __init__(self, uri: str = "neo4j://localhost:7687"):
-        self.driver = GraphDatabase.driver(uri, auth=("neo4j", "RedThread"))
+    def __init__(self, uri: str = None):
+        uri = os.getenv('NEO4J_URI', "neo4j://localhost:7687")
+        auth = tuple(os.getenv('NEO4J_AUTH', 'neo4j/ReadThread').split('/'))
+        self.driver = GraphDatabase.driver(uri, auth=auth)
         self.session = self.driver.session()
 
     @router.get('/friends/{person}')
