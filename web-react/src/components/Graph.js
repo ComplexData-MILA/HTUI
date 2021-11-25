@@ -22,7 +22,6 @@ import {
   Typography,
 } from '@material-ui/core'
 // import { Stack } from '@mui/material'
-import Autocomplete from '@material-ui/lab/Autocomplete'
 import Title from './Title'
 import getNextRecommended from './../actions/getNextRecommended'
 import acceptNodes from './../actions/acceptNodes'

@@ -53,9 +53,28 @@ def get_all(tx):
         population.append(result["individual"])
     return population
 
-# def runFullTextIdx(tx):
-#     tx.run("call db.labels() yield label with collect(label) as labels "
-#             "CALL db.index.fulltext.createNodeIndex('full_name', labels,['name', 'surname']) return labels")
+# TODO: Set max_results as env var or similar
+def text_search(tx, q: str, max_results: int = 25):
+    population = []
+    results = tx.run("""
+    CALL db.index.fulltext.queryNodes("full_name", $q) 
+    YIELD node 
+    RETURN {id: id(node), name: node.name, surname: node.surname, value: node.name + ' ' + node.surname} AS individual
+    LIMIT $n
+    """, q=q, n=max_results)
+    for result in results:
+        population.append(result["individual"])
+    return population
+
+def runFullTextIdx(tx):
+    print(tx.run("""
+    CALL db.labels() yield label with collect(label) as labels
+    WHERE NOT apoc.schema.node.indexExists('full_name', ['name', 'surname'])
+    CALL db.index.fulltext.createNodeIndex('full_name', labels, ['name', 'surname']) return labels
+    """))
+    # print(tx.run("""
+    # CREATE FULLTEXT INDEX full_name IF NOT EXISTS ON EACH ['name', 'surname']
+    # """))
 
 app = FastAPI()
 
@@ -79,7 +98,7 @@ class App:
         auth = tuple(os.getenv('NEO4J_AUTH', 'neo4j/ReadThread').split('/'))
         self.driver = GraphDatabase.driver(uri, auth=auth)
         self.session = self.driver.session()
-        # runFullTextIdx()
+        # self.session.write_transaction(runFullTextIdx)
 
     @router.get('/friends/{person}')
     def get_friends(self, person: str):
@@ -90,17 +109,12 @@ class App:
     def get_all_people(self):
         people = self.session.read_transaction(get_all)
         return people
-    
-    # seeds should be of form string "431 1198 828 59 1206" for [431, 1198, 828, 59, 1206]
-    # @router.get('/subgraph/{seeds}')
-    # def subgraph(self, seeds: str): 
-    #     intList = list(map(int, seeds.split(" ")))
-    #     return self.session.read_transaction(get_subgraph_json, intList)
 
-    # @router.post('/subgraph/{seeds}')
-    # def subgraph(self, seeds: str): 
-    #     intList = list(map(int, seeds.split(" ")))
-    #     return self.session.read_transaction(get_subgraph_json, intList)
+    @router.get('/search')
+    def get_all_people(self, q: str = ''):
+        if not q:
+            return []
+        return self.session.read_transaction(text_search, q)
 
     @router.post("/subgraph")
     async def subgraph(self, seeds: NodeList):
