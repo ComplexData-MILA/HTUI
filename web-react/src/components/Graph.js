@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import Graphin, { Utils, Behaviors } from '@antv/graphin'
 import { Tooltip } from '@antv/graphin-components'
@@ -21,6 +21,7 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core'
+// import { Stack } from '@mui/material'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import Title from './Title'
 import getNextRecommended from './../actions/getNextRecommended'
@@ -35,6 +36,8 @@ import rejectNodes from './../actions/rejectNodes'
 //     })
 //   }
 // }
+const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
+console.log(`API hosted at ${API_HOST}.`)
 
 const { ClickSelect } = Behaviors
 
@@ -91,13 +94,38 @@ function GraphDisplay(props) {
   // declare useState hooks
   const { classes } = props
   const [subgraphNodes, setNodes] = useState([])
+  const [people, setPeople] = useState([])
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [graph, setGraph] = useState({nodes: [], edges: []})
 
-  // adding fetch HTTP request
-  const tryFetch = () => {
-    fetch('http://127.0.0.1:8000/friends/Alice')
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-  }
+  // temporarily hardcode
+  // const people = [{name: "Harold", surname: "Oliver", id: 1162}];
+  // const fetchPeople = () => {
+  //   fetch(`${API_HOST}/allpeople`)
+  //   .then(response => response.json())
+  // }
+  // const people = fetchPeople()
+  // console.log(people)
+  // use hook with setPeople in .then, useEffect
+  useEffect(() => {
+    fetch(`${API_HOST}/allpeople`)
+        .then(response => response.json())
+        .then(
+          data => { setIsLoaded(true); setPeople(data); console.log(data) },
+          error => {
+            setIsLoaded(true);
+            setError(error);
+          }
+        );
+  }, []);
+
+  // // adding fetch HTTP request
+  // const tryFetch = () => {
+  //   fetch('http://127.0.0.1:8000/friends/Alice')
+  //     .then((response) => response.json())
+  //     .then((data) => console.log(data))
+  // }
 
   const addSeedNode = (id) => {
     console.log(
@@ -106,34 +134,60 @@ function GraphDisplay(props) {
     setNodes([...subgraphNodes, parseInt(id)])
   }
 
-  const people = useQuery(GET_PERSON, {
-    variables: { filter: { name_CONTAINS: '' } },
-  })
-  const subgraph = useQuery(GET_SUBGRAPH, {
-    variables: { seedNodes: subgraphNodes },
-  })
+  // const people = useQuery(GET_PERSON, {
+  //   variables: { filter: { name_CONTAINS: '' } },
+  // })
+  // const subgraph = useQuery(GET_SUBGRAPH, {
+  //   variables: { seedNodes: subgraphNodes },
+  // })
 
-  let err = people.error || subgraph.error
-  if (err) {
-    console.log(err)
-    return <p>Error</p>
+  // let err = people.error || subgraph.error
+  // if (err) {
+  //   console.log(err)
+  //   return <p>Error</p>
+  // }
+  // if (people.loading || subgraph.loading) return <p>Loading</p>
+  // 
+  // let graphDisplayData = JSON.parse(subgraph.data.Subgraph)
+
+  useEffect(() => {
+      const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ node_ids: subgraphNodes })
+      };
+      fetch(`${API_HOST}/subgraph`, requestOptions)
+          .then(response => response.json())
+          .then(
+            data => { setIsLoaded(true); setGraph(data); console.log(data); console.log(subgraphNodes) },
+            error => {
+              setIsLoaded(true);
+              setError(error);
+            }
+          );
+  }, [subgraphNodes]);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  } else if (!isLoaded) {
+    return <div>Loading...</div>;
   }
-  if (people.loading || subgraph.loading) return <p>Loading</p>
 
-  let graphDisplayData = JSON.parse(subgraph.data.Subgraph)
+  console.log({ graph, error, isLoaded })
+  let graphDisplayData = graph; // getSubgraph(subgraphNodes)
   graphDisplayData.nodes.forEach(function (node) {
     addNodeStyles(node, subgraphNodes)
   })
   graphDisplayData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphDisplayData.edges, { poly: 50 })
-  tryFetch()
 
   return (
     <React.Fragment>
       <Title>Person List</Title>
       <Autocomplete
-        options={people.data.people}
-        getOptionLabel={(option) => option.name + ' ' + option.surname}
+        // options={people.data.people}
+        options={people}
+        getOptionLabel={(option) => option.value}
         onChange={(event, value) => addSeedNode(value.id)}
         disableClearable
         renderInput={(params) => (
@@ -158,7 +212,7 @@ function GraphDisplay(props) {
           <Grid
             component={Box}
             container
-            justify="flex-end"
+            justifyContent="flex-end"
             display="block"
             id="GetNextButton"
           >
@@ -167,7 +221,7 @@ function GraphDisplay(props) {
             </Button>
           </Grid>
           {/* concentric */}
-          <Graphin data={graphDisplayData} layout={{ type: 'graphin-force' }}>
+          <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
             <ClickSelect
               onClick={(e) => addSeedNode(e.item._cfg.id)}
             ></ClickSelect>
@@ -191,7 +245,7 @@ function GraphDisplay(props) {
             </Tooltip>
           </Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>
-            <Grid container justify="flex-end">
+            <Grid container justifyContent="flex-end">
               <Button
                 variant="contained"
                 className={classes.acceptButton}
@@ -210,12 +264,32 @@ function GraphDisplay(props) {
           </div>
         </Paper>
       </div>
+      <div style={{ padding:20 }}>
+        <Grid>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography>
+                Hello
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography>
+                Hello
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </div>
     </React.Fragment>
+    
   )
 }
 
 export default withStyles(styles)(GraphDisplay)
 
+// TODO: This needs to be a dictionary
 function addNodeStyles(node, selectedNodes) {
   // adding styles
   let labelValue = ''
