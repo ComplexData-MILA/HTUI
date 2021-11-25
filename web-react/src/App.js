@@ -137,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function App() {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = React.useState(false)
   const handleDrawerOpen = () => {
     setOpen(true)
   }
@@ -178,7 +178,7 @@ export default function App() {
               noWrap
               className={classes.title}
             >
-              Welcome To HT UI App
+              HT UI
             </Typography>
           </Toolbar>
         </AppBar>
@@ -229,10 +229,10 @@ export default function App() {
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             <Switch>
-              <Route exact path="/" component={Dashboard} />
+              <Route exact path="/" component={GraphDisplay} />
               <Route exact path="/businesses" component={UserList} />
               <Route exact path="/users" component={UserList} />
-              <Route exact path="/graph" component={GraphDisplay} />
+              <Route exact path="/dashboard" component={Dashboard} />
             </Switch>
 
             <Box pt={4}>
