@@ -21,6 +21,7 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core'
+// import { DataGrid } from '@mui/x-data-grid'
 // import { Stack } from '@mui/material'
 import Title from './Title'
 import getNextRecommended from './../actions/getNextRecommended'
@@ -211,6 +212,11 @@ function GraphDisplay(props) {
               <Typography>
                 Hello
               </Typography>
+              <Button
+                onClick={()=>console.log("clicked 1")}
+              >
+                Click here!
+              </Button>
             </CardContent>
           </Card>
           <Card variant="outlined">
@@ -218,6 +224,11 @@ function GraphDisplay(props) {
               <Typography>
                 Hello
               </Typography>
+              <Button
+                onClick={()=>console.log("clicked 2")}
+              >
+                Click here!
+              </Button>
             </CardContent>
           </Card>
         </Grid>
