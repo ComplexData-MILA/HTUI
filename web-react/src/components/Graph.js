@@ -21,12 +21,15 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core'
+// import { DataGrid } from '@mui/x-data-grid'
 // import { Stack } from '@mui/material'
-import Autocomplete from '@material-ui/lab/Autocomplete'
 import Title from './Title'
 import getNextRecommended from './../actions/getNextRecommended'
 import acceptNodes from './../actions/acceptNodes'
 import rejectNodes from './../actions/rejectNodes'
+
+import SearchBar from './Search';
+import NodeTooltip from './Tooltip'
 
 // const walk = (node, callback) => {
 //   callback(node)
@@ -94,38 +97,9 @@ function GraphDisplay(props) {
   // declare useState hooks
   const { classes } = props
   const [subgraphNodes, setNodes] = useState([])
-  const [people, setPeople] = useState([])
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [graph, setGraph] = useState({nodes: [], edges: []})
-
-  // temporarily hardcode
-  // const people = [{name: "Harold", surname: "Oliver", id: 1162}];
-  // const fetchPeople = () => {
-  //   fetch(`${API_HOST}/allpeople`)
-  //   .then(response => response.json())
-  // }
-  // const people = fetchPeople()
-  // console.log(people)
-  // use hook with setPeople in .then, useEffect
-  useEffect(() => {
-    fetch(`${API_HOST}/allpeople`)
-        .then(response => response.json())
-        .then(
-          data => { setIsLoaded(true); setPeople(data); console.log(data) },
-          error => {
-            setIsLoaded(true);
-            setError(error);
-          }
-        );
-  }, []);
-
-  // // adding fetch HTTP request
-  // const tryFetch = () => {
-  //   fetch('http://127.0.0.1:8000/friends/Alice')
-  //     .then((response) => response.json())
-  //     .then((data) => console.log(data))
-  // }
 
   const addSeedNode = (id) => {
     console.log(
@@ -184,28 +158,12 @@ function GraphDisplay(props) {
   return (
     <React.Fragment>
       <Title>Person List</Title>
-      <Autocomplete
-        // options={people.data.people}
-        options={people}
-        getOptionLabel={(option) => option.value}
-        onChange={(event, value) => addSeedNode(value.id)}
-        disableClearable
-        renderInput={(params) => (
-          <TextField
-            id="search"
-            className={classes.textField}
-            {...params}
-            label="Search for a person"
-            margin="normal"
-            variant="outlined"
-            InputProps={{
-              ...params.InputProps,
-              type: 'search',
-              className: classes.input,
-            }}
-          />
-        )}
+      <SearchBar
+        classes={classes}
+        callback={(event, value) => addSeedNode(value.id)}
+        apiHost={API_HOST}
       />
+      
       <div>
         <Title>Graph</Title>
         <Paper>
@@ -225,24 +183,7 @@ function GraphDisplay(props) {
             <ClickSelect
               onClick={(e) => addSeedNode(e.item._cfg.id)}
             ></ClickSelect>
-            <Tooltip bindType="node" placement="top">
-              <Tooltip.Node>
-                {(node) => {
-                  return (
-                    <Card variant="outlined">
-                      <CardContent>
-                        <Typography color="textSecondary" gutterBottom>
-                          {node.label}
-                        </Typography>
-                        <Typography variant="h5" component="h2">
-                          {node.id}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  )
-                }}
-              </Tooltip.Node>
-            </Tooltip>
+            <NodeTooltip />
           </Graphin>
           <div id="AcceptAndReject" style={{ display: 'none' }}>
             <Grid container justifyContent="flex-end">
@@ -271,6 +212,11 @@ function GraphDisplay(props) {
               <Typography>
                 Hello
               </Typography>
+              <Button
+                onClick={()=>console.log("clicked 1")}
+              >
+                Click here!
+              </Button>
             </CardContent>
           </Card>
           <Card variant="outlined">
@@ -278,6 +224,11 @@ function GraphDisplay(props) {
               <Typography>
                 Hello
               </Typography>
+              <Button
+                onClick={()=>console.log("clicked 2")}
+              >
+                Click here!
+              </Button>
             </CardContent>
           </Card>
         </Grid>

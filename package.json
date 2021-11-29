@@ -32,8 +32,10 @@
     "@antv/graphin": "^2.0.7",
     "@antv/graphin-components": "^2.0.7",
     "@antv/graphin-icons": "^1.0.0",
+    "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@mui/material": "^5.2.0",
+    "@mui/x-data-grid": "^5.0.1",
     "graphql-type-json": "^0.3.2"
   }
 }
