@@ -17,6 +17,7 @@ log_info() {
 set -m
 
 log_info "Import database dump"
+echo "Allow upgrade: ${NEO4J_dbms_allow__upgrade}"
 neo4j-admin load --from=./pole-40.dump --database=neo4j --force
 log_info "DONE"
 

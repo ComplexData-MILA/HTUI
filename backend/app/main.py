@@ -35,6 +35,8 @@ app.add_middleware(
 
 router = InferringRouter()
 
+# @app.on_startup
+
 @cbv(router)
 class App:
     def __init__(self, uri: str = None):

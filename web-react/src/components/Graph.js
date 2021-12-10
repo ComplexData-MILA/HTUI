@@ -28,8 +28,9 @@ import getNextRecommended from './../actions/getNextRecommended'
 import acceptNodes from './../actions/acceptNodes'
 import rejectNodes from './../actions/rejectNodes'
 
-import SearchBar from './Search';
+import SearchBar from './Search'
 import NodeTooltip from './Tooltip'
+import Cards from './Cards'
 
 // const walk = (node, callback) => {
 //   callback(node)
@@ -206,32 +207,8 @@ function GraphDisplay(props) {
         </Paper>
       </div>
       <div style={{ padding:20 }}>
-        <Grid>
-          <Card variant="outlined">
-            <CardContent>
-              <Typography>
-                Hello
-              </Typography>
-              <Button
-                onClick={()=>console.log("clicked 1")}
-              >
-                Click here!
-              </Button>
-            </CardContent>
-          </Card>
-          <Card variant="outlined">
-            <CardContent>
-              <Typography>
-                Hello
-              </Typography>
-              <Button
-                onClick={()=>console.log("clicked 2")}
-              >
-                Click here!
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Title>Cards</Title>
+        <Cards/>
       </div>
     </React.Fragment>
     

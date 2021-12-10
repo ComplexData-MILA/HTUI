@@ -9,19 +9,22 @@ services:
         # NEO4JLABS_PLUGINS: '["apoc"]'
         APOC_VERSION:
         NEO4J_VERSION:
-        NEO4J_AUTH:
+        NEO4J_AUTH: 
     ports:
       - 7474:7474
       - 7687:7687
     environment:
-      - NEO4J_dbms_security_procedures_unrestricted=apoc.*,gds.*
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - NEO4J_dbms_shell_enabled=true
-      - NEO4J_dbms_allow_upgrade=true
+      - NEO4J_dbms_allow__upgrade=true
+      - NEO4J_dbms_allow__format__migration=true
       - NEO4J_apoc_import_file_enabled=true
       - NEO4J_apoc_export_file_enabled=true
       - NEO4J_AUTH=${NEO4J_AUTH}
-      - NEO4JLABS_PLUGINS='["graph-data-science"]'
+      - NEO4JLABS_PLUGINS='["graph-data-science", "apoc"]'
       - NEO4J_dbms_connector_bolt_advertised__address=neo4j://localhost:7687
+    volumes:
+      - ./conf:/conf
 
   api:
     build: ./backend

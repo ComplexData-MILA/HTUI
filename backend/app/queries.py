@@ -54,5 +54,5 @@ def runFullTextIdx(tx):
     CALL db.index.fulltext.createNodeIndex('full_name', labels, ['name', 'surname']) return labels
     """))
     # print(tx.run("""
-    # CREATE FULLTEXT INDEX full_name IF NOT EXISTS ON EACH ['name', 'surname']
+    # CREATE FULLTEXT INDEX full_name IF NOT EXISTS FOR * ON EACH ['name', 'surname']
     # """))
