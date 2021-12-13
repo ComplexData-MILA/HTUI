@@ -3,4 +3,4 @@ fastapi-utils
 starlette
 neo4j
 uvicorn
-
+ray[serve]
