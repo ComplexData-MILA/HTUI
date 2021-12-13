@@ -168,56 +168,68 @@ function GraphDisplay(props) {
         callback={(event, value) => addSeedNode(value.id)}
         apiHost={API_HOST}
       />
-      
-      <div>
-        <Title>Graph</Title>
-        <Paper>
-          <Grid
-            component={Box}
-            container
-            justifyContent="flex-end"
-            display="block"
-            id="GetNextButton"
-          >
-            <Button variant="contained" onClick={toggleVisibility}>
-              Get Next Ad and Next Evidence Nodes
-            </Button>
-          </Grid>
-          {/* concentric */}
-          <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
-            <ClickSelect
-              onClick={(e) => addSeedNode(e.item._cfg.id)}
-            ></ClickSelect>
-            <NodeTooltip />
-          </Graphin>
-          <div id="AcceptAndReject" style={{ display: 'none' }}>
-            <Grid container justifyContent="flex-end">
-              <Button
-                variant="contained"
-                className={classes.acceptButton}
-                onClick={acceptNodes}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(12, 1fr)',
+          alignItems: 'flex-start',
+          // gridAutoColumns: '1fr',
+          // gap: 1,
+        }}
+      >
+        <Box sx={{ gridRow: '1', gridColumn: 'span 9' }}>
+          <div>
+            <Title>Graph</Title>
+            <Paper>
+              <Grid
+                component={Box}
+                container
+                justifyContent="flex-end"
+                display="block"
+                id="GetNextButton"
               >
-                Accept
-              </Button>
-              <Button
-                variant="contained"
-                className={classes.rejectButton}
-                onClick={rejectNodes}
-              >
-                Reject
-              </Button>
-            </Grid>
+                <Button variant="contained" onClick={toggleVisibility}>
+                  Get Next Ad and Next Evidence Nodes
+                </Button>
+              </Grid>
+              {/* concentric */}
+              <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
+                <ClickSelect
+                  onClick={(e) => addSeedNode(e.item._cfg.id)}
+                ></ClickSelect>
+                <NodeTooltip />
+              </Graphin>
+              <div id="AcceptAndReject" style={{ display: 'none' }}>
+                <Grid container justifyContent="flex-end">
+                  <Button
+                    variant="contained"
+                    className={classes.acceptButton}
+                    onClick={acceptNodes}
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className={classes.rejectButton}
+                    onClick={rejectNodes}
+                  >
+                    Reject
+                  </Button>
+                </Grid>
+              </div>
+            </Paper>
           </div>
-        </Paper>
-      </div>
-      <div style={{ padding:20 }}>
-        <Title>Cards</Title>
-        <Cards
-          callback={(event,value) => placeHolder()}
-        />
-      </div>
+        </Box>
+        <Box sx={{ gridRow: '1', gridColumn: 'span 3' }}>
+          <div style={{marginLeft: '20px'}}>
+            <Title>Cards</Title>
+            <Cards
+              callback={(event,value) => placeHolder()}
+            />
+          </div> 
+        </Box>
+      </Box>
     </React.Fragment>
-    
   )
 }
 
