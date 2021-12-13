@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import '@antv/graphin/dist/index.css' // may be removed in the future by antv
 import {
     TextField,
-} from '@material-ui/core'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+    Autocomplete,
+} from '@mui/material'
 import { useQuery } from "react-query";
 
 

@@ -1,39 +1,24 @@
 import React from 'react'
 import {
-    Card,
-    CardContent,
-    Button,
-    Grid,
-    Typography,
-} from '@material-ui/core'
+    Box
+} from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
 
 export default function Cards(props) {
+  const {callback} = props
     return (
-        <Grid>
-          <Card variant="outlined">
-            <CardContent>
-              <Typography>
-                Hello
-              </Typography>
-              <Button
-                onClick={()=>console.log("clicked 1")}
-              >
-                Click here!
-              </Button>
-            </CardContent>
-          </Card>
-          <Card variant="outlined">
-            <CardContent>
-              <Typography>
-                Hello
-              </Typography>
-              <Button
-                onClick={()=>console.log("clicked 2")}
-              >
-                Click here!
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
+        <React.Fragment>
+        <Box sx={{ height: 400, bgcolor: 'background.paper' }}>
+          <DataGrid 
+            onCellClick={callback}
+            hideFooter 
+            columns={[{ field: 'name' }]}
+            rows={[
+              { id: 1, name: 'React' },
+              { id: 2, name: 'MUI' },
+            ]} 
+          />
+        </Box>
+      </React.Fragment>
     )
 }

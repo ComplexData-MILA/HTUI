@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+
 import registerServiceWorker from './registerServiceWorker'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 
@@ -10,9 +12,11 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+const theme = createTheme()
+
 const Main = () => (
   <ApolloProvider client={client}>
-    <App />
+    <ThemeProvider theme={theme}><App /></ThemeProvider>
   </ApolloProvider>
 )
 
