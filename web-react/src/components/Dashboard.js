@@ -1,6 +1,6 @@
 import React from 'react'
-import { useTheme } from '@material-ui/core/styles'
-import { Grid, Paper } from '@material-ui/core'
+import { useTheme } from '@mui/material'
+import { Grid, Paper } from '@mui/material'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 

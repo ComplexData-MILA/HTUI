@@ -2,11 +2,11 @@ import React from 'react'
 
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 
-import UserList from './components/UserList'
+// import UserList from './components/UserList'
 import GraphDisplay from './components/Graph'
 
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import {
   CssBaseline,
   Drawer,
@@ -22,7 +22,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Link } from 'react-router-dom'
 import {
   ChevronLeft as ChevronLeftIcon,
@@ -30,13 +30,13 @@ import {
   Dashboard as DashboardIcon,
   People as PeopleIcon,
   Timeline as GraphIcon,
-} from '@material-ui/icons'
+} from '@mui/icons-material'
 import {
   QueryClient,
   QueryClientProvider,
 } from 'react-query'
 
-import Dashboard from './components/Dashboard'
+// import Dashboard from './components/Dashboard'
 
 function Copyright() {
   return (
@@ -239,9 +239,9 @@ export default function App() {
             <Container maxWidth="lg" className={classes.container}>
               <Switch>
                 <Route exact path="/" component={GraphDisplay} />
-                <Route exact path="/businesses" component={UserList} />
-                <Route exact path="/users" component={UserList} />
-                <Route exact path="/dashboard" component={Dashboard} />
+                {/* <Route exact path="/businesses" component={UserList} /> */}
+                {/* <Route exact path="/users" component={UserList} /> */}
+                {/* <Route exact path="/dashboard" component={Dashboard} /> */}
               </Switch>
 
               <Box pt={4}>

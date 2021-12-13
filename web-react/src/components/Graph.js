@@ -11,7 +11,6 @@ import PhoneCallIcon from '../img/phone_in_talk_black_24dp.svg'
 import AreaIcon from '../img/place_black_24dp.svg'
 import '@antv/graphin/dist/index.css' // may be removed in the future by antv
 import {
-  withStyles,
   TextField,
   Paper,
   Button,
@@ -20,7 +19,8 @@ import {
   Card,
   CardContent,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
+import { withStyles } from '@mui/styles'
 // import { DataGrid } from '@mui/x-data-grid'
 // import { Stack } from '@mui/material'
 import Title from './Title'
@@ -156,6 +156,10 @@ function GraphDisplay(props) {
   graphDisplayData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphDisplayData.edges, { poly: 50 })
 
+  const placeHolder = () => {
+    console.log('clicked')
+  }
+
   return (
     <React.Fragment>
       <Title>Person List</Title>
@@ -208,7 +212,9 @@ function GraphDisplay(props) {
       </div>
       <div style={{ padding:20 }}>
         <Title>Cards</Title>
-        <Cards/>
+        <Cards
+          callback={(event,value) => placeHolder()}
+        />
       </div>
     </React.Fragment>
     

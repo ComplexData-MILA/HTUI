@@ -1,30 +1,17 @@
 import os
-from neo4j import GraphDatabase
-import json
-import uvicorn
+
+import ray
+from ray import serve
+
 from fastapi import FastAPI
-
-from uuid import UUID
-
-import sqlalchemy as sa
-from fastapi import Depends, Header, HTTPException
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session
-from starlette.status import HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
-
-from fastapi_utils.api_model import APIMessage, APIModel
-from fastapi_utils.cbv import cbv
-from fastapi_utils.guid_type import GUID
-from fastapi_utils.inferring_router import InferringRouter
-
-# CORS stuff
 from fastapi.middleware.cors import CORSMiddleware
 
-from .queries import *
+from . import queries as Q
 from .models import Subgraph
+from .deployments.graph import POLEGraph
+
 
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -33,41 +20,36 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-router = InferringRouter()
+serve_handle = None
 
-# @app.on_startup
+@app.on_event('startup')
+async def startup():
+    ray.init(address=os.getenv('RAY_ADDRESS', 'auto'), namespace='serve', ignore_reinit_error=True)# 'ray://ray-head:10001', )
+# 'host': None
+    serve.start()# http_options={'host': None, 'port': 8001}) # 'location': None
+    POLEGraph.deploy() # TODO: make this configurable 
 
-@cbv(router)
-class App:
-    def __init__(self, uri: str = None):
-        uri = os.getenv('NEO4J_URI', "neo4j://localhost:7687")
-        auth = tuple(os.getenv('NEO4J_AUTH', 'neo4j/ReadThread').split('/'))
-        self.driver = GraphDatabase.driver(uri, auth=auth)
-        self.session = self.driver.session()
-        # self.session.write_transaction(runFullTextIdx)
+    global serve_handle
+    serve_handle = POLEGraph.get_handle(sync=False)
+    ray.get(await serve_handle.build_index.remote())
 
-    @router.get('/friends/{person}')
-    def get_friends(self, person: str):
-        friends = self.session.read_transaction(get_friends_of, person)
-        return friends
+@app.get("/")
+async def index():
+    return 'Hello!'
 
-    @router.get('/allpeople')
-    def get_all_people(self):
-        people = self.session.read_transaction(get_all)
-        return people
+@app.get('/search')
+async def full_text_search(q: str = ''):
+    if not q:
+        print('Got empty query')
+        return []
+    ref = serve_handle.read.remote(Q.text_search, q)
+    data = ray.get(await ref)
+    print(data)
+    return data
 
-    @router.get('/search')
-    def full_text_search(self, q: str = ''):
-        if not q:
-            return []
-        return self.session.read_transaction(text_search, q)
-
-    @router.post("/subgraph")
-    async def subgraph(self, seeds: Subgraph):
-        # print(f'{k}-hop subgraph for {seeds}')
-        print(f'Subgraph for {seeds}')
-        graph = self.session.read_transaction(get_subgraph_json, seeds)
-        print(graph)
-        return graph
-
-app.include_router(router)
+@app.post("/subgraph")
+async def subgraph(seeds: Subgraph):
+    ref = serve_handle.read.remote(Q.get_subgraph_json, seeds)
+    data = ray.get(await ref)
+    print(data)
+    return data
