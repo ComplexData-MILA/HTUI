@@ -29,14 +29,18 @@ services:
   api:
     build: ./backend
     ports:
-      - 8000:8000
+      - 8000:8000 # api endpoint
+      - 8265:8265 # ray dashboard
+      - 10001:10001 # ray client
     volumes:
       - ./backend:/app
     environment:
       - NEO4J_URI=neo4j://neo4j:7687
       - NEO4J_AUTH=${NEO4J_AUTH}
+      - RAY_ADDRESS=auto
     # command: python /app/app/main.py # 
-    command: uvicorn app.main:app --host 0.0.0.0 --reload
+    # command: uvicorn app.main:app --host 0.0.0.0 --reload
+    command: 'bash /app/entrypoint.sh'
     depends_on:
       - neo4j
 
@@ -55,24 +59,3 @@ services:
       - api
     volumes:
       - ./web-react/src:/app/src
-
-  ray-head:
-    image: rayproject/ray:latest
-    shm_size: '2gb'
-    entrypoint: [ 'ray']
-    command: ['start', '--head', '--port', '6379', '--include-dashboard', 'true', '--dashboard-host', '0.0.0.0', '--block']
-    ports:
-      - 6379:6379
-      - 8265:8265
-
-  # 
-  ray-worker:
-    image: rayproject/ray:latest
-    shm_size: '2gb'
-    entrypoint: [ 'ray']
-    command: ['start', '--node-ip-address', 'ray-worker', '--address', 'ray-head:6379', '--block'] # '--object-manager-port', '12345', '--node-manager-port', '12346', 
-    # ports:
-    #   - 12345:12345
-    #   - 12346:12346
-    depends_on:
-      - "ray-head"
