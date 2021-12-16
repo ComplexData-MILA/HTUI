@@ -21,6 +21,7 @@ import {
   Typography,
 } from '@mui/material'
 import { withStyles } from '@mui/styles'
+import { grey } from '@mui/material/colors'
 // import { DataGrid } from '@mui/x-data-grid'
 // import { Stack } from '@mui/material'
 import Title from './Title'
@@ -31,6 +32,7 @@ import rejectNodes from './../actions/rejectNodes'
 import SearchBar from './Search'
 import NodeTooltip from './Tooltip'
 import Cards from './Cards'
+import ModelSelect from './ModelSelect'
 
 // const walk = (node, callback) => {
 //   callback(node)
@@ -51,17 +53,6 @@ const styles = (theme) => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     minWidth: 300,
-  },
-  whiteText: {
-    color: 'white',
-  },
-  acceptButton: {
-    background: 'green',
-    color: 'white',
-  },
-  rejectButton: {
-    background: 'red',
-    color: 'white',
   },
 })
 
@@ -162,7 +153,7 @@ function GraphDisplay(props) {
 
   return (
     <React.Fragment>
-      <Title>Person List</Title>
+      {/* <Title>Person List</Title> */}
       <SearchBar
         classes={classes}
         callback={(event, value) => addSeedNode(value.id)}
@@ -173,22 +164,23 @@ function GraphDisplay(props) {
           display: 'grid',
           gridTemplateColumns: 'repeat(12, 1fr)',
           alignItems: 'flex-start',
+          mt: 3,
           // gridAutoColumns: '1fr',
           // gap: 1,
         }}
       >
         <Box sx={{ gridRow: '1', gridColumn: 'span 9' }}>
           <div>
-            <Title>Graph</Title>
+            {/* <Title>Graph</Title> */}
             <Paper>
               <Grid
-                component={Box}
+                // component={Box}
                 container
                 justifyContent="flex-end"
-                display="block"
+                // display="block"
                 id="GetNextButton"
               >
-                <Button variant="contained" onClick={toggleVisibility}>
+                <Button variant="contained" onClick={toggleVisibility} sx={{backgroundColor: grey[400]}}>
                   Get Next Ad and Next Evidence Nodes
                 </Button>
               </Grid>
@@ -203,14 +195,16 @@ function GraphDisplay(props) {
                 <Grid container justifyContent="flex-end">
                   <Button
                     variant="contained"
-                    className={classes.acceptButton}
+                    // className={classes.acceptButton}
+                    color="success"
                     onClick={acceptNodes}
                   >
                     Accept
                   </Button>
                   <Button
                     variant="contained"
-                    className={classes.rejectButton}
+                    // className={classes.rejectButton}
+                    color="error"
                     onClick={rejectNodes}
                   >
                     Reject
@@ -222,7 +216,7 @@ function GraphDisplay(props) {
         </Box>
         <Box sx={{ gridRow: '1', gridColumn: 'span 3' }}>
           <div style={{marginLeft: '20px'}}>
-            <Title>Cards</Title>
+            {/* <Title>Cards</Title> */}
             <Cards
               callback={(event,value) => placeHolder()}
             />

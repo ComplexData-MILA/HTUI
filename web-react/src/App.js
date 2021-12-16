@@ -7,6 +7,7 @@ import GraphDisplay from './components/Graph'
 
 import clsx from 'clsx'
 import { makeStyles } from '@mui/styles'
+import { createTheme } from '@mui/material/styles'
 import {
   CssBaseline,
   Drawer,
@@ -43,7 +44,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <MUILink color="inherit" href="https://grandstack.io/">
-        HT UI
+        SusGraph
       </MUILink>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -52,6 +53,8 @@ function Copyright() {
 }
 
 const drawerWidth = 240
+
+export const theme = createTheme()
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -187,7 +190,7 @@ export default function App() {
                 noWrap
                 className={classes.title}
               >
-                HT UI
+                SusGraph
               </Typography>
             </Toolbar>
           </AppBar>

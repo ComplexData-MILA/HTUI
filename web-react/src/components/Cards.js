@@ -3,6 +3,7 @@ import {
     Box
 } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
+import ModelSelect from './ModelSelect.js'
 
 export default function Cards(props) {
   const {callback} = props
@@ -16,7 +17,10 @@ export default function Cards(props) {
             rows={[
               { id: 1, name: 'React' },
               { id: 2, name: 'MUI' },
-            ]} 
+            ]}
+            components={{
+              Toolbar: ModelSelect,
+            }}
           />
         </Box>
       </React.Fragment>
