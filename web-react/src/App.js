@@ -7,7 +7,8 @@ import GraphDisplay from './components/Graph'
 
 import clsx from 'clsx'
 import { makeStyles } from '@mui/styles'
-import { createTheme } from '@mui/material/styles'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { StyledEngineProvider } from '@mui/material/styles'
 import {
   CssBaseline,
   Drawer,
@@ -54,7 +55,8 @@ function Copyright() {
 
 const drawerWidth = 240
 
-export const theme = createTheme()
+// export const theme = createTheme()
+const theme = createTheme()
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -146,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
 // https://github.com/tannerlinsley/react-query/blob/master/examples/star-wars/src/App.js
 const queryClient = new QueryClient()
 
-export default function App() {
+function AppContent() {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
   const handleDrawerOpen = () => {
@@ -155,105 +157,115 @@ export default function App() {
   const handleDrawerClose = () => {
     setOpen(false)
   }
-
+  
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar
-            position="absolute"
-            className={clsx(classes.appBar, open && classes.appBarShift)}
-          >
-            <Toolbar className={classes.toolbar}>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                className={clsx(
-                  classes.menuButton,
-                  open && classes.menuButtonHidden
-                )}
-              >
-                <MenuIcon />
-              </IconButton>
-              <img
-                className={classes.appBarImage}
-                src="img/grandstack.png"
-                alt="GRANDstack logo"
-              />
-              <Typography
-                component="h1"
-                variant="h6"
-                color="inherit"
-                noWrap
-                className={classes.title}
-              >
-                SusGraph
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Drawer
-            variant="permanent"
-            classes={{
-              paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-            }}
-            open={open}
-          >
-            <div className={classes.toolbarIcon}>
-              <IconButton onClick={handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <Divider />
-            <List>
-              <Link to="/" className={classes.navLink}>
-                <ListItem button>
-                  <ListItemIcon>
-                    <DashboardIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Dashboard" />
-                </ListItem>
-              </Link>
+    <StyledEngineProvider injectFirst>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <div className={classes.root}>
+            <CssBaseline />
+            <AppBar
+              position="absolute"
+              className={clsx(classes.appBar, open && classes.appBarShift)}
+            >
+              <Toolbar className={classes.toolbar}>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  className={clsx(
+                    classes.menuButton,
+                    open && classes.menuButtonHidden
+                  )}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <img
+                  className={classes.appBarImage}
+                  src="img/grandstack.png"
+                  alt="GRANDstack logo"
+                />
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  color="inherit"
+                  noWrap
+                  className={classes.title}
+                >
+                  SusGraph
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <Drawer
+              variant="permanent"
+              classes={{
+                paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+              }}
+              open={open}
+            >
+              <div className={classes.toolbarIcon}>
+                <IconButton onClick={handleDrawerClose}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </div>
+              <Divider />
+              <List>
+                <Link to="/" className={classes.navLink}>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Dashboard" />
+                  </ListItem>
+                </Link>
 
-              <Link to="/users" className={classes.navLink}>
-                <ListItem button>
-                  <ListItemIcon>
-                    <PeopleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Users" />
-                </ListItem>
-              </Link>
+                <Link to="/users" className={classes.navLink}>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PeopleIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Users" />
+                  </ListItem>
+                </Link>
 
-              <Link to="/graph" className={classes.navLink}>
-                <ListItem button>
-                  <ListItemIcon>
-                    <GraphIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Graph" />
-                </ListItem>
-              </Link>
-            </List>
-            <Divider />
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
-              <Switch>
-                <Route exact path="/" component={GraphDisplay} />
-                {/* <Route exact path="/businesses" component={UserList} /> */}
-                {/* <Route exact path="/users" component={UserList} /> */}
-                {/* <Route exact path="/dashboard" component={Dashboard} /> */}
-              </Switch>
+                <Link to="/graph" className={classes.navLink}>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <GraphIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Graph" />
+                  </ListItem>
+                </Link>
+              </List>
+              <Divider />
+            </Drawer>
+            <main className={classes.content}>
+              <div className={classes.appBarSpacer} />
+              <Container maxWidth="lg" className={classes.container}>
+                <Switch>
+                  <Route exact path="/" component={GraphDisplay} />
+                  {/* <Route exact path="/businesses" component={UserList} /> */}
+                  {/* <Route exact path="/users" component={UserList} /> */}
+                  {/* <Route exact path="/dashboard" component={Dashboard} /> */}
+                </Switch>
 
-              <Box pt={4}>
-                <Copyright />
-              </Box>
-            </Container>
-          </main>
-        </div>
-      </Router>
-    </QueryClientProvider>
+                <Box pt={4}>
+                  <Copyright />
+                </Box>
+              </Container>
+            </main>
+          </div>
+        </Router>
+      </QueryClientProvider>
+    </StyledEngineProvider>
   )
+}
+
+export default function App() {
+    return (
+      <ThemeProvider theme={theme}>
+        <AppContent />
+      </ThemeProvider>
+    )
 }

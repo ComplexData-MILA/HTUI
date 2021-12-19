@@ -32,7 +32,6 @@ import rejectNodes from './../actions/rejectNodes'
 import SearchBar from './Search'
 import NodeTooltip from './Tooltip'
 import Cards from './Cards'
-import ModelSelect from './ModelSelect'
 
 // const walk = (node, callback) => {
 //   callback(node)
