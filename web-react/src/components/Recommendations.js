@@ -5,7 +5,7 @@ import {
 import { DataGrid } from '@mui/x-data-grid'
 import ModelSelect from './ModelSelect.js'
 
-export default function Cards(props) {
+export default function Recommendations(props) {
   const {callback} = props
     return (
         <React.Fragment>

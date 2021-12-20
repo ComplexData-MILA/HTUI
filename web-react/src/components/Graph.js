@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createRef } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import Graphin, { Utils, Behaviors } from '@antv/graphin'
 import { Tooltip } from '@antv/graphin-components'
@@ -31,7 +31,7 @@ import rejectNodes from './../actions/rejectNodes'
 
 import SearchBar from './Search'
 import NodeTooltip from './Tooltip'
-import Cards from './Cards'
+import Recommendations from './Recommendations'
 
 // const walk = (node, callback) => {
 //   callback(node)
@@ -91,6 +91,7 @@ function GraphDisplay(props) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [graph, setGraph] = useState({nodes: [], edges: []})
+  const graphRef = createRef(null)
 
   const addSeedNode = (id) => {
     console.log(
@@ -150,6 +151,15 @@ function GraphDisplay(props) {
     console.log('clicked')
   }
 
+  // new Graphin things to try to fix clicking node function
+  
+  // useEffect(() => {
+  //   const { graph } = graphRef.current;
+  //   graph.on('node:click', e => {
+  //       console.log('node:click', e);
+  //   });
+  // }, [graphRef]); 
+
   return (
     <React.Fragment>
       {/* <Title>Person List</Title> */}
@@ -184,7 +194,7 @@ function GraphDisplay(props) {
                 </Button>
               </Grid>
               {/* concentric */}
-              <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
+              <Graphin data={graphDisplayData} layout={{ type: 'concentric' }} ref={graphRef}>
                 <ClickSelect
                   onClick={(e) => addSeedNode(e.item._cfg.id)}
                 ></ClickSelect>
@@ -216,7 +226,7 @@ function GraphDisplay(props) {
         <Box sx={{ gridRow: '1', gridColumn: 'span 3' }}>
           <div style={{marginLeft: '20px'}}>
             {/* <Title>Cards</Title> */}
-            <Cards
+            <Recommendations
               callback={(event,value) => placeHolder()}
             />
           </div> 

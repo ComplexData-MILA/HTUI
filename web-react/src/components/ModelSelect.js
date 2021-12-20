@@ -4,6 +4,7 @@ import { GridToolbarContainer } from '@mui/x-data-grid';
 
 export default function ModelSelect() {
     const [model, setModel] = useState('')
+    const models = ['Random', 'Random Walk', 'RedThread']; // get from the backend
 
     const handleChange = (event) => {
         console.log(event.target.value)
@@ -21,9 +22,7 @@ export default function ModelSelect() {
                     label="Model"
                     onChange={handleChange}
                 >
-                    <MenuItem value={'Random selection'}>Random selection</MenuItem>
-                    <MenuItem value={'Random walk'}>Random walk</MenuItem>
-                    <MenuItem value={'Red Thread'}>Red Thread</MenuItem>
+                    {models.map((val) => <MenuItem value={val}>{val}</MenuItem>)}
                 </Select>
             </FormControl>
         </GridToolbarContainer>
