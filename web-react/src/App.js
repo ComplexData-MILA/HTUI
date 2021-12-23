@@ -29,8 +29,8 @@ import { Link } from 'react-router-dom'
 import {
   ChevronLeft as ChevronLeftIcon,
   Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
+  // Dashboard as DashboardIcon,
+  // People as PeopleIcon,
   Timeline as GraphIcon,
 } from '@mui/icons-material'
 import {
@@ -214,13 +214,13 @@ function AppContent() {
                 <Link to="/" className={classes.navLink}>
                   <ListItem button>
                     <ListItemIcon>
-                      <DashboardIcon />
+                      <GraphIcon />
                     </ListItemIcon>
                     <ListItemText primary="Dashboard" />
                   </ListItem>
                 </Link>
 
-                <Link to="/users" className={classes.navLink}>
+                {/* <Link to="/users" className={classes.navLink}>
                   <ListItem button>
                     <ListItemIcon>
                       <PeopleIcon />
@@ -236,7 +236,7 @@ function AppContent() {
                     </ListItemIcon>
                     <ListItemText primary="Graph" />
                   </ListItem>
-                </Link>
+                </Link> */}
               </List>
               <Divider />
             </Drawer>

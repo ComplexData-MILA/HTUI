@@ -182,17 +182,6 @@ function GraphDisplay(props) {
           <div>
             {/* <Title>Graph</Title> */}
             <Paper>
-              <Grid
-                // component={Box}
-                container
-                justifyContent="flex-end"
-                // display="block"
-                id="GetNextButton"
-              >
-                <Button variant="contained" onClick={toggleVisibility} sx={{backgroundColor: grey[400]}}>
-                  Get Next Ad and Next Evidence Nodes
-                </Button>
-              </Grid>
               {/* concentric */}
               <Graphin data={graphDisplayData} layout={{ type: 'concentric' }} ref={graphRef}>
                 <ClickSelect
@@ -200,26 +189,6 @@ function GraphDisplay(props) {
                 ></ClickSelect>
                 <NodeTooltip />
               </Graphin>
-              <div id="AcceptAndReject" style={{ display: 'none' }}>
-                <Grid container justifyContent="flex-end">
-                  <Button
-                    variant="contained"
-                    // className={classes.acceptButton}
-                    color="success"
-                    onClick={acceptNodes}
-                  >
-                    Accept
-                  </Button>
-                  <Button
-                    variant="contained"
-                    // className={classes.rejectButton}
-                    color="error"
-                    onClick={rejectNodes}
-                  >
-                    Reject
-                  </Button>
-                </Grid>
-              </div>
             </Paper>
           </div>
         </Box>
@@ -247,7 +216,7 @@ function addNodeStyles(node, selectedNodes) {
   if (node.label == 'Person') {
     labelValue = node.name + ' ' + node.surname
     iconValue = PersonIcon
-    color = 'orange'
+    color = '#1fc9bd'
   } else if (node.label == 'Email') {
     labelValue = node.email_address
     iconValue = EmailIcon
