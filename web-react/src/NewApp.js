@@ -18,9 +18,13 @@ import {
     Box,
     Container,
     Fab,
+    Drawer,
+    IconButton,
+    Divider,
 } from '@mui/material'
 import {
     Menu as MenuIcon,
+    ChevronRight,
 } from '@mui/icons-material'
 
 import {
@@ -46,37 +50,6 @@ const useStyles = makeStyles((theme) => ({
       toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
       },
-      toolbarIcon: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-      },
-      appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-      },
-      appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-      menuButton: {
-        marginRight: 36,
-      },
-      menuButtonHidden: {
-        display: 'none',
-      },
-      title: {
-        flexGrow: 1,
-      },
       drawerPaper: {
         position: 'relative',
         whiteSpace: 'nowrap',
@@ -97,33 +70,51 @@ const useStyles = makeStyles((theme) => ({
           width: theme.spacing(9),
         },
       },
-      appBarSpacer: theme.mixins.toolbar,
       content: {
         flexGrow: 1,
         height: '100vh',
         overflow: 'auto',
         paddingBottom: 20,
       },
-      container: {
-        // paddingTop: theme.spacing(4),
-        borderBottom: 2,
+      recButton: {
+        position: 'fixed',
+        top: 100,
+        right: theme.spacing(2)
       },
-      paper: {
-        padding: theme.spacing(2),
-        display: 'flex',
+      recButtonHidden: {
+        hidden: 'none',
+      },
+      main: {
+        height: '100vh',
         overflow: 'auto',
-        flexDirection: 'column',
+        paddingBottom: 20,
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        marginRight: -drawerWidth,
       },
-      fixedHeight: {
-        height: 240,
+      mainShift: {
+        height: '100vh',
+        overflow: 'auto',
+        paddingBottom: 20,
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginRight: 0,
       },
-      navLink: {
-        textDecoration: 'none',
-        color: 'inherit',
-      },
-      appBarImage: {
-        maxHeight: '75px',
-        paddingRight: '20px',
+      drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-start',
       },
 }))
 
@@ -131,6 +122,14 @@ const queryClient = new QueryClient()
 
 function NewAppContent() {
     const classes = useStyles()
+    const [open, setOpen] = React.useState(false)
+    const handleDrawerOpen = () => {
+      console.log('opened')
+      setOpen(true)
+    }
+    const handleDrawerClose = () => {
+      setOpen(false)
+    }
 
     const [subgraphNodes, setNodes] = useState([])
     const addSeedNode = (id) => {
@@ -138,6 +137,10 @@ function NewAppContent() {
         `Adding node ${id} to the visualization with existing nodes ${subgraphNodes}.`
         )
         setNodes([...subgraphNodes, parseInt(id)])
+    }
+  
+    const placeHolder = () => {
+      console.log('clicked')
     }
 
     return (
@@ -166,15 +169,45 @@ function NewAppContent() {
                             />
                         </Toolbar>
                     </AppBar>
-                    <main className={classes.content}>
+                    <main
+                      className={clsx(classes.main, open && classes.mainShift)}
+                    >
                         <GraphDisplay
                             subgraphNodes={subgraphNodes}
                             addSeedNode={addSeedNode}
                         ></GraphDisplay>
-                        <Fab>
+                        <Fab
+                          onClick={handleDrawerOpen}
+                          className={clsx(
+                            classes.recButton,
+                            open && classes.recButtonHidden
+                          )}
+                        >
                           <MenuIcon />
                         </Fab>
                     </main>
+                    <Drawer
+                      sx={{
+                        width: drawerWidth,
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                          width: drawerWidth,
+                        },
+                      }}
+                      variant="persistent"
+                      anchor="right"
+                      open={open}
+                    >
+                      <Toolbar className={classes.drawerHeader}>
+                        <IconButton onClick={handleDrawerClose}>
+                          <ChevronRight />
+                        </IconButton>
+                      </Toolbar>
+                      <Divider />
+                      <Recommendations
+                        callback={(event,value) => placeHolder()}
+                      />
+                    </Drawer>
                 </div>
             </QueryClientProvider>
         </StyledEngineProvider>

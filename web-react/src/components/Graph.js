@@ -147,10 +147,6 @@ function GraphDisplay(props) {
   graphDisplayData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphDisplayData.edges, { poly: 50 })
 
-  const placeHolder = () => {
-    console.log('clicked')
-  }
-
   // new Graphin things to try to fix clicking node function
   
   // useEffect(() => {
