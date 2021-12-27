@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 import clsx from 'clsx'
 import { makeStyles } from '@mui/styles'
@@ -111,11 +111,27 @@ const useStyles = makeStyles((theme) => ({
       drawerHeader: {
         display: 'flex',
         alignItems: 'center',
-        padding: theme.spacing(0, 1),
+        // padding: theme.spacing(0, 1),
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
         justifyContent: 'flex-start',
+        // top: 80,
       },
+      title: {
+        flexGrow: 1,
+      },
+      appBar: {
+        positive: 'relative',
+        zIndex: theme.zIndex.drawer + 1,
+        // height: 36,
+        transition: theme.transitions.create(['width', 'margin'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+      },
+      drawerPadding: {
+        marginTop: 80,
+      }
 }))
 
 const queryClient = new QueryClient()
@@ -138,9 +154,17 @@ function NewAppContent() {
         )
         setNodes([...subgraphNodes, parseInt(id)])
     }
+
+    const [height, setHeight] = React.useState(0);
+
+    const measuredRef = React.useCallback(node => {
+      if (node !== null) {
+        setHeight(node.getBoundingClientRect().height);
+      }
+    }, []);
   
-    const placeHolder = () => {
-      console.log('clicked')
+    const placeHolder = (event) => {
+      console.log(event.id)
     }
 
     return (
@@ -150,7 +174,8 @@ function NewAppContent() {
                     <CssBaseline />
                     <AppBar
                         position="absolute"
-                        className={clsx(classes.appBar)}
+                        className={classes.appBar}
+                        ref={measuredRef}
                     >
                         <Toolbar className={classes.toolbar}>
                             <Typography
@@ -185,29 +210,35 @@ function NewAppContent() {
                         >
                           <MenuIcon />
                         </Fab>
+                        <div>
+                          <Drawer
+                            // position="relative"
+                            sx={{
+                              width: drawerWidth,
+                              flexShrink: 0,
+                              '& .MuiDrawer-paper': {
+                                width: drawerWidth,
+                              },
+                              // top: 200,
+                            }}
+                            variant="persistent"
+                            anchor="right"
+                            open={open}
+                          >
+                            <Box className={classes.drawerPadding}>
+                              <Toolbar className={classes.drawerHeader}>
+                                <IconButton onClick={handleDrawerClose}>
+                                  <ChevronRight />
+                                </IconButton>
+                              </Toolbar>
+                              <Divider />
+                              <Recommendations
+                                callback={(event) => placeHolder(event)}
+                              />
+                            </Box>
+                          </Drawer>
+                        </div>
                     </main>
-                    <Drawer
-                      sx={{
-                        width: drawerWidth,
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                          width: drawerWidth,
-                        },
-                      }}
-                      variant="persistent"
-                      anchor="right"
-                      open={open}
-                    >
-                      <Toolbar className={classes.drawerHeader}>
-                        <IconButton onClick={handleDrawerClose}>
-                          <ChevronRight />
-                        </IconButton>
-                      </Toolbar>
-                      <Divider />
-                      <Recommendations
-                        callback={(event,value) => placeHolder()}
-                      />
-                    </Drawer>
                 </div>
             </QueryClientProvider>
         </StyledEngineProvider>
