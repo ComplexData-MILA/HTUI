@@ -122,7 +122,7 @@ function GraphDisplay(props) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ node_ids: subgraphNodes })
       };
-      fetch(`${API_HOST}/subgraph`, requestOptions)
+      fetch(`${API_HOST}/graph/pole/subgraph`, requestOptions)
           .then(response => response.json())
           .then(
             data => { setIsLoaded(true); setGraph(data); console.log(data); console.log(subgraphNodes) },

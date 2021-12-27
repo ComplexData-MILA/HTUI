@@ -7,14 +7,14 @@ import {
 import { DataGrid } from '@mui/x-data-grid'
 import ModelSelect from './ModelSelect.js'
 
-const apiHost = 'http://localhost:8001';
+const apiHost = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 
 export default function Recommendations(props) {
   const {callback} = props
   const [recommendations, setRecs] = useState([]);
 
-  const { isLoading, error, data, isFetching } = useQuery(["providers"], () =>
-    fetch(`${apiHost}/providers/random?k=5`).then((res) => res.json())
+  const { isLoading, error, data, isFetching } = useQuery(["provider"], () =>
+    fetch(`${apiHost}/provider/random?k=5`).then((res) => res.json())
   );
 
   if (error) {
@@ -28,7 +28,7 @@ export default function Recommendations(props) {
   //   14923,
   //   24809
   // ]
-  console.log(data)
+  // console.log(data)
 
   const formatData = (data) => {
     const newArr = data.map(function(num) {
@@ -50,11 +50,12 @@ export default function Recommendations(props) {
           onCellClick={callback}
           hideFooter 
           columns={[{ field: 'id' }]}
-          rows={isLoading ? [] : recommendations}
+          rows={formatData(data)}
           components={{
             Toolbar: ModelSelect,
           }}
-        />}
+        />
+        }
       </Box>
     </React.Fragment>
   )

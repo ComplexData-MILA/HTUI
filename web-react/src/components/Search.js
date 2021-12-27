@@ -16,7 +16,7 @@ export default function SearchBar(props) {
     };
 
     const { isLoading, error, data, isFetching } = useQuery(["search", textInput], () =>
-        fetch(`${apiHost}/search?q=${textInput}`).then((res) => res.json())
+        fetch(`${apiHost}/graph/pole/search?q=${textInput}`).then((res) => res.json())
     );
 
     if (error) {
