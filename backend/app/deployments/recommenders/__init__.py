@@ -4,8 +4,8 @@ from ray import serve
 import logging
 
 class Provider:
-    def __init__(self) -> None:
-        self.graph = serve.get_deployment('graph').get_handle(sync=False)
+    def __init__(self, graph_handle: str = 'graph') -> None:
+        self.graph = serve.get_deployment(graph_handle).get_handle(sync=False)
 
     async def recommend(self, state: 'GraphState'):
         raise NotImplementedError()
@@ -24,7 +24,7 @@ def random_nodes(tx, k):
     logging.info(result)
     return [r['n'].id for r in result]
 
-@serve.deployment
+@serve.deployment(name='provider.random', route_prefix='/provider/random')
 class RandomProvider(Provider):
     async def recommend(self, k: int):
         logging.basicConfig(level=logging.INFO)

@@ -5,6 +5,10 @@ from ray import serve
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError
 
+from ..app import app
+from ..queries import text_search, get_subgraph_json
+from ..models import Subgraph
+
 class GraphDB:
     def __init__(self):
         uri = os.getenv('NEO4J_URI', "neo4j://localhost:7687")
@@ -13,16 +17,21 @@ class GraphDB:
         self.driver = GraphDatabase.driver(uri, auth=auth)
         self.session = self.driver.session()
 
+        self.build_index()
+
     def read(self, *args, **kwargs):
         print(args, kwargs)
         return self.session.read_transaction(*args, **kwargs)
 
-    def build_index(self):
-        raise NotImplementedError()
 
-@serve.deployment # (name="graph", route_prefix="/graph")
+    def build_index(self):
+        pass
+
+@serve.deployment(name="graph.pole", route_prefix="/graph/pole")
+@serve.ingress(app)
 class POLEGraph(GraphDB):
     def build_index(self):
+        print('Building index.')
         from ..queries import runFullTextIdx
 
         try:
@@ -36,6 +45,14 @@ class POLEGraph(GraphDB):
             else:
                 raise e
 
+    @app.post("/subgraph")
+    async def subgraph(self, seeds: Subgraph):
+        return self.read(get_subgraph_json, seeds)
 
-    # def write(self, *args):
-    #     return self.session.write_transaction(*args)
+    
+    @app.get('/search')
+    async def full_text_search(self, q: str = ''):
+        if not q:
+            print('Got empty query')
+            return []
+        return self.read(text_search, q)
