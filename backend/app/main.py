@@ -36,7 +36,7 @@ async def startup():
 
     global serve_handle
     serve_handle = POLEGraph.get_handle(sync=False)
-    # ray.get(await serve_handle.build_index.remote())
+    ray.get(await serve_handle.build_index.remote())
 
 
 @app.get("/")
