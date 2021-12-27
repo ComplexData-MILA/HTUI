@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
+import NewApp from './NewApp'
 // import { ThemeProvider } from '@mui/material/styles'
 
 import registerServiceWorker from './registerServiceWorker'
@@ -16,7 +17,8 @@ const client = new ApolloClient({
 
 const Main = () => (
   <ApolloProvider client={client}>
-    <App />
+    {/* <App /> */}
+    <NewApp />
   </ApolloProvider>
 )
 

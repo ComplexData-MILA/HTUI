@@ -72,33 +72,33 @@ const GET_SUBGRAPH = gql`
   }
 `
 
-const toggleVisibility = () => {
-  const feedbackArea = document.getElementById('AcceptAndReject')
-  const currentVisibility = feedbackArea.style.display
-  if (currentVisibility == 'none') {
-    feedbackArea.style.display = 'block'
-    document.getElementById('GetNextButton').display = 'none'
-  } else if (currentVisibility == 'block') {
-    feedbackArea.style.display = 'none'
-  }
-  getNextRecommended()
-}
+// const toggleVisibility = () => {
+//   const feedbackArea = document.getElementById('AcceptAndReject')
+//   const currentVisibility = feedbackArea.style.display
+//   if (currentVisibility == 'none') {
+//     feedbackArea.style.display = 'block'
+//     document.getElementById('GetNextButton').display = 'none'
+//   } else if (currentVisibility == 'block') {
+//     feedbackArea.style.display = 'none'
+//   }
+//   getNextRecommended()
+// }
 
 function GraphDisplay(props) {
   // declare useState hooks
-  const { classes } = props
-  const [subgraphNodes, setNodes] = useState([])
+  const { subgraphNodes, addSeedNode } = props
+  // const [subgraphNodes, setNodes] = useState([])
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [graph, setGraph] = useState({nodes: [], edges: []})
   const graphRef = createRef(null)
 
-  const addSeedNode = (id) => {
-    console.log(
-      `Adding node ${id} to the visualization with existing nodes ${subgraphNodes}.`
-    )
-    setNodes([...subgraphNodes, parseInt(id)])
-  }
+  // const addSeedNode = (id) => {
+  //   console.log(
+  //     `Adding node ${id} to the visualization with existing nodes ${subgraphNodes}.`
+  //   )
+  //   setNodes([...subgraphNodes, parseInt(id)])
+  // }
 
   // const people = useQuery(GET_PERSON, {
   //   variables: { filter: { name_CONTAINS: '' } },
@@ -162,45 +162,15 @@ function GraphDisplay(props) {
 
   return (
     <React.Fragment>
-      {/* <Title>Person List</Title> */}
-      <SearchBar
-        classes={classes}
-        callback={(event, value) => addSeedNode(value.id)}
-        apiHost={API_HOST}
-      />
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          alignItems: 'flex-start',
-          mt: 3,
-          // gridAutoColumns: '1fr',
-          // gap: 1,
-        }}
-      >
-        <Box sx={{ gridRow: '1', gridColumn: 'span 9' }}>
-          <div>
-            {/* <Title>Graph</Title> */}
-            <Paper>
-              {/* concentric */}
-              <Graphin data={graphDisplayData} layout={{ type: 'concentric' }} ref={graphRef}>
-                <ClickSelect
-                  onClick={(e) => addSeedNode(e.item._cfg.id)}
-                ></ClickSelect>
-                <NodeTooltip />
-              </Graphin>
-            </Paper>
-          </div>
-        </Box>
-        <Box sx={{ gridRow: '1', gridColumn: 'span 3' }}>
-          <div style={{marginLeft: '20px'}}>
-            {/* <Title>Cards</Title> */}
-            <Recommendations
-              callback={(event,value) => placeHolder()}
-            />
-          </div> 
-        </Box>
-      </Box>
+      <Graphin data={graphDisplayData} layout={{ type: 'concentric' }} ref={graphRef}>
+        <ClickSelect
+          onClick={(e) => addSeedNode(e.item._cfg.id)}
+        ></ClickSelect>
+        <NodeTooltip />
+      </Graphin>
+      {/* <Recommendations
+        callback={(event,value) => placeHolder()}
+      /> */}
     </React.Fragment>
   )
 }
@@ -247,6 +217,10 @@ function addNodeStyles(node, selectedNodes) {
     labelValue = node.make + ' ' + node.model
     iconValue = VehicleIcon
     color = 'gray'
+  } else if (node.label == 'Officer') {
+    labelValue = node.name + ' ' + node.surname
+    iconValue = PersonIcon
+    color = 'orange'
   }
 
   node.style = {
