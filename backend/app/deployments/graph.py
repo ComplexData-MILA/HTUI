@@ -13,13 +13,14 @@ class GraphDB:
         self.driver = GraphDatabase.driver(uri, auth=auth)
         self.session = self.driver.session()
 
-    def read(self, *args):
-        return self.session.read_transaction(*args)
+    def read(self, *args, **kwargs):
+        print(args, kwargs)
+        return self.session.read_transaction(*args, **kwargs)
 
     def build_index(self):
         raise NotImplementedError()
 
-@serve.deployment(name="graph", route_prefix="/graph")
+@serve.deployment # (name="graph", route_prefix="/graph")
 class POLEGraph(GraphDB):
     def build_index(self):
         from ..queries import runFullTextIdx
