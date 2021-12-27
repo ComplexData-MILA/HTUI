@@ -30,6 +30,7 @@ services:
     build: ./backend
     ports:
       - 8000:8000 # api endpoint
+      - 8001:8001
       - 8265:8265 # ray dashboard
       - 10001:10001 # ray client
     volumes:

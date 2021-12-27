@@ -7,8 +7,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from . import queries as Q
-from .models import Subgraph
+from .models import Subgraph, GraphState
 from .deployments.graph import POLEGraph
+from .deployments.recommenders import RandomProvider
 
 
 app = FastAPI()
@@ -27,11 +28,16 @@ async def startup():
     ray.init(address=os.getenv('RAY_ADDRESS', 'auto'), namespace='serve', ignore_reinit_error=True)# 'ray://ray-head:10001', )
 # 'host': None
     serve.start()# http_options={'host': None, 'port': 8001}) # 'location': None
-    POLEGraph.deploy() # TODO: make this configurable 
+    POLEGraph.options(name='graph', route_prefix='/graph').deploy() # TODO: make this configurable 
+
+    RandomProvider.options(name='provider.random', route_prefix='/providers/random').deploy()
+    rp_handle = RandomProvider.get_handle(sync=False)
+    # print(ray.get(await rp_handle.remote(state=GraphState(k=5))))
 
     global serve_handle
     serve_handle = POLEGraph.get_handle(sync=False)
-    ray.get(await serve_handle.build_index.remote())
+    # ray.get(await serve_handle.build_index.remote())
+
 
 @app.get("/")
 async def index():
