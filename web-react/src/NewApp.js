@@ -233,7 +233,7 @@ function NewAppContent() {
                               </Toolbar>
                               <Divider />
                               <Recommendations
-                                callback={(event) => placeHolder(event)}
+                                callback={(event) => addSeedNode(event.id)}
                                 apiHost={API_HOST}
                               />
                             </Box>
