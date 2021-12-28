@@ -3,6 +3,8 @@ import ray
 from ray import serve
 import logging
 
+from ...app import app
+
 class Provider:
     def __init__(self, graph_handle: str = 'graph') -> None:
         self.graph = serve.get_deployment(graph_handle).get_handle(sync=False)
@@ -10,8 +12,8 @@ class Provider:
     async def recommend(self, state: 'GraphState'):
         raise NotImplementedError()
 
-    async def __call__(self, request):
-        return await self.recommend(**request.query_params)
+    # async def __call__(self, request):
+    #     return await self.recommend(**request.query_params)
 
 
 def random_nodes(tx, k):
@@ -25,7 +27,9 @@ def random_nodes(tx, k):
     return [r['n'].id for r in result]
 
 @serve.deployment(name='provider.random', route_prefix='/provider/random')
+@serve.ingress(app)
 class RandomProvider(Provider):
+    @app.get('/recommend')
     async def recommend(self, k: int):
         logging.basicConfig(level=logging.INFO)
         ref = await self.graph.read.remote(random_nodes, k=int(k))

@@ -234,6 +234,7 @@ function NewAppContent() {
                               <Divider />
                               <Recommendations
                                 callback={(event) => placeHolder(event)}
+                                apiHost={API_HOST}
                               />
                             </Box>
                           </Drawer>

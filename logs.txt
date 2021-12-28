@@ -1,0 +1,856 @@
+Attaching to htui_ui_1, htui_api_1
+[36mapi_1    |[0m 2021-12-26 20:12:49,273	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-26 20:12:49,277	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-26 20:12:42,525	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-26 20:12:49,487	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-26 20:12:49,487	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-26 20:12:49,487	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-26 20:12:49,487	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-26 20:12:49,487	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-26 20:12:49,487	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-26 20:12:49,487	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[36mapi_1    |[0m 2021-12-26 20:12:49,488	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-26 20:12:53,806	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=197)[0m 2021-12-26 20:12:56,253	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=197)[0m 2021-12-26 20:12:56,267	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8001'
+[36mapi_1    |[0m 2021-12-26 20:12:58,566	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=230)[0m INFO:     Started server process [230]
+[36mapi_1    |[0m INFO:     Will watch for changes in these directories: ['/app']
+[36mapi_1    |[0m INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[36mapi_1    |[0m INFO:     Started reloader process [265] using statreload
+[36mapi_1    |[0m INFO:     Started server process [267]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-26 20:13:02,224	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-26 20:13:02,473	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-26 20:13:02,491	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=197)[0m 2021-12-26 20:13:02,557	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-26 20:13:05,413	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-26 20:13:05,456	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=197)[0m 2021-12-26 20:13:05,510	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-26 20:13:08,260	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m INFO:     Application startup complete.
+[36mapi_1    |[0m INFO:     172.19.0.1:56740 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56742 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56752 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56758 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56758 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56758 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56920 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56932 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56938 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56944 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:56978 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:56982 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57036 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57046 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57090 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57146 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57202 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57244 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57278 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:57324 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57328 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57364 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57364 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57364 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57414 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57472 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57482 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57482 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57516 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57556 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57616 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:57618 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57634 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57704 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57704 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57770 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57820 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57860 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57870 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57870 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:57952 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58038 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58082 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58200 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58214 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58220 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58232 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58232 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:58258 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58296 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58316 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58316 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58316 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58378 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58378 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58446 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58502 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58546 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58546 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58612 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58638 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58658 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58658 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58728 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58786 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58860 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58938 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58954 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58954 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58954 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58954 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:58954 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59008 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59008 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:59034 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59084 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59098 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59098 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m 2021-12-27 11:32:55,715	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-27 11:32:55,731	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-27 11:32:44,542	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-27 11:32:57,360	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-27 11:32:57,360	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-27 11:32:57,360	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-27 11:32:57,360	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-27 11:32:57,360	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-27 11:32:57,360	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-27 11:32:57,360	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-27 11:32:57,361	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[33mui_1     |[0m 
+[33mui_1     |[0m > grand-stack-starter-web-react@0.0.1 start /app
+[33mui_1     |[0m > react-scripts start
+[33mui_1     |[0m 
+[33mui_1     |[0m [HPM] Proxy created: /  -> http://api:4001/graphql
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: Project is running at http://172.19.0.4/
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: webpack output is served from 
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: Content not from webpack is served from /app/public
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: 404s will fallback to /
+[33mui_1     |[0m Starting the development server...
+[33mui_1     |[0m 
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m 
+[33mui_1     |[0m You can now view grand-stack-starter-web-react in the browser.
+[33mui_1     |[0m 
+[33mui_1     |[0m   Local:            http://localhost:3000
+[33mui_1     |[0m   On Your Network:  http://172.19.0.4:3000
+[33mui_1     |[0m 
+[33mui_1     |[0m Note that the development build is not optimized.
+[33mui_1     |[0m To create a production build, use npm run build.
+[33mui_1     |[0m 
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Failed to compile.
+[33mui_1     |[0m 
+[33mui_1     |[0m src/components/Recommendations.js
+[33mui_1     |[0m Syntax error: Identifier 'data' has already been declared. (24:9)
+[33mui_1     |[0m 
+[33mui_1     |[0m   22 |   }
+[33mui_1     |[0m   23 |   
+[33mui_1     |[0m > 24 |   const data = [
+[33mui_1     |[0m      |         ^
+[33mui_1     |[0m   25 |     47404,
+[33mui_1     |[0m   26 |     53420,
+[33mui_1     |[0m   27 |     56315,
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Failed to compile.
+[33mui_1     |[0m 
+[33mui_1     |[0m src/components/Recommendations.js
+[33mui_1     |[0m Syntax error: Identifier 'data' has already been declared. (24:9)
+[33mui_1     |[0m 
+[33mui_1     |[0m   22 |   }
+[33mui_1     |[0m   23 |   
+[33mui_1     |[0m > 24 |   const data = [
+[33mui_1     |[0m      |         ^
+[33mui_1     |[0m   25 |     47404,
+[33mui_1     |[0m   26 |     53420,
+[33mui_1     |[0m   27 |     56315,
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Failed to compile.
+[33mui_1     |[0m 
+[33mui_1     |[0m src/components/Recommendations.js
+[33mui_1     |[0m Syntax error: Unexpected token, expected "}" (58:9)
+[33mui_1     |[0m 
+[33mui_1     |[0m   56 |           }}
+[33mui_1     |[0m   57 |         />
+[33mui_1     |[0m > 58 |         {/* } */}
+[33mui_1     |[0m      |         ^
+[33mui_1     |[0m   59 |       </Box>
+[33mui_1     |[0m   60 |     </React.Fragment>
+[33mui_1     |[0m   61 |   )
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Failed to compile.
+[33mui_1     |[0m 
+[33mui_1     |[0m src/components/Recommendations.js
+[33mui_1     |[0m Syntax error: Unexpected token, expected "}" (58:9)
+[33mui_1     |[0m 
+[33mui_1     |[0m   56 |           }}
+[33mui_1     |[0m   57 |         />
+[33mui_1     |[0m > 58 |         {/* } */}
+[33mui_1     |[0m      |         ^
+[33mui_1     |[0m   59 |       </Box>
+[33mui_1     |[0m   60 |     </React.Fragment>
+[33mui_1     |[0m   61 |   )
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m 
+[33mui_1     |[0m > grand-stack-starter-web-react@0.0.1 start /app
+[33mui_1     |[0m > react-scripts start
+[33mui_1     |[0m 
+[33mui_1     |[0m [HPM] Proxy created: /  -> http://api:4001/graphql
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: Project is running at http://172.19.0.4/
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: webpack output is served from 
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: Content not from webpack is served from /app/public
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: 404s will fallback to /
+[33mui_1     |[0m Starting the development server...
+[33mui_1     |[0m 
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m 
+[33mui_1     |[0m You can now view grand-stack-starter-web-react in the browser.
+[33mui_1     |[0m 
+[33mui_1     |[0m   Local:            http://localhost:3000
+[33mui_1     |[0m   On Your Network:  http://172.19.0.4:3000
+[33mui_1     |[0m 
+[33mui_1     |[0m Note that the development build is not optimized.
+[36mapi_1    |[0m 2021-12-27 11:32:57,362	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-27 11:33:02,827	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 11:33:04,871	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 11:33:04,884	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8001'
+[36mapi_1    |[0m 2021-12-27 11:33:07,342	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=230)[0m INFO:     Started server process [230]
+[36mapi_1    |[0m INFO:     Will watch for changes in these directories: ['/app']
+[36mapi_1    |[0m INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[36mapi_1    |[0m INFO:     Started reloader process [266] using statreload
+[36mapi_1    |[0m INFO:     Started server process [268]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 11:33:10,688	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 11:33:10,965	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 11:33:10,982	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 11:33:11,039	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 11:33:13,780	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 11:33:13,798	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 11:33:13,883	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 11:33:16,761	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m INFO:     Application startup complete.
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59422 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59422 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59422 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:59454 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59528 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m 2021-12-27 11:37:37,715	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-27 11:37:37,725	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-27 11:37:30,254	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-27 11:37:38,898	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-27 11:37:38,899	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-27 11:37:38,899	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-27 11:37:38,899	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-27 11:37:38,899	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-27 11:37:38,899	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-27 11:37:38,899	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[36mapi_1    |[0m 2021-12-27 11:37:38,900	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-27 11:37:42,699	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=196)[0m 2021-12-27 11:37:44,916	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=196)[0m 2021-12-27 11:37:44,920	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8001'
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=229)[0m INFO:     Started server process [229]
+[36mapi_1    |[0m 2021-12-27 11:37:47,291	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m INFO:     Will watch for changes in these directories: ['/app']
+[36mapi_1    |[0m INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[36mapi_1    |[0m INFO:     Started reloader process [264] using statreload
+[36mapi_1    |[0m INFO:     Started server process [266]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 11:37:50,921	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 11:37:51,165	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 11:37:51,177	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=196)[0m 2021-12-27 11:37:51,256	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 11:37:53,536	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 11:37:53,556	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=196)[0m 2021-12-27 11:37:53,640	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 11:37:56,424	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m INFO:     Application startup complete.
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59916 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59916 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59916 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59952 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:59986 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:60010 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:60014 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:60014 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:60014 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:60236 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:60312 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:60306 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m 2021-12-27 12:14:18,250	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-27 12:14:18,253	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-27 12:14:11,228	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-27 12:14:19,639	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-27 12:14:19,639	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-27 12:14:19,639	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-27 12:14:19,639	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-27 12:14:19,639	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-27 12:14:19,639	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-27 12:14:19,639	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-27 12:14:19,640	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[36mapi_1    |[0m 2021-12-27 12:14:19,641	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-27 12:14:24,492	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 12:14:26,834	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 12:14:26,842	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8001'
+[36mapi_1    |[0m 2021-12-27 12:14:29,045	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=231)[0m INFO:     Started server process [231]
+[36mapi_1    |[0m INFO:     Will watch for changes in these directories: ['/app']
+[36mapi_1    |[0m INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[36mapi_1    |[0m INFO:     Started reloader process [265] using statreload
+[36mapi_1    |[0m INFO:     Started server process [267]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 12:14:32,950	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 12:14:33,200	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 12:14:33,210	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 12:14:33,259	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:14:36,521	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:14:36,559	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 12:14:36,620	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 12:14:39,860	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m INFO:     Application startup complete.
+[36mapi_1    |[0m [2m[36m(graph pid=306)[0m (<function random_nodes at 0x7f2749d72440>,) {'k': 5}
+[33mui_1     |[0m To create a production build, use npm run build.
+[33mui_1     |[0m 
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m 
+[33mui_1     |[0m > grand-stack-starter-web-react@0.0.1 start /app
+[33mui_1     |[0m > react-scripts start
+[33mui_1     |[0m 
+[33mui_1     |[0m [HPM] Proxy created: /  -> http://api:4001/graphql
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: Project is running at http://172.19.0.4/
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: webpack output is served from 
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: Content not from webpack is served from /app/public
+[33mui_1     |[0m [34mℹ[39m [90m｢wds｣[39m: 404s will fallback to /
+[33mui_1     |[0m Starting the development server...
+[33mui_1     |[0m 
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m 
+[33mui_1     |[0m You can now view grand-stack-starter-web-react in the browser.
+[33mui_1     |[0m 
+[33mui_1     |[0m   Local:            http://localhost:3000
+[33mui_1     |[0m   On Your Network:  http://172.19.0.4:3000
+[33mui_1     |[0m 
+[33mui_1     |[0m Note that the development build is not optimized.
+[33mui_1     |[0m To create a production build, use npm run build.
+[33mui_1     |[0m 
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[33mui_1     |[0m Compiling...
+[33mui_1     |[0m Compiled successfully!
+[36mapi_1    |[0m [2m[36m(graph pid=306)[0m (<function random_nodes at 0x7f2749d72440>,) {'k': 5}
+[36mapi_1    |[0m [2m[36m(graph pid=306)[0m (<function random_nodes at 0x7f2749d72440>,) {'k': 5}
+[36mapi_1    |[0m INFO:     172.19.0.1:32952 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:32954 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:32964 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:32988 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m [2m[36m(graph pid=306)[0m (<function random_nodes at 0x7f2749d72440>,) {'k': 5}
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:33104 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:33104 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:33170 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m 2021-12-27 12:39:58,854	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-27 12:39:58,857	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-27 12:39:52,312	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-27 12:40:00,080	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-27 12:40:00,081	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-27 12:40:00,081	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-27 12:40:00,081	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-27 12:40:00,081	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-27 12:40:00,081	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-27 12:40:00,081	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[36mapi_1    |[0m 2021-12-27 12:40:00,083	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-27 12:40:03,552	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:40:05,934	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:40:05,955	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8001'
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=229)[0m INFO:     Started server process [229]
+[36mapi_1    |[0m 2021-12-27 12:40:08,292	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m INFO:     Will watch for changes in these directories: ['/app']
+[36mapi_1    |[0m INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+[36mapi_1    |[0m INFO:     Started reloader process [264] using statreload
+[36mapi_1    |[0m INFO:     Started server process [266]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 12:40:11,686	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 12:40:11,902	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 12:40:11,912	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:40:11,970	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:40:14,857	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:40:14,883	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:40:14,961	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 12:40:17,833	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m INFO:     Application startup complete.
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:33460 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m INFO:     172.19.0.1:33496 - "OPTIONS /subgraph HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:33498 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:33560 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m WARNING:  StatReload detected file change in 'app/main.py'. Reloading...
+[36mapi_1    |[0m *** SIGTERM received at time=1640637739 on cpu 0 ***
+[36mapi_1    |[0m PC: @     0x7f0a992d85ce  (unknown)  epoll_wait
+[36mapi_1    |[0m     @     0x7f0a993bd3c0  (unknown)  (unknown)
+[36mapi_1    |[0m [2021-12-27 12:42:19,226 E 266 266] logging.cc:317: *** SIGTERM received at time=1640637739 on cpu 0 ***
+[36mapi_1    |[0m [2021-12-27 12:42:19,226 E 266 266] logging.cc:317: PC: @     0x7f0a992d85ce  (unknown)  epoll_wait
+[36mapi_1    |[0m [2021-12-27 12:42:19,226 E 266 266] logging.cc:317:     @     0x7f0a993bd3c0  (unknown)  (unknown)
+[36mapi_1    |[0m INFO:     Shutting down
+[36mapi_1    |[0m INFO:     Waiting for connections to close. (CTRL+C to force quit)
+[36mapi_1    |[0m INFO:     Started server process [373]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 12:42:23,559	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 12:42:23,713	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 12:42:23,718	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:42:23,761	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'graph' with outdated versions. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:42:25,948	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:42:27,221	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:42:27,231	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:42:27,326	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'provider.random' with outdated versions. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:42:29,525	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 12:42:30,791	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m INFO:     Application startup complete.
+[36mapi_1    |[0m Got empty query
+[36mapi_1    |[0m INFO:     172.19.0.1:33622 - "GET /search?q= HTTP/1.1" 200 OK
+[36mapi_1    |[0m WARNING:  StatReload detected file change in 'app/main.py'. Reloading...
+[36mapi_1    |[0m *** SIGTERM received at time=1640637763 on cpu 1 ***
+[36mapi_1    |[0m PC: @     0x7f2ff14d75ce  (unknown)  epoll_wait
+[36mapi_1    |[0m     @     0x7f2ff15bc3c0  (unknown)  (unknown)
+[36mapi_1    |[0m [2021-12-27 12:42:43,938 E 373 373] logging.cc:317: *** SIGTERM received at time=1640637763 on cpu 1 ***
+[36mapi_1    |[0m [2021-12-27 12:42:43,938 E 373 373] logging.cc:317: PC: @     0x7f2ff14d75ce  (unknown)  epoll_wait
+[36mapi_1    |[0m [2021-12-27 12:42:43,939 E 373 373] logging.cc:317:     @     0x7f2ff15bc3c0  (unknown)  (unknown)
+[36mapi_1    |[0m INFO:     Shutting down
+[36mapi_1    |[0m INFO:     Waiting for connections to close. (CTRL+C to force quit)
+[36mapi_1    |[0m INFO:     Started server process [469]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 12:42:48,222	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 12:42:48,373	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 12:42:48,379	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:42:48,412	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'graph' with outdated versions. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:42:50,613	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:42:51,783	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:42:51,797	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:42:51,889	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'provider.random' with outdated versions. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:42:54,092	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 12:42:55,500	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m WARNING:  StatReload detected file change in 'app/main.py'. Reloading...
+[36mapi_1    |[0m *** SIGTERM received at time=1640637830 on cpu 1 ***
+[36mapi_1    |[0m PC: @     0x7f16934bf5ce  (unknown)  epoll_wait
+[36mapi_1    |[0m     @     0x7f16935a43c0  (unknown)  (unknown)
+[36mapi_1    |[0m [2021-12-27 12:43:50,698 E 469 469] logging.cc:317: *** SIGTERM received at time=1640637830 on cpu 1 ***
+[36mapi_1    |[0m [2021-12-27 12:43:50,699 E 469 469] logging.cc:317: PC: @     0x7f16934bf5ce  (unknown)  epoll_wait
+[36mapi_1    |[0m [2021-12-27 12:43:50,699 E 469 469] logging.cc:317:     @     0x7f16935a43c0  (unknown)  (unknown)
+[36mapi_1    |[0m INFO:     Started server process [567]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 12:43:55,084	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 12:43:55,274	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 12:43:55,286	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:43:55,292	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'graph' with outdated versions. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:43:57,496	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:43:58,673	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:43:58,684	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:43:58,778	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'provider.random' with outdated versions. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:44:00,980	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 12:44:02,252	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m WARNING:  StatReload detected file change in 'app/main.py'. Reloading...
+[36mapi_1    |[0m *** SIGTERM received at time=1640637950 on cpu 1 ***
+[36mapi_1    |[0m PC: @     0x7ff09d9bf5ce  (unknown)  epoll_wait
+[36mapi_1    |[0m     @     0x7ff09daa43c0  (unknown)  (unknown)
+[36mapi_1    |[0m [2021-12-27 12:45:50,475 E 567 567] logging.cc:317: *** SIGTERM received at time=1640637950 on cpu 1 ***
+[36mapi_1    |[0m [2021-12-27 12:45:50,475 E 567 567] logging.cc:317: PC: @     0x7ff09d9bf5ce  (unknown)  epoll_wait
+[36mapi_1    |[0m [2021-12-27 12:45:50,475 E 567 567] logging.cc:317:     @     0x7ff09daa43c0  (unknown)  (unknown)
+[36mapi_1    |[0m INFO:     Started server process [663]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 12:45:54,815	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 12:45:54,973	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 12:45:54,980	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:45:55,001	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'graph' with outdated versions. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:45:57,198	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:45:58,480	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:45:58,489	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:45:58,586	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'provider.random' with outdated versions. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:46:00,780	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 12:46:02,051	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m WARNING:  StatReload detected file change in 'app/main.py'. Reloading...
+[36mapi_1    |[0m *** SIGTERM received at time=1640638015 on cpu 1 ***
+[36mapi_1    |[0m PC: @     0x7effb2a915ce  (unknown)  epoll_wait
+[36mapi_1    |[0m     @     0x7effb2b763c0  (unknown)  (unknown)
+[36mapi_1    |[0m [2021-12-27 12:46:55,972 E 663 663] logging.cc:317: *** SIGTERM received at time=1640638015 on cpu 1 ***
+[36mapi_1    |[0m [2021-12-27 12:46:55,974 E 663 663] logging.cc:317: PC: @     0x7effb2a915ce  (unknown)  epoll_wait
+[36mapi_1    |[0m [2021-12-27 12:46:55,974 E 663 663] logging.cc:317:     @     0x7effb2b763c0  (unknown)  (unknown)
+[36mapi_1    |[0m INFO:     Started server process [759]
+[36mapi_1    |[0m INFO:     Waiting for application startup.
+[36mapi_1    |[0m 2021-12-27 12:47:00,283	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 12:47:00,451	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 12:47:00,456	INFO api.py:242 -- Updating deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:47:00,524	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'graph' with outdated versions. component=serve deployment=graph
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:47:02,715	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph'. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:47:04,092	INFO api.py:250 -- Deployment 'graph' is ready at `http://0.0.0.0:8001/graph`. component=serve deployment=graph
+[36mapi_1    |[0m 2021-12-27 12:47:04,103	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:47:04,196	INFO deployment_state.py:874 -- Stopping 1 replicas of deployment 'provider.random' with outdated versions. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 12:47:06,412	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 12:47:07,802	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8001/providers/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 14:06:37,447	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-27 14:06:37,451	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-27 14:06:30,610	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-27 14:06:38,615	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-27 14:06:38,615	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-27 14:06:38,615	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-27 14:06:38,615	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-27 14:06:38,615	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-27 14:06:38,615	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-27 14:06:38,615	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-27 14:06:38,616	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-27 14:06:38,616	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-27 14:06:38,616	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-27 14:06:38,616	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-27 14:06:38,616	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-27 14:06:38,616	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-27 14:06:38,616	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-27 14:06:38,617	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-27 14:06:38,617	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[36mapi_1    |[0m 2021-12-27 14:06:38,617	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-27 14:06:41,804	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=199)[0m 2021-12-27 14:06:44,179	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=199)[0m 2021-12-27 14:06:44,196	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8000'
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=232)[0m INFO:     Started server process [232]
+[36mapi_1    |[0m 2021-12-27 14:06:46,499	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m INFO:ray.worker:Using address auto set in the environment variable RAY_ADDRESS
+[36mapi_1    |[0m 2021-12-27 14:06:49,176	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 14:06:49,380	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 14:06:49,418	INFO api.py:242 -- Updating deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(ServeController pid=199)[0m 2021-12-27 14:06:49,495	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 1.047942009631988s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 2.028367266051712s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 3.705174483376971s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 6.5740760181532245s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 13.027128818010217s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 36.51477315216084s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(ServeController pid=199)[0m 2021-12-27 14:07:19,572	WARNING deployment_state.py:1124 -- Deployment 'graph.pole' has 1 replicas that have taken more than 30s to initialize. This may be caused by a slow __init__ or reconfigure method.component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(ServeController pid=199)[0m 2021-12-27 14:07:49,615	WARNING deployment_state.py:1124 -- Deployment 'graph.pole' has 1 replicas that have taken more than 30s to initialize. This may be caused by a slow __init__ or reconfigure method.component=serve deployment=graph.pole
+[36mapi_1    |[0m 2021-12-27 14:07:56,547	INFO api.py:250 -- Deployment 'graph.pole' is ready at `http://0.0.0.0:8000/graph/pole`. component=serve deployment=graph.pole
+[36mapi_1    |[0m 2021-12-27 14:07:56,559	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=199)[0m 2021-12-27 14:07:56,651	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 14:07:58,352	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8000/provider/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Building index.
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m <neo4j.work.result.Result object at 0x7f738e56c550>
+[36mapi_1    |[0m 2021-12-27 14:12:03,930	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-27 14:12:03,944	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-27 14:11:56,526	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-27 14:12:05,073	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-27 14:12:05,073	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-27 14:12:05,081	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-27 14:12:05,081	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-27 14:12:05,082	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-27 14:12:05,082	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-27 14:12:05,082	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-27 14:12:05,082	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[36mapi_1    |[0m 2021-12-27 14:12:05,083	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-27 14:12:08,171	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 14:12:10,612	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 14:12:10,628	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8000'
+[36mapi_1    |[0m 2021-12-27 14:12:12,744	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=230)[0m INFO:     Started server process [230]
+[36mapi_1    |[0m INFO:ray.worker:Using address auto set in the environment variable RAY_ADDRESS
+[36mapi_1    |[0m 2021-12-27 14:12:15,329	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 14:12:15,555	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 14:12:15,581	INFO api.py:242 -- Updating deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 14:12:15,601	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Transaction failed and will be retried in 0.8006821214052628s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Transaction failed and will be retried in 1.9296044762691602s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Transaction failed and will be retried in 4.359556573811249s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Transaction failed and will be retried in 8.599195088601645s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Transaction failed and will be retried in 15.786918822728417s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 14:12:45,696	WARNING deployment_state.py:1124 -- Deployment 'graph.pole' has 1 replicas that have taken more than 30s to initialize. This may be caused by a slow __init__ or reconfigure method.component=serve deployment=graph.pole
+[36mapi_1    |[0m 2021-12-27 14:12:52,577	INFO api.py:250 -- Deployment 'graph.pole' is ready at `http://0.0.0.0:8000/graph/pole`. component=serve deployment=graph.pole
+[36mapi_1    |[0m 2021-12-27 14:12:52,594	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=195)[0m 2021-12-27 14:12:52,679	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 14:12:55,321	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8000/provider/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m Building index.
+[36mapi_1    |[0m [2m[36m(graph.pole pid=302)[0m <neo4j.work.result.Result object at 0x7f970233ff90>
+[36mapi_1    |[0m 2021-12-27 14:40:20,476	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-27 14:40:20,483	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-27 14:40:13,330	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-27 14:40:21,694	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-27 14:40:21,694	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-27 14:40:21,695	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-27 14:40:21,695	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-27 14:40:21,695	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-27 14:40:21,695	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-27 14:40:21,695	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-27 14:40:21,695	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[36mapi_1    |[0m 2021-12-27 14:40:21,696	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-27 14:40:25,306	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 14:40:27,461	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 14:40:27,483	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8000'
+[36mapi_1    |[0m 2021-12-27 14:40:29,968	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=231)[0m INFO:     Started server process [231]
+[36mapi_1    |[0m INFO:ray.worker:Using address auto set in the environment variable RAY_ADDRESS
+[36mapi_1    |[0m 2021-12-27 14:40:32,781	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 14:40:33,005	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 14:40:33,040	INFO api.py:242 -- Updating deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 14:40:33,035	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 0.9188371550908394s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 2.284488741364475s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 4.4544950351278505s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 8.571639571624114s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Transaction failed and will be retried in 16.67051302135902s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 14:41:03,086	WARNING deployment_state.py:1124 -- Deployment 'graph.pole' has 1 replicas that have taken more than 30s to initialize. This may be caused by a slow __init__ or reconfigure method.component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 14:41:09,369	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m 2021-12-27 14:41:16,791	INFO api.py:250 -- Deployment 'graph.pole' is ready at `http://0.0.0.0:8000/graph/pole`. component=serve deployment=graph.pole
+[36mapi_1    |[0m 2021-12-27 14:41:16,808	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=198)[0m 2021-12-27 14:41:16,893	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 14:41:19,636	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8000/provider/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(graph.pole pid=304)[0m Building index.
+[36mapi_1    |[0m [2m[36m(graph.pole pid=342)[0m Building index.
+[36mapi_1    |[0m [2m[36m(graph.pole pid=342)[0m <neo4j.work.result.Result object at 0x7f2ccf198090>
+[36mapi_1    |[0m [2m[36m(graph.pole pid=342)[0m (<function text_search at 0x7f2ccfa26cb0>, 'lois') {}
+[36mapi_1    |[0m 2021-12-27 15:03:19,168	INFO services.py:1340 -- View the Ray dashboard at [1m[32mhttp://172.19.0.3:8265[39m[22m
+[36mapi_1    |[0m 2021-12-27 15:03:19,171	WARNING services.py:1826 -- WARNING: The object store is using /tmp instead of /dev/shm because /dev/shm has only 67108864 bytes available. This will harm performance! You may be able to free up space by deleting files in /dev/shm. If you are inside a Docker container, you can increase /dev/shm size by passing '--shm-size=2.38gb' to 'docker run' (or add it to the run_options list in a Ray cluster config). Make sure to set this to more than 30% of available RAM.
+[36mapi_1    |[0m 2021-12-27 15:03:11,815	INFO scripts.py:612 -- Local node IP: 172.19.0.3
+[36mapi_1    |[0m 2021-12-27 15:03:20,503	SUCC scripts.py:651 -- --------------------
+[36mapi_1    |[0m 2021-12-27 15:03:20,503	SUCC scripts.py:652 -- Ray runtime started.
+[36mapi_1    |[0m 2021-12-27 15:03:20,503	SUCC scripts.py:653 -- --------------------
+[36mapi_1    |[0m 2021-12-27 15:03:20,503	INFO scripts.py:655 -- Next steps
+[36mapi_1    |[0m 2021-12-27 15:03:20,504	INFO scripts.py:657 -- To connect to this Ray runtime from another node, run
+[36mapi_1    |[0m 2021-12-27 15:03:20,504	INFO scripts.py:663 --   ray start --address='172.19.0.3:6379' --redis-password='5241590000000000'
+[36mapi_1    |[0m 2021-12-27 15:03:20,504	INFO scripts.py:665 -- Alternatively, use the following Python code:
+[36mapi_1    |[0m 2021-12-27 15:03:20,504	INFO scripts.py:668 -- import ray
+[36mapi_1    |[0m 2021-12-27 15:03:20,504	INFO scripts.py:675 -- ray.init(address='auto', _redis_password='5241590000000000')
+[36mapi_1    |[0m 2021-12-27 15:03:20,504	INFO scripts.py:677 -- To connect to this Ray runtime from outside of the cluster, for example to
+[36mapi_1    |[0m 2021-12-27 15:03:20,505	INFO scripts.py:679 -- connect to a remote cluster from your laptop directly, use the following
+[36mapi_1    |[0m 2021-12-27 15:03:20,505	INFO scripts.py:681 -- Python code:
+[36mapi_1    |[0m 2021-12-27 15:03:20,505	INFO scripts.py:684 -- import ray
+[36mapi_1    |[0m 2021-12-27 15:03:20,505	INFO scripts.py:688 -- ray.init(address='ray://<head_node_ip_address>:10001')
+[36mapi_1    |[0m 2021-12-27 15:03:20,505	INFO scripts.py:692 -- If connection fails, check your firewall settings and network configuration.
+[36mapi_1    |[0m 2021-12-27 15:03:20,505	INFO scripts.py:696 -- To terminate the Ray runtime, run
+[36mapi_1    |[0m 2021-12-27 15:03:20,505	INFO scripts.py:697 --   ray stop
+[36mapi_1    |[0m 2021-12-27 15:03:23,572	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m [2m[36m(ServeController pid=193)[0m 2021-12-27 15:03:26,357	INFO checkpoint_path.py:16 -- Using RayInternalKVStore for controller checkpoint and recovery.
+[36mapi_1    |[0m [2m[36m(ServeController pid=193)[0m 2021-12-27 15:03:26,370	INFO http_state.py:101 -- Starting HTTP proxy with name 'SERVE_CONTROLLER_ACTOR:SERVE_PROXY_ACTOR-node:172.19.0.3-0' on node 'node:172.19.0.3-0' listening on '0.0.0.0:8000'
+[36mapi_1    |[0m 2021-12-27 15:03:28,613	INFO api.py:463 -- Started detached Serve instance in namespace 'serve'.
+[36mapi_1    |[0m [2m[36m(HTTPProxyActor pid=228)[0m INFO:     Started server process [228]
+[36mapi_1    |[0m INFO:ray.worker:Using address auto set in the environment variable RAY_ADDRESS
+[36mapi_1    |[0m 2021-12-27 15:03:31,443	INFO worker.py:843 -- Connecting to existing Ray cluster at address: 172.19.0.3:6379
+[36mapi_1    |[0m 2021-12-27 15:03:31,663	INFO api.py:414 -- Connecting to existing Serve instance in namespace 'serve'.
+[36mapi_1    |[0m 2021-12-27 15:03:31,696	INFO api.py:242 -- Updating deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(ServeController pid=193)[0m 2021-12-27 15:03:31,716	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'graph.pole'. component=serve deployment=graph.pole
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Transaction failed and will be retried in 0.9380379921429502s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Transaction failed and will be retried in 2.0382401293989965s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Transaction failed and will be retried in 3.793563133687965s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Transaction failed and will be retried in 8.537525197217562s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Unable to retrieve routing information
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Transaction failed and will be retried in 18.424092106259575s (Unable to retrieve routing information)
+[36mapi_1    |[0m [2m[36m(ServeController pid=193)[0m 2021-12-27 15:04:01,790	WARNING deployment_state.py:1124 -- Deployment 'graph.pole' has 1 replicas that have taken more than 30s to initialize. This may be caused by a slow __init__ or reconfigure method.component=serve deployment=graph.pole
+[36mapi_1    |[0m 2021-12-27 15:04:11,252	INFO api.py:250 -- Deployment 'graph.pole' is ready at `http://0.0.0.0:8000/graph/pole`. component=serve deployment=graph.pole
+[36mapi_1    |[0m 2021-12-27 15:04:11,305	INFO api.py:242 -- Updating deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(ServeController pid=193)[0m 2021-12-27 15:04:11,359	INFO deployment_state.py:912 -- Adding 1 replicas to deployment 'provider.random'. component=serve deployment=provider.random
+[36mapi_1    |[0m 2021-12-27 15:04:14,047	INFO api.py:250 -- Deployment 'provider.random' is ready at `http://0.0.0.0:8000/provider/random`. component=serve deployment=provider.random
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Building index.
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m <neo4j.work.result.Result object at 0x7f6523a5efd0>
+[36mapi_1    |[0m [2m[36m(graph.pole pid=301)[0m Got empty query
