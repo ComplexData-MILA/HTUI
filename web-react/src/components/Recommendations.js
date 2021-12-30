@@ -13,21 +13,32 @@ export default function Recommendations(props) {
   const {callback, apiHost} = props
   const [recommendations, setRecs] = useState([]);
 
-  const { isLoading, error, data, isFetching } = useQuery(["provider"], () =>
-    fetch('http://localhost:8000/provider/random/recommend?k=5').then((res) => res.json())
-  );
+  const providerFetch = () => {
+    return fetch('http://localhost:8000/provider/random/recommend?k=5').then((res) => res.json())
+  }
+
+  const { isLoading, error, data, refetch } = useQuery(["provider"], providerFetch);
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
   const formatData = (data) => {
-    console.log(data)
+    if (!data) {
+      refetch()
+    }
+
     const newArr = data.map(function(num) {
       return {id: num}
     });
-    console.log(newArr)
+    // console.log(newArr)
     return newArr
+  }
+
+  // refetch()
+  const addRedo = (event) => {
+    callback(event.id)
+    refetch()
   }
 
   return (
@@ -37,7 +48,7 @@ export default function Recommendations(props) {
         <Typography>Loading</Typography>
         : 
         <DataGrid 
-          onCellClick={callback}
+          onCellClick={addRedo}
           hideFooter 
           columns={[{ field: 'id' }]}
           rows={formatData(data)}

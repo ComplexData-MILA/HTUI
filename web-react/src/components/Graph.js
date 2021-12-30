@@ -10,28 +10,11 @@ import PhoneIcon from '../img/phone_black_24dp.svg'
 import PhoneCallIcon from '../img/phone_in_talk_black_24dp.svg'
 import AreaIcon from '../img/place_black_24dp.svg'
 import '@antv/graphin/dist/index.css' // may be removed in the future by antv
-import {
-  TextField,
-  Paper,
-  Button,
-  Grid,
-  Box,
-  Card,
-  CardContent,
-  Typography,
-} from '@mui/material'
 import { withStyles } from '@mui/styles'
-import { grey } from '@mui/material/colors'
-// import { DataGrid } from '@mui/x-data-grid'
-// import { Stack } from '@mui/material'
-import Title from './Title'
-import getNextRecommended from './../actions/getNextRecommended'
-import acceptNodes from './../actions/acceptNodes'
-import rejectNodes from './../actions/rejectNodes'
-
-import SearchBar from './Search'
+import clsx from 'clsx'
 import NodeTooltip from './Tooltip'
-import Recommendations from './Recommendations'
+import { Box, Container } from '@mui/material'
+import classNames from 'classnames'
 
 // const walk = (node, callback) => {
 //   callback(node)
@@ -86,7 +69,7 @@ const GET_SUBGRAPH = gql`
 
 function GraphDisplay(props) {
   // declare useState hooks
-  const { subgraphNodes, addSeedNode } = props
+  const { height, open, classes, subgraphNodes, addSeedNode } = props
   // const [subgraphNodes, setNodes] = useState([])
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -155,23 +138,23 @@ function GraphDisplay(props) {
   //       console.log('node:click', e);
   //   });
   // }, [graphRef]); 
-
+  // console.log(height)
   return (
     <React.Fragment>
-      <Graphin data={graphDisplayData} layout={{ type: 'concentric' }} ref={graphRef}>
-        <ClickSelect
-          onClick={(e) => addSeedNode(e.item._cfg.id)}
-        ></ClickSelect>
-        <NodeTooltip />
-      </Graphin>
-      {/* <Recommendations
-        callback={(event,value) => placeHolder()}
-      /> */}
+      {/* <Container> */}
+        <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
+          <ClickSelect
+            onClick={(e) => addSeedNode(e.item._cfg.id)}
+          ></ClickSelect>
+          <NodeTooltip />
+        </Graphin>
+      {/* </Container> */}
     </React.Fragment>
   )
 }
 
-export default withStyles(styles)(GraphDisplay)
+// export default withStyles(styles)(GraphDisplay)
+export default GraphDisplay
 
 // TODO: This needs to be a dictionary
 function addNodeStyles(node, selectedNodes) {
