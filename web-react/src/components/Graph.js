@@ -1,6 +1,6 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect, createRef, useRef } from 'react'
 import { useQuery, gql } from '@apollo/client'
-import Graphin, { Utils, Behaviors } from '@antv/graphin'
+import Graphin, { Utils, Behaviors, GraphinContext } from '@antv/graphin'
 import { Tooltip } from '@antv/graphin-components'
 import PersonIcon from '../img/person_black_24dp.svg'
 import EmailIcon from '../img/alternate_email_black_24dp.svg'
@@ -27,7 +27,7 @@ import classNames from 'classnames'
 const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 console.log(`API hosted at ${API_HOST}.`)
 
-const { ClickSelect } = Behaviors
+const { ClickSelect, ResizeCanvas } = Behaviors
 
 //written in JSS not CSS
 const styles = (theme) => ({
@@ -67,6 +67,43 @@ const GET_SUBGRAPH = gql`
 //   getNextRecommended()
 // }
 
+/* attempt to resize the canvas */
+// const useContainerWidth = (myRef, graph) => {
+//   const getWidth = () => (
+//     myRef.current.offsetWidth
+//   )
+  
+//   const getHeight = () => (
+//     myRef.current.offsetHeight
+//   )
+
+//   const [width, setWidth] = useState(0)
+//   const [height, setHeight] = useState(0)
+
+//   useEffect(() => {
+//     const handleResize = () => {
+//       setWidth(getWidth())
+//       setHeight(getHeight())
+//       graph.set('width', width)
+//     }
+
+//     if (myRef.current) {
+//       setWidth(getWidth())
+//       setHeight(getHeight())
+//       console.log(width)
+//       graph.set('width', width)
+//     }
+
+//     window.addEventListener("resize", handleResize)
+
+//     return () => {
+//       window.removeEventListener("resize", handleResize)
+//     }
+//   }, [myRef.current])
+
+//   return width;
+// };
+
 function GraphDisplay(props) {
   // declare useState hooks
   const { height, open, classes, subgraphNodes, addSeedNode } = props
@@ -74,30 +111,11 @@ function GraphDisplay(props) {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [graph, setGraph] = useState({nodes: [], edges: []})
-  const graphRef = createRef(null)
+  // const canvasRef = useRef()
 
-  // const addSeedNode = (id) => {
-  //   console.log(
-  //     `Adding node ${id} to the visualization with existing nodes ${subgraphNodes}.`
-  //   )
-  //   setNodes([...subgraphNodes, parseInt(id)])
-  // }
-
-  // const people = useQuery(GET_PERSON, {
-  //   variables: { filter: { name_CONTAINS: '' } },
-  // })
-  // const subgraph = useQuery(GET_SUBGRAPH, {
-  //   variables: { seedNodes: subgraphNodes },
-  // })
-
-  // let err = people.error || subgraph.error
-  // if (err) {
-  //   console.log(err)
-  //   return <p>Error</p>
-  // }
-  // if (people.loading || subgraph.loading) return <p>Loading</p>
-  // 
-  // let graphDisplayData = JSON.parse(subgraph.data.Subgraph)
+  // const { graph: graphContext } = React.useContext(GraphinContext)
+  // console.log(graphContext)
+  // const width = useContainerWidth(canvasRef, graphContext)
 
   useEffect(() => {
       const requestOptions = {
@@ -139,16 +157,17 @@ function GraphDisplay(props) {
   //   });
   // }, [graphRef]); 
   // console.log(height)
+
   return (
     <React.Fragment>
-      {/* <Container> */}
-        <Graphin data={graphDisplayData} layout={{ type: 'concentric' }}>
+      <Box className={clsx(classes.main, open && classes.mainShift)}>  {/*ref={canvasRef}> */}
+        <Graphin data={graphDisplayData} layout={{ type: 'concentric' }} fitView={true}>
           <ClickSelect
             onClick={(e) => addSeedNode(e.item._cfg.id)}
           ></ClickSelect>
           <NodeTooltip />
         </Graphin>
-      {/* </Container> */}
+      </Box>
     </React.Fragment>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Select, FormControl, InputLabel, MenuItem } from '@mui/material';
+import { Select, FormControl, FormHelperText, InputLabel, MenuItem } from '@mui/material';
 import { GridToolbarContainer } from '@mui/x-data-grid';
 
 export default function ModelSelect() {
@@ -22,8 +22,9 @@ export default function ModelSelect() {
                     label="Model"
                     onChange={handleChange}
                 >
-                    {models.map((val) => <MenuItem value={val}>{val}</MenuItem>)}
+                    {models.map((val) => <MenuItem value={val} key={val}>{val}</MenuItem>)}
                 </Select>
+                <FormHelperText>Default: Random</FormHelperText>
             </FormControl>
         </GridToolbarContainer>
     )

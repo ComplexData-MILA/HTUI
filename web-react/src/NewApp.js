@@ -236,7 +236,7 @@ function NewAppContent() {
                         </Toolbar>
                     </AppBar>
                     <main
-                      className={clsx(classes.main, open && classes.mainShift)}
+                      // className={clsx(classes.main, open && classes.mainShift)}
                     >
                       <GraphDisplay
                         height={appBarHeight}
@@ -251,8 +251,9 @@ function NewAppContent() {
                           classes.recButton,
                           open && classes.recButtonHidden
                         )}
+                        variant="extended"
                       >
-                        <MenuIcon />
+                        Recommend Nodes
                       </Fab>
                       <div>
                         <Drawer
