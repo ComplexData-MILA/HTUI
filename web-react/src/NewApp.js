@@ -101,7 +101,8 @@ const useStyles = makeStyles((theme) => ({
         position: 'fixed',
         top: 100,
         right: theme.spacing(2),
-        // fillColor: theme.palette.secondary.main,
+        background: theme.palette.highlight.main,
+        color: theme.palette.secondary.contrastText,
       },
       recButtonHidden: {
         hidden: 'none',
@@ -163,6 +164,15 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.secondary.contrastText,
       },
 }))
+
+const NewFab = styled(Fab)(({ theme }) => ({
+  '& .MuiFab-root': {
+    background: theme.palette.highlight.main,
+  },
+  '&:hover': {
+    background: '#000',
+  },
+}));
 
 const queryClient = new QueryClient()
 
@@ -232,17 +242,16 @@ function NewAppContent() {
                         subgraphNodes={subgraphNodes}
                         addSeedNode={addSeedNode}
                       ></GraphDisplay>
-                      <Fab
+                      <NewFab
                         onClick={handleDrawerOpen}
                         className={clsx(
                           classes.recButton,
                           open && classes.recButtonHidden
                         )}
                         variant="extended"
-                        sx={{background: theme.palette.secondary.main}}
                       >
                         Recommend Nodes
-                      </Fab>
+                      </NewFab>
                       <div>
                         <Drawer
                           classes={{ paper: classes.paper }}
@@ -260,7 +269,7 @@ function NewAppContent() {
                         >
                           <Box className={classes.drawerPadding}>
                             <Toolbar className={classes.drawerHeader}>
-                              <IconButton onClick={handleDrawerClose} color="white">
+                              <IconButton onClick={handleDrawerClose} color="white" sx={{left: '2px'}}>
                                 <ChevronRight />
                               </IconButton>
                             </Toolbar>

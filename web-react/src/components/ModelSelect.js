@@ -37,7 +37,7 @@ const BootstrapInput = styled(OutlinedInput)(({ theme }) => ({
         border: '1px solid #fff',
         color: '#fff',
     },
-  }));
+}));
 
 export default function ModelSelect() {
     const classes = useStyles()
