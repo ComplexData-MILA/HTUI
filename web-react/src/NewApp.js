@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@mui/styles'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
+// import { green, purple } from '@mui/material/colors'
 import { StyledEngineProvider } from '@mui/material/styles'
 import { withStyles } from '@mui/styles'
 
@@ -37,7 +38,23 @@ const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 const drawerWidth = 240
 const appBarHeight = 80
 
-const theme = createTheme()
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#55C7EB',
+    },
+    secondary: {
+      main: '#235481',
+      contrastText: '#fff',
+    },
+    highlight: {
+      main: '#B23E2B',
+    },
+    typography: {
+      fontFamily: 'Montserrat',
+    },
+  },
+});
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -99,7 +116,8 @@ const useStyles = makeStyles((theme) => ({
       recButton: {
         position: 'fixed',
         top: 100,
-        right: theme.spacing(2)
+        right: theme.spacing(2),
+        color: theme.palette.highlight.main,
       },
       recButtonHidden: {
         hidden: 'none',
@@ -154,26 +172,11 @@ const useStyles = makeStyles((theme) => ({
         }),
       },
       drawerPadding: {
-        marginTop: 80,
+        marginTop: appBarHeight,
       }, 
-      contentWrapper: {
-        height: '100vh',
-        overflow: 'auto',
-        paddingBottom: 20,
-        width: '100%',
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        transition: theme.transitions.create("margin", {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen
-        })
-      },
-      contentShift: {
-        width: `calc(100% - ${drawerWidth})`, 
-        transition: theme.transitions.create("margin", {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen
-        })
+      paper: {
+        background: theme.palette.secondary.main,
+        color: theme.palette.secondary.contrastText,
       },
 }))
 
@@ -252,19 +255,20 @@ function NewAppContent() {
                           open && classes.recButtonHidden
                         )}
                         variant="extended"
+                        color="secondary"
                       >
                         Recommend Nodes
                       </Fab>
                       <div>
                         <Drawer
-                          // position="relative"
+                          classes={{ paper: classes.paper }}
                           sx={{
                             width: drawerWidth,
                             flexShrink: 0,
                             '& .MuiDrawer-paper': {
                               width: drawerWidth,
                             },
-                            // top: 200,
+                            // background: theme.palette.secondary.main
                           }}
                           variant="persistent"
                           anchor="right"
@@ -280,6 +284,7 @@ function NewAppContent() {
                             <Recommendations
                               callback={addSeedNode}
                               apiHost={API_HOST}
+                              classes={classes}
                             />
                           </Box>
                         </Drawer>

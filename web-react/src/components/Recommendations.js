@@ -10,7 +10,7 @@ import ModelSelect from './ModelSelect.js'
 // const apiHost = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 
 export default function Recommendations(props) {
-  const {callback, apiHost} = props
+  const {callback, apiHost, classes} = props
   const [recommendations, setRecs] = useState([]);
 
   const providerFetch = () => {
@@ -43,7 +43,7 @@ export default function Recommendations(props) {
 
   return (
       <React.Fragment>
-      <Box sx={{ height: 400, bgcolor: 'background.paper' }}>
+      <Box sx={{ height: 400 }}>
         {isLoading ? 
         <Typography>Loading</Typography>
         : 
@@ -55,6 +55,7 @@ export default function Recommendations(props) {
           components={{
             Toolbar: ModelSelect,
           }}
+          className={classes.paper}
         />
         }
       </Box>
