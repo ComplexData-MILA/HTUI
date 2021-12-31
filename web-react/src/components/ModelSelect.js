@@ -34,7 +34,7 @@ const BootstrapInput = styled(OutlinedInput)(({ theme }) => ({
     },
     '&:focus': {
         borderRadius: 4,
-        borderColor: '#fff',
+        border: '1px solid #fff',
         color: '#fff',
     },
   }));
@@ -52,11 +52,14 @@ export default function ModelSelect() {
     return (
         <GridToolbarContainer>
             <FormControl sx={{color: '#fff'}}fullWidth>
-                <InputLabel id="demo-simple-select-label" sx={{color: '#fff'}}>Model</InputLabel>
+                {/* <InputLabel id="demo-simple-select-label" sx={{color: '#fff'}}>Model</InputLabel> */}
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={model}
+                    // defaultValue="Random"
+                    displayEmpty={true}
+                    renderValue={()=> "Random"}
                     onChange={handleChange}
                     // classes={classes.select}
                     input={<BootstrapInput />}
@@ -67,6 +70,7 @@ export default function ModelSelect() {
                         }
                     }}
                 >
+                    {/* <MenuItem value="">Random</MenuItem> */}
                     {models.map((val) => <MenuItem value={val} key={val}>{val}</MenuItem>)}
                 </Select>
                 <FormHelperText sx={{color: '#fff'}}>Choose a Model</FormHelperText>

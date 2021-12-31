@@ -50,30 +50,14 @@ const theme = createTheme({
     highlight: {
       main: '#B23E2B',
     },
+    white: {
+      main: '#fff',
+    },
     typography: {
       fontFamily: 'Montserrat',
     },
   },
 });
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginRight: -drawerWidth,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginRight: 0,
-    }),
-  }),
-);
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -117,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'fixed',
         top: 100,
         right: theme.spacing(2),
-        color: theme.palette.highlight.main,
+        // fillColor: theme.palette.secondary.main,
       },
       recButtonHidden: {
         hidden: 'none',
@@ -255,7 +239,7 @@ function NewAppContent() {
                           open && classes.recButtonHidden
                         )}
                         variant="extended"
-                        color="secondary"
+                        sx={{background: theme.palette.secondary.main}}
                       >
                         Recommend Nodes
                       </Fab>
@@ -276,7 +260,7 @@ function NewAppContent() {
                         >
                           <Box className={classes.drawerPadding}>
                             <Toolbar className={classes.drawerHeader}>
-                              <IconButton onClick={handleDrawerClose}>
+                              <IconButton onClick={handleDrawerClose} color="white">
                                 <ChevronRight />
                               </IconButton>
                             </Toolbar>
