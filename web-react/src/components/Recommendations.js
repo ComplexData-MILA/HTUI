@@ -14,7 +14,7 @@ export default function Recommendations(props) {
   const [recommendations, setRecs] = useState([]);
 
   const providerFetch = () => {
-    return fetch('http://localhost:8000/provider/random/recommend?k=5').then((res) => res.json())
+    return fetch('http://localhost:8000/provider/random/recommend?k=5&m=random').then((res) => res.json())
   }
 
   const { isLoading, error, data, refetch } = useQuery(["provider"], providerFetch);

@@ -16,13 +16,22 @@ class Provider:
     #     return await self.recommend(**request.query_params)
 
 
-def random_nodes(tx, k):
+def random_nodes(tx, k, m):
     logging.basicConfig(level=logging.INFO)
-    result = tx.run("""
-        MATCH (n)
-        WITH n, rand() AS r
-        ORDER BY r
-        RETURN n LIMIT $k""", k=int(k))
+    if m == "random":
+        result = tx.run("""
+            MATCH (n)
+            WITH n, rand() AS r
+            ORDER BY r
+            RETURN n LIMIT $k""", k=int(k))
+    elif m == "pagerank":
+        result = tx.run("""
+            MATCH (n)
+            WITH n, rand() AS r
+            ORDER BY r
+            RETURN n LIMIT $k""", k=int(k+5))
+    else:
+        result = ""
     logging.info(result)
     return [r['n'].id for r in result]
 
@@ -30,9 +39,20 @@ def random_nodes(tx, k):
 @serve.ingress(app)
 class RandomProvider(Provider):
     @app.get('/recommend')
-    async def recommend(self, k: int):
+    async def recommend(self, k: int, m:str):
         logging.basicConfig(level=logging.INFO)
-        ref = await self.graph.read.remote(random_nodes, k=int(k))
+        ref = await self.graph.read.remote(random_nodes, k=int(k), m=str(m))
         result = ray.get(ref)
         logging.info(result)
         return result
+
+# @serve.deployment(name='provider.pagerank', route_prefix='/provider/pagerank')
+# @serve.ingress(app)
+# class PageRankProvider(Provider):
+#     @app.get('/recommend')
+#     async def recommend(self, k: int):
+#         logging.basicConfig(level=logging.INFO)
+#         ref = await self.graph.read.remote(pagerank_nodes, k=int(k))
+#         result = ray.get(ref)
+#         logging.info(result)
+#         return result

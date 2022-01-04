@@ -42,3 +42,4 @@ async def providers():
 
 POLEGraph.deploy()
 RandomProvider.deploy('graph.pole')
+# PageRankProvider.deploy('graph.pole')
