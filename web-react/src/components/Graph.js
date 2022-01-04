@@ -160,7 +160,7 @@ function GraphDisplay(props) {
 
   return (
     <React.Fragment>
-      <Box className={clsx(classes.main, open && classes.mainShift)}>  {/*ref={canvasRef}> */}
+      <Box>  {/*ref={canvasRef}> */}
         <Graphin data={graphDisplayData} layout={{ type: 'concentric' }} fitView={true}>
           <ClickSelect
             onClick={(e) => addSeedNode(e.item._cfg.id)}

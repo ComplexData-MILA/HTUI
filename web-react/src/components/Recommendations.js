@@ -10,7 +10,7 @@ import ModelSelect from './ModelSelect.js'
 // const apiHost = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 
 export default function Recommendations(props) {
-  const {callback, apiHost, classes} = props
+  const {callback, apiHost, classes, theme} = props
   const [recommendations, setRecs] = useState([]);
 
   const providerFetch = () => {
@@ -54,6 +54,12 @@ export default function Recommendations(props) {
           rows={formatData(data)}
           components={{
             Toolbar: ModelSelect,
+          }}
+          componentsProps={{
+            toolbar: {
+              color: theme.palette.secondary.contrastText,
+              classes: classes,
+            }
           }}
           className={classes.paper}
         />

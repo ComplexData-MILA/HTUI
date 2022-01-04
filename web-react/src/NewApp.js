@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@mui/styles'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
-// import { green, purple } from '@mui/material/colors'
+import { green, purple } from '@mui/material/colors'
 import { StyledEngineProvider } from '@mui/material/styles'
 import { withStyles } from '@mui/styles'
 
@@ -41,14 +41,14 @@ const appBarHeight = 80
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#55C7EB',
+      main: '#39A0ED',
     },
     secondary: {
-      main: '#235481',
+      main: '#4C6085',
       contrastText: '#fff',
     },
     highlight: {
-      main: '#B23E2B',
+      main: '#36F1CD',
     },
     white: {
       main: '#fff',
@@ -65,31 +65,8 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(1),
       minWidth: 300,
     },
-    root: {
-        display: 'flex',
-      },
       toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
-      },
-      drawerPaper: {
-        position: 'relative',
-        whiteSpace: 'nowrap',
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-      drawerPaperClose: {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
-        },
       },
       content: {
         flexGrow: 1,
@@ -107,34 +84,6 @@ const useStyles = makeStyles((theme) => ({
       recButtonHidden: {
         hidden: 'none',
       },
-      main: {
-        height: `calc(100vh - ${appBarHeight}px)`,
-        width: '100%',
-        overflow: 'auto',
-        paddingTop: 20,
-        paddingBottom: 20,
-        flexGrow: 1,
-        transition: theme.transitions.create('margin', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginRight: -drawerWidth,
-        ...theme.mixins.toolbar,
-      },
-      mainShift: {
-        height: `calc(100vh - ${appBarHeight}px)`,
-        width: `calc(100vw - ${drawerWidth}px)`,
-        overflow: 'auto',
-        paddingTop: 20,
-        paddingBottom: 20,
-        flexGrow: 1,
-        transition: theme.transitions.create('margin', {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: 0,
-        ...theme.mixins.toolbar,
-      },
       drawerHeader: {
         display: 'flex',
         alignItems: 'center',
@@ -142,7 +91,6 @@ const useStyles = makeStyles((theme) => ({
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
         justifyContent: 'flex-start',
-        // top: 80,
       },
       title: {
         flexGrow: 1,
@@ -163,6 +111,12 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.secondary.main,
         color: theme.palette.secondary.contrastText,
       },
+      icon: {
+          fill: theme.palette.secondary.contrastText,
+      },
+      root: {
+          color: theme.palette.secondary.contrastText,
+      },
 }))
 
 const NewFab = styled(Fab)(({ theme }) => ({
@@ -173,6 +127,11 @@ const NewFab = styled(Fab)(({ theme }) => ({
     background: '#000',
   },
 }));
+
+const ColorButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.secondary.contrastText,
+}));
+
 
 const queryClient = new QueryClient()
 
@@ -232,9 +191,7 @@ function NewAppContent() {
                             />
                         </Toolbar>
                     </AppBar>
-                    <main
-                      // className={clsx(classes.main, open && classes.mainShift)}
-                    >
+                    <main>
                       <GraphDisplay
                         height={appBarHeight}
                         open={open}
@@ -261,23 +218,23 @@ function NewAppContent() {
                             '& .MuiDrawer-paper': {
                               width: drawerWidth,
                             },
-                            // background: theme.palette.secondary.main
                           }}
                           variant="persistent"
                           anchor="right"
                           open={open}
                         >
                           <Box className={classes.drawerPadding}>
-                            <Toolbar className={classes.drawerHeader}>
-                              <IconButton onClick={handleDrawerClose} color="white" sx={{left: '2px'}}>
+                            <div className={classes.drawerHeader}>
+                              <ColorButton onClick={handleDrawerClose} sx={{ml: '5px'}}>
                                 <ChevronRight />
-                              </IconButton>
-                            </Toolbar>
+                              </ColorButton>
+                            </div>
                             <Divider />
                             <Recommendations
                               callback={addSeedNode}
                               apiHost={API_HOST}
                               classes={classes}
+                              theme={theme}
                             />
                           </Box>
                         </Drawer>
