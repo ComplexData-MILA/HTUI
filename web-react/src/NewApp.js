@@ -41,14 +41,15 @@ const appBarHeight = 80
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#39A0ED',
+      main: '#55C7EB',
     },
     secondary: {
-      main: '#4C6085',
+      main: '#235481',
       contrastText: '#fff',
     },
     highlight: {
-      main: '#36F1CD',
+      main: '#955e42',
+      contrastText: '#fff'
     },
     white: {
       main: '#fff',
@@ -79,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
         top: 100,
         right: theme.spacing(2),
         background: theme.palette.highlight.main,
-        color: theme.palette.secondary.contrastText,
+        color: theme.palette.highlight.contrastText,
       },
       recButtonHidden: {
         hidden: 'none',
@@ -110,6 +111,7 @@ const useStyles = makeStyles((theme) => ({
       paper: {
         background: theme.palette.secondary.main,
         color: theme.palette.secondary.contrastText,
+        border: 0,
       },
       icon: {
           fill: theme.palette.secondary.contrastText,
@@ -120,11 +122,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const NewFab = styled(Fab)(({ theme }) => ({
-  '& .MuiFab-root': {
-    background: theme.palette.highlight.main,
-  },
+  // '& .MuiFab-root': {
+  //   background: theme.palette.highlight.main,
+  // },
   '&:hover': {
-    background: '#000',
+    background: '#6d4c41',
   },
 }));
 
