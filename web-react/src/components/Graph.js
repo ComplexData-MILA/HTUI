@@ -1,7 +1,6 @@
 import React, { useState, useEffect, createRef, useRef } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import Graphin, { Utils, Behaviors, GraphinContext } from '@antv/graphin'
-import { Tooltip } from '@antv/graphin-components'
 import PersonIcon from '../img/person_black_24dp.svg'
 import EmailIcon from '../img/alternate_email_black_24dp.svg'
 import VehicleIcon from '../img/directions_car_black_24dp.svg'
@@ -9,6 +8,7 @@ import AddressIcon from '../img/home_black_24dp.svg'
 import PhoneIcon from '../img/phone_black_24dp.svg'
 import PhoneCallIcon from '../img/phone_in_talk_black_24dp.svg'
 import AreaIcon from '../img/place_black_24dp.svg'
+import {GppMaybeIcon as CrimeIcon} from '@mui/icons-material/GppMaybe';
 import '@antv/graphin/dist/index.css' // may be removed in the future by antv
 import { withStyles } from '@mui/styles'
 import clsx from 'clsx'
@@ -106,7 +106,7 @@ const GET_SUBGRAPH = gql`
 
 function GraphDisplay(props) {
   // declare useState hooks
-  const { height, open, classes, subgraphNodes, addSeedNode } = props
+  const { open, classes, subgraphNodes, addSeedNode } = props
   // const [subgraphNodes, setNodes] = useState([])
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -201,8 +201,10 @@ function addNodeStyles(node, selectedNodes) {
     labelValue = node.areaCode
     iconValue = AreaIcon
     color = 'pink'
-  } else if (node.label == 'Crime') {
+  } else if (node.label == 'Crime') { // doesn't quite work because Crime nodes have an ID field that is messing up Graphin
     labelValue = 'crime: ' + node.type
+    iconValue = CrimeIcon
+    color = 'blue'
   } else if (node.label == 'PostCode') {
     labelValue = 'postcode: ' + node.code
     iconValue = AreaIcon
@@ -233,7 +235,7 @@ function addNodeStyles(node, selectedNodes) {
     keyshape: {
       fill: color,
       stroke: color,
-      opacity: 1,
+      fillOpacity: 0.2,
     },
   }
 

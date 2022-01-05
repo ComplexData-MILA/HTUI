@@ -8,7 +8,7 @@ import { useQuery } from "react-query";
 
 
 export default function SearchBar(props) {
-    const { classes, callback, apiHost } = props
+    const { classes, callback, apiHost, Custom } = props
     const [textInput, setTextInput] = useState('');
 
     const handleTextInputChange = event => {
@@ -35,7 +35,7 @@ export default function SearchBar(props) {
             // onInputChange={handleTextInputChange}
             disableClearable
             renderInput={(params) => (
-                <TextField
+                <Custom
                     id="search"
                     className={classes.textField}
                     value= {textInput}
@@ -43,11 +43,14 @@ export default function SearchBar(props) {
                     label="Search for an entity"
                     margin="normal"
                     variant="outlined"
-                    InputProps={{
-                        ...params.InputProps,
+                    inputProps={{
+                        ...params.inputProps,
                         type: 'search',
-                        className: classes.input,
+                        classes: {
+                            icon: classes.icon,
+                        }
                     }}
+                    color="primary"
                     {...params}
                 />
             )}

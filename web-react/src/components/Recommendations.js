@@ -10,35 +10,25 @@ import ModelSelect from './ModelSelect.js'
 // const apiHost = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 
 export default function Recommendations(props) {
-  const {callback, apiHost, classes, theme} = props
-  const [recommendations, setRecs] = useState([]);
+  const {callback, apiHost, classes, theme, seedNodes} = props
+  // const [recommendations, setRecs] = useState([]);
 
   const providerFetch = () => {
-    return fetch('http://localhost:8000/provider/random/recommend?k=5&m=random').then((res) => res.json())
+    return fetch(`${apiHost}/provider/random/recommend?k=5&m=random`).then((res) => res.json())
   }
 
-  const { isLoading, error, data, refetch } = useQuery(["provider"], providerFetch);
+  const { isLoading, error, data} = useQuery(["provider", seedNodes], providerFetch);
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
   const formatData = (data) => {
-    if (!data) {
-      refetch()
-    }
-
     const newArr = data.map(function(num) {
       return {id: num}
     });
     // console.log(newArr)
     return newArr
-  }
-
-  // refetch()
-  const addRedo = (event) => {
-    callback(event.id)
-    refetch()
   }
 
   return (
@@ -48,7 +38,7 @@ export default function Recommendations(props) {
         <Typography>Loading</Typography>
         : 
         <DataGrid 
-          onCellClick={addRedo}
+          onCellClick={(event) => callback(event.id)}
           hideFooter 
           columns={[{ field: 'id' }]}
           rows={formatData(data)}

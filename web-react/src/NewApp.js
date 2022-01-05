@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@mui/styles'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
-import { green, purple } from '@mui/material/colors'
+import { Menu } from '@mui/icons-material'
 import { StyledEngineProvider } from '@mui/material/styles'
 import { withStyles } from '@mui/styles'
 
@@ -22,6 +22,7 @@ import {
     Drawer,
     IconButton,
     Divider,
+    TextField,
 } from '@mui/material'
 import {
     Menu as MenuIcon,
@@ -41,14 +42,14 @@ const appBarHeight = 80
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#55C7EB',
+      main: '#4C90CF',
     },
     secondary: {
       main: '#235481',
       contrastText: '#fff',
     },
     highlight: {
-      main: '#955e42',
+      main: '#76078c',
       contrastText: '#fff'
     },
     white: {
@@ -77,21 +78,20 @@ const useStyles = makeStyles((theme) => ({
       },
       recButton: {
         position: 'fixed',
-        top: 100,
-        right: theme.spacing(2),
+        bottom: theme.spacing(3),
+        right: theme.spacing(3),
         background: theme.palette.highlight.main,
         color: theme.palette.highlight.contrastText,
       },
       recButtonHidden: {
         hidden: 'none',
       },
-      drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
+      drawerFooter: {
+        position: 'relative',
+        alignContent: 'flex-end',
         // padding: theme.spacing(0, 1),
         // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-start',
+        bottom: theme.spacing(3),
       },
       title: {
         flexGrow: 1,
@@ -134,7 +134,8 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar,
       },
       drawerPadding: {
-        marginTop: appBarHeight,
+        marginTop: appBarHeight + 10,
+        height: '100vh'
       }, 
       paper: {
         background: theme.palette.secondary.main,
@@ -149,12 +150,35 @@ const useStyles = makeStyles((theme) => ({
       },
 }))
 
+const CssTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: '#fafafa',
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: '#fafafa',
+  },
+  // '& .MuiInputLabel-root': {
+  //   color: '#bdbdbd',
+  // },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#bdbdbd',
+    },
+    '&:hover fieldset': {
+      borderColor: '#fafafa',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#fafafa',
+    },
+  },
+});
+
 const NewFab = styled(Fab)(({ theme }) => ({
   // '& .MuiFab-root': {
   //   background: theme.palette.highlight.main,
   // },
   '&:hover': {
-    background: '#6d4c41',
+    background: '#963484',
   },
 }));
 
@@ -215,6 +239,7 @@ function NewAppContent() {
                                 SusGraph
                             </Typography>
                             <SearchBar
+                                Custom={CssTextField}
                                 classes={classes}
                                 callback={(event, value) => addSeedNode(value.id)}
                                 apiHost={API_HOST}
@@ -223,7 +248,6 @@ function NewAppContent() {
                     </AppBar>
                     <main>
                       <GraphDisplay
-                        height={appBarHeight}
                         open={open}
                         classes={classes}
                         subgraphNodes={subgraphNodes}
@@ -235,9 +259,9 @@ function NewAppContent() {
                           classes.recButton,
                           open && classes.recButtonHidden
                         )}
-                        variant="extended"
+                        variant="circular"
                       >
-                        Recommend Nodes
+                        <Menu></Menu>
                       </NewFab>
                       <div>
                         <Drawer
@@ -254,19 +278,20 @@ function NewAppContent() {
                           open={open}
                         >
                           <Box className={classes.drawerPadding}>
-                            <div className={classes.drawerHeader}>
-                              <ColorButton onClick={handleDrawerClose} sx={{ml: '5px'}}>
-                                <ChevronRight />
-                              </ColorButton>
-                            </div>
                             <Divider />
                             <Recommendations
                               callback={addSeedNode}
                               apiHost={API_HOST}
                               classes={classes}
                               theme={theme}
+                              seedNodes={subgraphNodes}
                             />
                           </Box>
+                          <div className={classes.drawerFooter}>
+                            <ColorButton onClick={handleDrawerClose} sx={{ml: '5px'}}>
+                              <ChevronRight />
+                            </ColorButton>
+                          </div>
                         </Drawer>
                       </div>
                     </main>
