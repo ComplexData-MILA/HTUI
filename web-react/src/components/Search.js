@@ -35,12 +35,12 @@ export default function SearchBar(props) {
             // onInputChange={handleTextInputChange}
             disableClearable
             renderInput={(params) => (
-                <Custom
+                <TextField
                     id="search"
                     className={classes.textField}
                     value= {textInput}
                     onChange= {handleTextInputChange}
-                    label="Search for an entity"
+                    label={textInput == '' ? "Search for an entity" : ''}
                     margin="normal"
                     variant="outlined"
                     inputProps={{
@@ -48,6 +48,9 @@ export default function SearchBar(props) {
                         type: 'search',
                         classes: {
                             icon: classes.icon,
+                        },
+                        style: {
+                            color: classes.root
                         }
                     }}
                     color="primary"
