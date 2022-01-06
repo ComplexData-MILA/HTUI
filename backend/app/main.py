@@ -6,7 +6,7 @@ from ray import serve
 
 from .deployments.info import APIInfoDeployment
 from .deployments.graph import POLEGraph
-from .deployments.recommenders import RandomProvider, PageRankProvider
+from .deployments.recommenders import PageRankProvider, RandomProvider
 
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
@@ -27,9 +27,7 @@ serve.start(detached=True, http_options={"middlewares": [
     ]}
 )
 
-# APIInfoDeployment.deploy()
+APIInfoDeployment.deploy()
 POLEGraph.options(name='graph').deploy()
+RandomProvider.deploy()
 PageRankProvider.deploy()
-# RandomProvider.deploy()
-
-# PageRankProvider.deploy('graph.pole')

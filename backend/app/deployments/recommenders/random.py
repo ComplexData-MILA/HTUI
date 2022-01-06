@@ -5,22 +5,23 @@ import logging
 from ...app import app
 from .provider import Provider, ProviderQuery
 
-def random_nodes(tx, k):
-    result = tx.run("""
+from fastapi import APIRouter
+router = APIRouter()
+app.include_router(router)
+
+@serve.deployment(name='provider.random', route_prefix='/provider/random')
+@serve.ingress(router)
+class RandomProvider(Provider):
+
+    @router.post('/')
+    async def endpoint(self, query: ProviderQuery):
+        return await self.recommend(query)
+
+    @staticmethod
+    def call_db(tx, query: ProviderQuery):
+        result = tx.run("""
         MATCH (n)
         WITH n, rand() AS r
         ORDER BY r
-        RETURN n LIMIT $k""", k=k)
-    return [r['n'].id for r in result]
-
-@serve.deployment(name='provider.random', route_prefix='/random')
-@serve.ingress(app)
-class RandomProvider(Provider):
-    @app.post('/recommend')
-    async def random_recommend(self, query: ProviderQuery):
-        logging.basicConfig(level=logging.INFO)
-        ref = await self.graph.read.remote(random_nodes, k=query.k)
-        result = ray.get(ref)
-        logging.info(result)
-        print(result)
-        return result
+        RETURN n LIMIT $k""", k=query.k)
+        return [r['n'].id for r in result]
