@@ -9,7 +9,13 @@ from ..app import app
 from ..queries import text_search, get_subgraph_json
 from ..models import Subgraph
 
+
+def await_idx(tx, name: str):
+    tx.run("CALL db.awaitIndex($name)", name=name)
+
 class GraphDB:
+    _index_name: str = None
+
     def __init__(self):
         uri = os.getenv('NEO4J_URI', "neo4j://localhost:7687")
         auth = tuple(os.getenv('NEO4J_AUTH', 'neo4j/neo4j').split('/'))
@@ -17,23 +23,44 @@ class GraphDB:
         self.driver = GraphDatabase.driver(uri, auth=auth)
         self.session = self.driver.session()
 
-        self.build_index()
+        self._build_index()
 
     def read(self, *args, **kwargs):
         print(args, kwargs)
         return self.session.read_transaction(*args, **kwargs)
 
+    def _build_index(self):
+        if not self._index_name:
+            return
+
+        try:
+            self.read(await_idx, name=self._index_name)
+        except ClientError as e:
+            if e.code == 'Neo.ClientError.Schema.IndexNotFound':
+                print('Building index.')
+                return self.build_index()
+            # if e.message == f"No such index '{self._index_name}'":
+            #     pass
+        
+        print('Index ready.')
+
 
     def build_index(self):
-        pass
+        raise NotImplementedError()
+
+def runFullTextIdx(tx):
+    tx.run("""
+    CALL db.labels() yield label with collect(label) as labels
+    WHERE NOT apoc.schema.node.indexExists('full_name', ['name', 'surname'])
+    CALL db.index.fulltext.createNodeIndex('full_name', labels, ['name', 'surname']) return labels
+    """)
 
 @serve.deployment(name="graph.pole", route_prefix="/graph/pole")
 @serve.ingress(app)
 class POLEGraph(GraphDB):
-    def build_index(self):
-        print('Building index.')
-        from ..queries import runFullTextIdx
+    _index_name = 'full_name'
 
+    def build_index(self):
         try:
             self.session.write_transaction(runFullTextIdx)
         except ClientError as e:
@@ -44,6 +71,7 @@ class POLEGraph(GraphDB):
                 print('Index already exists, skipping')
             else:
                 raise e
+
 
     @app.post("/subgraph")
     async def subgraph(self, seeds: Subgraph):

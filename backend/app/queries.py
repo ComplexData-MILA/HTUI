@@ -46,13 +46,3 @@ def text_search(tx, q: str, max_results: int = 25):
     for result in results:
         population.append(result["individual"])
     return population
-
-def runFullTextIdx(tx):
-    print(tx.run("""
-    CALL db.labels() yield label with collect(label) as labels
-    WHERE NOT apoc.schema.node.indexExists('full_name', ['name', 'surname'])
-    CALL db.index.fulltext.createNodeIndex('full_name', labels, ['name', 'surname']) return labels
-    """))
-    # print(tx.run("""
-    # CREATE FULLTEXT INDEX full_name IF NOT EXISTS FOR * ON EACH ['name', 'surname']
-    # """))
