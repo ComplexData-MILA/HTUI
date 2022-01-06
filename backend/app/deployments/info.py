@@ -1,10 +1,13 @@
-import os
-import logging
-
 import ray
 from ray import serve
+import urllib.parse
+
+from ray.worker import get
 
 from ..app import app
+
+def get_endpoint(deployment_name: str):
+    return urllib.parse.urlparse(serve.get_deployment(deployment_name).url).path
 
 @serve.deployment(name='info', route_prefix="/")
 @serve.ingress(app)
@@ -20,6 +23,6 @@ class APIInfoDeployment:
     @app.get("/provider")
     async def providers(self):
         return [
-            { 'name': 'Random', 'description': '', 'endpoint': serve.get_deployment('provider.random').url },
-            { 'name': 'PageRank', 'description': '', 'endpoint': serve.get_deployment('provider.pagerank').url }
+            { 'name': 'Random', 'description': '', 'endpoint': get_endpoint('provider.random') },
+            { 'name': 'PageRank', 'description': '', 'endpoint': get_endpoint('provider.pagerank') }
         ]
