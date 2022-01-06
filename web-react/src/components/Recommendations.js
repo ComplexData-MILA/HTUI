@@ -35,14 +35,14 @@ export default function Recommendations(props) {
   return (
       <React.Fragment>
       <Box sx={{ height: 400 }}>
-        {isLoading ? 
+        {/* {isLoading ? 
         <Typography>Loading</Typography>
-        : 
+        :  */}
         <DataGrid 
           onCellClick={(event) => callback(event.id)}
           hideFooter 
           columns={[{ field: 'id' }]}
-          rows={formatData(data)}
+          rows={isLoading ? [] : formatData(data)}
           components={{
             Toolbar: ModelSelect,
           }}
@@ -54,7 +54,7 @@ export default function Recommendations(props) {
           }}
           className={classes.paper}
         />
-        } 
+        {/* }  */}
       </Box>
     </React.Fragment>
   )
