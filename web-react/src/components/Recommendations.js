@@ -11,7 +11,7 @@ import ModelSelect from './ModelSelect.js'
 
 export default function Recommendations(props) {
   const {callback, apiHost, classes, theme, seedNodes} = props
-  // const [recommendations, setRecs] = useState([]);
+  const [recommendations, setRecs] = useState([]);
 
   const providerFetch = () => {
     return fetch(`${apiHost}/provider/random/recommend?k=5&m=random`).then((res) => res.json())
@@ -28,6 +28,7 @@ export default function Recommendations(props) {
       return {id: num}
     });
     // console.log(newArr)
+    // setRecs(newArr)
     return newArr
   }
 
@@ -53,7 +54,7 @@ export default function Recommendations(props) {
           }}
           className={classes.paper}
         />
-        }
+        } 
       </Box>
     </React.Fragment>
   )

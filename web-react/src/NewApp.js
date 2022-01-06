@@ -42,7 +42,7 @@ const appBarHeight = 80
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4C90CF',
+      main: '#81C2FF',
     },
     secondary: {
       main: '#235481',
@@ -143,32 +143,52 @@ const useStyles = makeStyles((theme) => ({
         border: 0,
       },
       icon: {
-          fill: theme.palette.secondary.contrastText,
+          fill: '#bdbdbd',
       },
       root: {
           color: theme.palette.secondary.contrastText,
       },
+      // inputLabel: {
+      //   color: '#bdbdbd',
+      //   '&:hover fieldset': {
+      //     color: '#fff',
+      //   },
+      //   '&.Mui-focused':{
+      //     color: '#fff',
+      //   }
+      // },
 }))
 
 const CssTextField = styled(TextField)({
   '& label.Mui-focused': {
     color: '#fafafa',
   },
+  // '& .MuiInputLabel-root':{
+  //   color: '#bdbdbd'
+  // },
   '& .MuiInput-underline:after': {
     borderBottomColor: '#fafafa',
   },
-  // '& .MuiInputLabel-root': {
-  //   color: '#bdbdbd',
+  // '& .MuiInputBase-input': {
+  //   // '&.Mui-focused': {
+  //   //   color: '#fafafa'
+  //   // }
+  //   color: '#fafafa'
   // },
   '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: '#bdbdbd',
-    },
+    // '& fieldset': {
+    //   borderColor: '#bdbdbd',
+    // },
     '&:hover fieldset': {
-      borderColor: '#fafafa',
+      border: '1px solid #fafafa',
+      color: '#fafafa'
     },
     '&.Mui-focused fieldset': {
-      borderColor: '#fafafa',
+      border: '2px solid #fafafa',
+      color: '#fafafa'
+      // '& .MuiInputBase-input': {
+      //   color: '#fafafa'
+      // },
     },
   },
 });
