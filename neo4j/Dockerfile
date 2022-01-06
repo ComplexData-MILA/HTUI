@@ -30,11 +30,3 @@ USER neo4j
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["neo4j"]
-
-
-docker run -it --rm \
-  --publish=7474:7474 --publish=7687:7687 \
-  --user="$(id -u):$(id -g)" \
-  -e NEO4J_AUTH='neo4j/RedThread' \
-  --env NEO4JLABS_PLUGINS='["graph-data-science", "apoc"]' \
-  neo4j:4.3
