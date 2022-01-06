@@ -8,7 +8,7 @@ ARG APOC_VERSION
 
 RUN echo "Building neo4j ${NEO4J_VERSION} with apoc ${APOC_VERSION}"
 
-ADD --chown=neo4j:neo4j https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/${APOC_VERSION}/apoc-${APOC_VERSION}-all.jar ./plugins
+# ADD --chown=neo4j:neo4j https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/${APOC_VERSION}/apoc-${APOC_VERSION}-all.jar ./plugins
 ADD --chown=neo4j:neo4j https://raw.githubusercontent.com/neo4j-graph-examples/pole/main/data/pole-40.dump .
 
 ARG NEO4J_AUTH=neo4j/letmein
@@ -30,3 +30,11 @@ USER neo4j
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["neo4j"]
+
+
+docker run -it --rm \
+  --publish=7474:7474 --publish=7687:7687 \
+  --user="$(id -u):$(id -g)" \
+  -e NEO4J_AUTH='neo4j/RedThread' \
+  --env NEO4JLABS_PLUGINS='["graph-data-science", "apoc"]' \
+  neo4j:4.3
