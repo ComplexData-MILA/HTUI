@@ -7,10 +7,6 @@ from ray import serve
 from ...app import app
 from .provider import Provider, ProviderQuery
 
-from fastapi import APIRouter
-# router = APIRouter()
-# app.include_router(router)
-
 class PPRQuery(ProviderQuery):
     maxIterations: int = 5
     dampingFactor: float = 0.85
@@ -20,7 +16,7 @@ class PPRQuery(ProviderQuery):
 @serve.ingress(app)
 class PageRankProvider(Provider):
     @app.post('/')
-    async def endpointt(self, query: PPRQuery):
+    async def endpoint(self, query: PPRQuery):
         return await self.recommend(query)
         # return dict(query)
 
