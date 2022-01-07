@@ -8,19 +8,21 @@ from ...app import app
 from .provider import Provider, ProviderQuery
 
 from fastapi import APIRouter
-router = APIRouter()
-app.include_router(router)
+# router = APIRouter()
+# app.include_router(router)
 
 class PPRQuery(ProviderQuery):
     maxIterations: int = 5
     dampingFactor: float = 0.85
 
-@serve.deployment(name='provider.pagerank', route_prefix='/provider/pagerank')
-@serve.ingress(router)
+
+@serve.deployment(name='provider.pagerank', route_prefix='/provider/pagerank', ray_actor_options={"num_cpus": 0.1})
+@serve.ingress(app)
 class PageRankProvider(Provider):
-    @router.post('/')
-    async def endpoint(self, query: PPRQuery):
+    @app.post('/')
+    async def endpointt(self, query: PPRQuery):
         return await self.recommend(query)
+        # return dict(query)
 
     @staticmethod
     def call_db(tx, query: PPRQuery):

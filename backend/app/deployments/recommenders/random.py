@@ -2,18 +2,18 @@ import ray
 from ray import serve
 import logging
 
-from ...app import app
+from ...app import app, get_router
 from .provider import Provider, ProviderQuery
 
 from fastapi import APIRouter
-router = APIRouter()
-app.include_router(router)
+# router = APIRouter()
+# app.include_router(router)
 
-@serve.deployment(name='provider.random', route_prefix='/provider/random')
-@serve.ingress(router)
+@serve.deployment(name='provider.random', route_prefix='/provider/random', ray_actor_options={"num_cpus": 0.1})
+@serve.ingress(app)
 class RandomProvider(Provider):
 
-    @router.post('/')
+    @app.post('/')
     async def endpoint(self, query: ProviderQuery):
         return await self.recommend(query)
 

@@ -55,7 +55,7 @@ def runFullTextIdx(tx):
     CALL db.index.fulltext.createNodeIndex('full_name', labels, ['name', 'surname']) return labels
     """)
 
-@serve.deployment(name="graph.pole", route_prefix="/graph/pole")
+@serve.deployment(name="graph.pole", route_prefix="/graph/pole", ray_actor_options={"num_cpus": 0.1})
 @serve.ingress(app)
 class POLEGraph(GraphDB):
     _index_name = 'full_name'

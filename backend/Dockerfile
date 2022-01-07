@@ -1,5 +1,5 @@
 # FROM python:3.8
-FROM rayproject/ray:latest
+FROM rayproject/ray:nightly
 
 WORKDIR /app
 ADD requirements.txt /tmp

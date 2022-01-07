@@ -9,7 +9,7 @@ from ..app import app
 def get_endpoint(deployment_name: str):
     return urllib.parse.urlparse(serve.get_deployment(deployment_name).url).path
 
-@serve.deployment(name='info', route_prefix="/")
+@serve.deployment(name='info', route_prefix="/", ray_actor_options={"num_cpus": 0.1})
 @serve.ingress(app)
 class APIInfoDeployment:
     @app.get("/")
