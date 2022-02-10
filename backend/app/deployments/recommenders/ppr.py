@@ -24,6 +24,8 @@ class PageRankProvider(Provider):
     def call_db(tx, query: PPRQuery):
         logging.basicConfig(level=logging.INFO)
         logging.info('PPR')
+        print(query.state.nodeIds)
+        logging.info(query.state.nodeIds)
         
         result = tx.run("""
                 MATCH (s)
@@ -31,8 +33,9 @@ class PageRankProvider(Provider):
                 WITH collect(s) as seeds
                 CALL gds.pageRank.stream({nodeProjection: '*', relationshipProjection: '*', maxIterations: $maxIterations, sourceNodes: seeds})
                 YIELD nodeId, score
-                RETURN nodeId AS node, score
+                MATCH (n) WHERE ID(n) = nodeId
+                RETURN nodeId AS node, score, labels(n)[0] AS label
                 ORDER BY score DESC
                 LIMIT $k""", sourceNodes=query.state.nodeIds, k=query.k, maxIterations=query.maxIterations)
         logging.info(result)
-        return [r['node'] for r in result]
+        return [[r['node'], r['label']] for r in result]

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useQuery } from 'react-query'
 import { 
     Select, 
     FormControl, 
@@ -35,26 +36,28 @@ const CssTextField = styled(TextField)({
     },
   });
 
+var options = {}
+
 export default function ModelSelect(props) {
-    const { color, classes } = props
-    const [model, setModel] = useState('')
-    const models = ['Random', 'Random Walk', 'RedThread']; // get from the backend
-
-    const handleChange = (event) => {
-        console.log(event)
-        console.log(event.target.value)
-        setModel(event.target.value)
-    }
-
-    const algDescriptions = ["about random", "about pagerank", "about others"]
-
+    const { classes, apiHost, model, handleChange, providerOptions } = props
+    
+    
+    // options = providerOptions
+    // console.log(providerOptions)
+    
+    // ModelSelect.model = model
+  
+    // console.log(providerOptions)
+  
+    // const algDescriptions = ["about random", "about pagerank", "about others"]
+    
     return (
         <GridToolbarContainer>
             <CssTextField
                 id="outlined-select-models"
                 select
                 // label="Models"
-                value={model || 'Random'}
+                value={model}
                 onChange={handleChange}
                 helperText="Select a model"
                 FormHelperTextProps={{
@@ -71,12 +74,19 @@ export default function ModelSelect(props) {
                 // }}
                 fullWidth
             >
-                {models.map((val, index) => 
-                    <Tooltip title={algDescriptions[index]} key={val} placement="left" value={val}>
-                        <MenuItem value={val} key={val}>{val}</MenuItem>
-                    </Tooltip>
-                )}
+                {Object.keys(providerOptions).map(function(name){
+                    // const obj = providerOptions[name]
+                    
+                    return(<Tooltip title={"providerOptions[name].description"} key={name} placement="left" value={name}>
+                                <MenuItem value={name} key={name}>{name}</MenuItem>
+                            </Tooltip>
+                    )
+                })}
             </CssTextField>
         </GridToolbarContainer>
     )
 }
+
+// export function getOptions() {
+//     return options
+// }

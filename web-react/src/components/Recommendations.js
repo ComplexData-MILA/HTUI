@@ -3,29 +3,90 @@ import { useQuery } from "react-query"
 import {
     Box,
     Typography,
+    Tooltip,
+    MenuItem,
+    TextField
 } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
-import ModelSelect from './ModelSelect.js'
+import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
+import {default as ModelSelect, getOptions} from './ModelSelect.js'
+import { styled } from '@mui/material/styles'
 
-// const apiHost = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
+const CssTextField = styled(TextField)({
+  '& .MuiInput-underline:after': {
+    borderBottomColor: '#fafafa',
+  },
+  '& .MuiButtonBase-root': {
+      color: '#fff',
+      padding: '0 0 0 0'
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#bdbdbd',
+    },
+    '&:hover fieldset': {
+      borderColor: '#fafafa',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#fafafa',
+    },
+  },
+});
 
 export default function Recommendations(props) {
   const {callback, apiHost, classes, theme, seedNodes} = props
-  const [recommendations, setRecs] = useState([]);
-
-  const providerFetch = () => {
-    return fetch(`${apiHost}/provider/random/recommend?k=5&m=random`).then((res) => res.json())
+  const [model, setModel] = useState('Random')
+  
+  const handleChange = (event) => {
+    // console.log(event)
+    // console.log(event.target.value)
+    setModel(event.target.value)
   }
 
-  const { isLoading, error, data} = useQuery(["provider", seedNodes], providerFetch);
+  const { isLoading: isLoadingModels, error: errorModels, data:providerOptions } = useQuery(["models"], () =>
+      fetch(`${apiHost}/provider`).then((res) => res.json())
+  );
+  // const options = getOptions()
+
+  const providerFetch = () => {
+    var bodyContent = JSON.stringify({ k: 5 });
+    if (model == "Random") {
+      bodyContent = JSON.stringify({ k: 5 });
+    } else if (model == "PageRank") {
+      // var obj = {}
+      // obj["node_ids"] = seedNodes
+      bodyContent = JSON.stringify({ k: 10, state: {nodeIds: seedNodes}, maxIterations: 20})
+    }
+    console.log(bodyContent)
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: bodyContent
+    };
+    console.log(model)
+    const endpoint = providerOptions ? providerOptions[model].endpoint : '/provider/random'
+    console.log(endpoint)
+    return fetch(`${apiHost}${endpoint}/`, requestOptions).then((res) => res.json())
+  }
+
+  const { isLoading, error, data} = useQuery(["provider", seedNodes, model], providerFetch);
+
+  if (errorModels) {
+      return <div>Error: {errorModels.message}</div>;
+  }
+
+  if (isLoadingModels) {
+      return <div>Loading...</div>;
+  }
 
   if (error) {
+    // console.log(error)
     return <div>Error: {error.message}</div>;
   }
 
   const formatData = (data) => {
-    const newArr = data.map(function(num) {
-      return {id: num}
+    console.log(data)
+    const newArr = data.map(function(arr) {
+      return {id: arr[0], type: arr[1]}
     });
     // console.log(newArr)
     // setRecs(newArr)
@@ -41,15 +102,20 @@ export default function Recommendations(props) {
         <DataGrid 
           onCellClick={(event) => callback(event.id)}
           hideFooter 
-          columns={[{ field: 'id' }]}
+          columns={[{ field: 'id' }, { field: 'type' }]}
           rows={isLoading ? [] : formatData(data)}
           components={{
             Toolbar: ModelSelect,
           }}
           componentsProps={{
             toolbar: {
-              color: theme.palette.secondary.contrastText,
+              // color: theme.palette.secondary.contrastText,
               classes: classes,
+              apiHost: apiHost,
+              model: model,
+              handleChange: handleChange,
+              // setModel: setModel,
+              providerOptions: providerOptions,
             }
           }}
           className={classes.paper}

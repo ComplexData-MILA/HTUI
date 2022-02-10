@@ -6,7 +6,7 @@ import ray
 from ray import serve
 
 class GraphState(BaseModel):
-    nodeIds: List[str] = []
+    nodeIds: List[int] = []
     actions: Optional[List[Dict[str, Any]]] = None
 
 class ProviderQuery(BaseModel):

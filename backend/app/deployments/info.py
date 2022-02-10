@@ -22,7 +22,7 @@ class APIInfoDeployment:
 
     @app.get("/provider")
     async def providers(self):
-        return [
-            { 'name': 'Random', 'description': '', 'endpoint': get_endpoint('provider.random') },
-            { 'name': 'PageRank', 'description': '', 'endpoint': get_endpoint('provider.pagerank') }
-        ]
+        return {
+            'Random' : { 'name': 'Random', 'description': '', 'endpoint': get_endpoint('provider.random') },
+            'PageRank' : { 'name': 'PageRank', 'description': '', 'endpoint': get_endpoint('provider.pagerank') }
+        }

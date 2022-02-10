@@ -19,5 +19,6 @@ class RandomProvider(Provider):
         MATCH (n)
         WITH n, rand() AS r
         ORDER BY r
-        RETURN n LIMIT $k""", k=query.k)
-        return [r['n'].id for r in result]
+        RETURN n AS node, labels(n)[0] AS label 
+        LIMIT $k""", k=query.k)
+        return [[r['node'].id, r['label']] for r in result]
