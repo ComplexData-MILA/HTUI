@@ -1,12 +1,13 @@
 import os
 import ray
 from ray import serve
+# from typing import List
 
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError
 
 from ..app import app
-from ..queries import text_search, get_subgraph_json
+from ..queries import text_search, get_subgraph_json, get_info
 from ..models import Subgraph
 
 
@@ -84,3 +85,8 @@ class POLEGraph(GraphDB):
             print('Got empty query')
             return []
         return self.read(text_search, q)
+
+    @app.get('/info/{ids}')
+    async def node_info(self, ids: str):
+        idList = list(map(int, ids.strip().split(" ")))
+        return self.read(get_info, idList)

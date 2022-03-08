@@ -54,7 +54,7 @@ export default function Recommendations(props) {
     } else if (model == "PageRank") {
       // var obj = {}
       // obj["node_ids"] = seedNodes
-      bodyContent = JSON.stringify({ k: 10, state: {nodeIds: seedNodes}, maxIterations: 20})
+      bodyContent = JSON.stringify({ k: 5, state: {nodeIds: seedNodes}, maxIterations: 20})
     }
     console.log(bodyContent)
     const requestOptions = {
@@ -83,14 +83,40 @@ export default function Recommendations(props) {
     return <div>Error: {error.message}</div>;
   }
 
+  // const getInfo = (obj) => {
+  //   var id = obj["id"]
+  //   const { isLoading: isLoadingInfo, error: errorInfo, data:dataInfo } = useQuery(["info", id], () =>
+  //     fetch(`${apiHost}/info/${id}`).then((res) => res.json())
+  //   );
+
+  //   return [isLoadingInfo, errorInfo, {'id': id, 'label': obj['labels'][0]}]
+  // }
+
   const formatData = (data) => {
     console.log(data)
+    var parameter = "";
+    for (let i = 0; i < data.length; i++) {
+      parameter += data[i] + " ";
+    }
+    const { isLoading: isLoadingInfo, error: errorInfo, data:dataInfo } = useQuery(["info"], () =>
+      fetch(`${apiHost}/info/${parameter}`).then((res) => res.json())
+    );
+
     const newArr = data.map(function(arr) {
-      return {id: arr[0], type: arr[1]}
-    });
-    // console.log(newArr)
-    // setRecs(newArr)
+      // var result = getInfo(arr)
+      
+      return dataInfo;
+    })
+
     return newArr
+  };
+
+  if (errorInfo) {
+    return <div>Error: {errorInfo.message}</div>;
+  }
+
+  if (isLoadingInfo) {
+      return <div>Loading...</div>;
   }
 
   return (
@@ -102,7 +128,7 @@ export default function Recommendations(props) {
         <DataGrid 
           onCellClick={(event) => callback(event.id)}
           hideFooter 
-          columns={[{ field: 'id' }, { field: 'type' }]}
+          columns={[{ field: 'id' }, { field: 'label' }]}
           rows={isLoading ? [] : formatData(data)}
           components={{
             Toolbar: ModelSelect,

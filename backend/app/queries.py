@@ -1,5 +1,6 @@
 import json
 from .models import Subgraph
+from typing import List
 
 
 
@@ -46,3 +47,13 @@ def text_search(tx, q: str, max_results: int = 25):
     for result in results:
         population.append(result["individual"])
     return population
+
+def get_info(tx, node_ids: List[int]):
+    info = []
+    results = tx.run("""UNWIND $node_ids as id
+                        MATCH (n) WHERE ID(n) = id
+                        RETURN collect(apoc.convert.toJson(n)) AS node""", node_ids=node_ids)
+    for result in results:
+        info.append(result["node"])
+
+    return info
