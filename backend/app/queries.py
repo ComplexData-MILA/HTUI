@@ -52,8 +52,8 @@ def get_info(tx, node_ids: List[int]):
     info = []
     results = tx.run("""UNWIND $node_ids as id
                         MATCH (n) WHERE ID(n) = id
-                        RETURN collect(apoc.convert.toJson(n)) AS node""", node_ids=node_ids)
+                        RETURN apoc.convert.toJson(n) AS node""", node_ids=node_ids)
     for result in results:
-        info.append(result["node"])
+        info.append(json.loads(result["node"]))
 
     return info

@@ -8,7 +8,7 @@ from neo4j.exceptions import ClientError
 
 from ..app import app
 from ..queries import text_search, get_subgraph_json, get_info
-from ..models import Subgraph
+from ..models import Subgraph, SeedNodes
 
 
 def await_idx(tx, name: str):
@@ -86,7 +86,6 @@ class POLEGraph(GraphDB):
             return []
         return self.read(text_search, q)
 
-    @app.get('/info/{ids}')
-    async def node_info(self, ids: str):
-        idList = list(map(int, ids.strip().split(" ")))
-        return self.read(get_info, idList)
+    @app.post('/info')
+    async def node_info(self, ids: SeedNodes):
+        return self.read(get_info, ids.node_ids)

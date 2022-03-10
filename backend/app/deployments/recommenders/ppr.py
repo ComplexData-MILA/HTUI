@@ -34,8 +34,8 @@ class PageRankProvider(Provider):
                 CALL gds.pageRank.stream({nodeProjection: '*', relationshipProjection: '*', maxIterations: $maxIterations, sourceNodes: seeds})
                 YIELD nodeId, score
                 MATCH (n) WHERE ID(n) = nodeId
-                RETURN nodeId AS node, score, labels(n)[0] AS label
+                RETURN nodeId AS node, score
                 ORDER BY score DESC
                 LIMIT $k""", sourceNodes=query.state.nodeIds, k=query.k, maxIterations=query.maxIterations)
         logging.info(result)
-        return [[r['node'], r['label']] for r in result]
+        return [r['node'] for r in result]

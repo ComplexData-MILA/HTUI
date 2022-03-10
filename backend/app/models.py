@@ -8,3 +8,6 @@ class Subgraph(BaseModel):
 
 class GraphState(BaseModel):
     k: int
+
+class SeedNodes(BaseModel):
+    node_ids: List[int] = []

@@ -36,7 +36,7 @@ import {
 
 const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 
-const drawerWidth = 240
+const drawerWidth = 300
 const appBarHeight = 80
 
 const theme = createTheme({
