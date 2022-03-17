@@ -5,10 +5,17 @@ import {
     Typography,
     Tooltip,
     MenuItem,
-    TextField
+    TextField,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia, 
+    Button
 } from '@mui/material'
 import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
-import {default as ModelSelect, getOptions} from './ModelSelect.js'
+import {default as ModelSelect} from './ModelSelect.js'
+import {default as NewModelSelect} from './NewModelSelect.js'
+import {default as InfoCards} from './InfoCards.js'
 import { styled } from '@mui/material/styles'
 
 const CssTextField = styled(TextField)({
@@ -107,10 +114,10 @@ export default function Recommendations(props) {
   if (infoLoading) {
       return <div>Loading...</div>;
   }
-
+  console.log(infoData)
   const formatData = (data) => {
     console.log(data)
-    console.log(infoData)
+    
     const newArr = data.map(function(arr, idx) {
       const label = infoData[idx].labels[0]
       const properties = Object.values(infoData[idx].properties)
@@ -130,7 +137,7 @@ export default function Recommendations(props) {
         {/* {isLoading ? 
         <Typography>Loading</Typography>
         :  */}
-        <DataGrid 
+        {/* <DataGrid 
           onCellClick={(event) => callback(event.id)}
           hideFooter 
           columns={[{ field: 'id' }, { field: 'label' }, {field: 'property'}]}
@@ -150,8 +157,20 @@ export default function Recommendations(props) {
             }
           }}
           className={classes.paper}
-        />
-        {/* }  */}
+        /> */}
+        <NewModelSelect
+          classes={classes}
+          apiHost={apiHost}
+          model={model}
+          handleChange={handleChange}
+          providerOptions={providerOptions}
+        >
+        </NewModelSelect>
+        <InfoCards
+          infoData={infoData}
+          callback={callback}
+        ></InfoCards>
+      {/* } */}
       </Box>
     </React.Fragment>
   )
