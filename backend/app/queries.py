@@ -20,7 +20,7 @@ def get_subgraph_json(tx, seeds: Subgraph):
     subgraphs = []
     result = tx.run("CALL apoc.path.subgraphAll($seeds, {maxLevel: $k}) YIELD nodes, relationships "
         "WITH [node in nodes | node {.*, label:labels(node)[0], id: toString(id(node))}] as nodes, " 
-            "[rel in relationships | rel {.*, source:toString(id(startNode(rel))), target:toString(id(endNode(rel))), label:type(rel)}] as edges "
+            "[rel in relationships | rel {.*, from:toString(id(startNode(rel))), to:toString(id(endNode(rel))), label:type(rel)}] as edges "
         "WITH { nodes: nodes, edges: edges, numNodes: size(nodes), numEdges:size(edges) } as graph "
         "RETURN apoc.convert.toJson(graph) AS subgraph", seeds=seeds.node_ids, k=seeds.k)
     

@@ -40,7 +40,7 @@ const CssTextField = styled(TextField)({
 });
 
 export default function Recommendations(props) {
-  const {callback, apiHost, classes, theme, seedNodes} = props
+  const {callback, apiHost, classes, theme, seedNodes, setSelected} = props
   const [model, setModel] = useState('Random')
   const [recs, setRecs] = useState([])
   
@@ -134,14 +134,16 @@ export default function Recommendations(props) {
   return (
       <React.Fragment>
       <Box sx={{ height: 400 }}>
-        {/* {isLoading ? 
+        {isLoading ? 
         <Typography>Loading</Typography>
-        :  */}
-        {/* <DataGrid 
-          onCellClick={(event) => callback(event.id)}
+        : 
+        <DataGrid 
+          // onCellClick={(event) => callback(event.id)}
           hideFooter 
+          checkboxSelection
           columns={[{ field: 'id' }, { field: 'label' }, {field: 'property'}]}
           rows={isLoading ? [] : formatData(data)}
+          onSelectionModelChange={elem => setSelected(elem)}
           components={{
             Toolbar: ModelSelect,
           }}
@@ -157,20 +159,20 @@ export default function Recommendations(props) {
             }
           }}
           className={classes.paper}
-        /> */}
-        <NewModelSelect
-          classes={classes}
-          apiHost={apiHost}
-          model={model}
-          handleChange={handleChange}
-          providerOptions={providerOptions}
-        >
-        </NewModelSelect>
-        <InfoCards
-          infoData={infoData}
-          callback={callback}
-        ></InfoCards>
-      {/* } */}
+        />
+        // <NewModelSelect
+        //   classes={classes}
+        //   apiHost={apiHost}
+        //   model={model}
+        //   handleChange={handleChange}
+        //   providerOptions={providerOptions}
+        // >
+        // </NewModelSelect>
+        // <InfoCards
+        //   infoData={infoData}
+        //   callback={callback}
+        // ></InfoCards>
+      }
       </Box>
     </React.Fragment>
   )

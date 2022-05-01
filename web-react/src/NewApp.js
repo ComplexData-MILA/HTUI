@@ -8,8 +8,11 @@ import { StyledEngineProvider } from '@mui/material/styles'
 import { withStyles } from '@mui/styles'
 
 import SearchBar from './components/Search'
-import Recommendations from './components/Recommendations'
+// import Recommendations from './components/Recommendations'
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 import GraphDisplay from './components/Graph'
+import CustomizedDialog from './components/RecDialog'
 
 import {
     CssBaseline,
@@ -107,6 +110,7 @@ const useStyles = makeStyles((theme) => ({
       },
       main: {
         height: `calc(100vh - ${appBarHeight}px)`,
+        // height: '100vh',
         width: '100%',
         overflow: 'auto',
         paddingTop: 20,
@@ -221,12 +225,24 @@ function NewAppContent() {
       console.log(open)
     }
 
+    // hook for the Get Recommendation floating options button
+    const [openOptions, setOpenOptions] = useState(false);
+
     const [subgraphNodes, setNodes] = useState([])
     const addSeedNode = (id) => {
         console.log(
         `Adding node ${id} to the visualization with existing nodes ${subgraphNodes}.`
         )
         setNodes([...subgraphNodes, parseInt(id)])
+        setOpenOptions(false);
+    }
+
+    const addMultSeedNodes = (ids) => {
+      console.log(
+        `Adding MULTIPLE nodes ${ids} to the visualization with existing nodes ${subgraphNodes}.`
+      )
+      setNodes(subgraphNodes.concat(ids))
+      setOpenOptions(false);
     }
 
     const [height, setHeight] = React.useState(0);
@@ -237,6 +253,16 @@ function NewAppContent() {
       }
       // console.log(height)
     }, []);
+
+    // rec dialog open/close hooks and functions, passed in as prop to CustomizedDialog
+    const [openDialog, setOpenDialog] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpenDialog(true);
+    };
+    const handleClickClose = () => {
+      setOpenDialog(false);
+    };
 
     return (
         <StyledEngineProvider injectFirst>
@@ -266,14 +292,35 @@ function NewAppContent() {
                             />
                         </Toolbar>
                     </AppBar>
+                    {openOptions && <Grid container spacing={2} 
+                            columns={8} 
+                            display="flex" 
+                            alignItems="center"
+                            justifyContent="center"
+                            marginTop={'0px'}
+                      >
+                          <Button
+                            style={{
+                              backgroundColor: theme.palette.secondary.main,
+                              color: theme.palette.secondary.contrastText,
+                            }}
+                            onClick={() => {
+                              handleClickOpen()
+                            }}
+                          >
+                            Get Recommendations
+                          </Button>
+                      </Grid>
+                    }     
                     <main>
                       <GraphDisplay
                         open={open}
                         classes={classes}
                         subgraphNodes={subgraphNodes}
                         addSeedNode={addSeedNode}
+                        handleOpenOptions={setOpenOptions}
                       ></GraphDisplay>
-                      <NewFab
+                      {/* <NewFab
                         onClick={handleDrawerOpen}
                         className={clsx(
                           classes.recButton,
@@ -282,8 +329,8 @@ function NewAppContent() {
                         variant="circular"
                       >
                         <Menu></Menu>
-                      </NewFab>
-                      <div>
+                      </NewFab> */}
+                      {/* <div>
                         <Drawer
                           classes={{ paper: classes.paper }}
                           sx={{
@@ -313,8 +360,18 @@ function NewAppContent() {
                             </ColorButton>
                           </div>
                         </Drawer>
-                      </div>
+                      </div> */}
                     </main>
+                    <CustomizedDialog 
+                      openDialog={openDialog}
+                      handleClickClose={handleClickClose}
+                      handleClickOpen={handleClickOpen}
+                      callback={addMultSeedNodes}
+                      apiHost={API_HOST}
+                      classes={classes}
+                      theme={theme}
+                      seedNodes={subgraphNodes}
+                    />
                 </div>
             </QueryClientProvider>
         </StyledEngineProvider>

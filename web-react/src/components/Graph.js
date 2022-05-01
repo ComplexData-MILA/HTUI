@@ -15,19 +15,10 @@ import clsx from 'clsx'
 import NodeTooltip from './Tooltip'
 import { Box, Container } from '@mui/material'
 import classNames from 'classnames'
+import Graph from "react-graph-vis"; // new graph visualization
 
-// const walk = (node, callback) => {
-//   callback(node)
-//   if (node.children && node.children.length !== 0) {
-//     node.children.forEach((n) => {
-//       walk(n, callback)
-//     })
-//   }
-// }
 const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 console.log(`API hosted at ${API_HOST}.`)
-
-const { ClickSelect, ResizeCanvas } = Behaviors
 
 //written in JSS not CSS
 const styles = (theme) => ({
@@ -38,75 +29,9 @@ const styles = (theme) => ({
   },
 })
 
-//graphql queries
-const GET_PERSON = gql`
-  query peoplePaginateQuery($filter: PersonWhere) {
-    people(where: $filter) {
-      id
-      name
-      surname
-    }
-  }
-`
-
-const GET_SUBGRAPH = gql`
-  query subgraphQuery($seedNodes: [Int]) {
-    Subgraph(seeds: $seedNodes)
-  }
-`
-
-// const toggleVisibility = () => {
-//   const feedbackArea = document.getElementById('AcceptAndReject')
-//   const currentVisibility = feedbackArea.style.display
-//   if (currentVisibility == 'none') {
-//     feedbackArea.style.display = 'block'
-//     document.getElementById('GetNextButton').display = 'none'
-//   } else if (currentVisibility == 'block') {
-//     feedbackArea.style.display = 'none'
-//   }
-//   getNextRecommended()
-// }
-
-/* attempt to resize the canvas */
-// const useContainerWidth = (myRef, graph) => {
-//   const getWidth = () => (
-//     myRef.current.offsetWidth
-//   )
-  
-//   const getHeight = () => (
-//     myRef.current.offsetHeight
-//   )
-
-//   const [width, setWidth] = useState(0)
-//   const [height, setHeight] = useState(0)
-
-//   useEffect(() => {
-//     const handleResize = () => {
-//       setWidth(getWidth())
-//       setHeight(getHeight())
-//       graph.set('width', width)
-//     }
-
-//     if (myRef.current) {
-//       setWidth(getWidth())
-//       setHeight(getHeight())
-//       console.log(width)
-//       graph.set('width', width)
-//     }
-
-//     window.addEventListener("resize", handleResize)
-
-//     return () => {
-//       window.removeEventListener("resize", handleResize)
-//     }
-//   }, [myRef.current])
-
-//   return width;
-// };
-
 function GraphDisplay(props) {
   // declare useState hooks
-  const { open, classes, subgraphNodes, addSeedNode } = props
+  const { open, classes, subgraphNodes, addSeedNode, handleOpenOptions } = props
   // const [subgraphNodes, setNodes] = useState([])
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -148,25 +73,79 @@ function GraphDisplay(props) {
   graphDisplayData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphDisplayData.edges, { poly: 50 })
 
-  // new Graphin things to try to fix clicking node function
-  
-  // useEffect(() => {
-  //   const { graph } = graphRef.current;
-  //   graph.on('node:click', e => {
-  //       console.log('node:click', e);
-  //   });
-  // }, [graphRef]); 
-  // console.log(height)
+  const options = {
+    layout: {
+      hierarchical: false
+    },
+    edges: {
+      color: "#000000",
+      font: {
+        "align": 'top'
+      },
+      length: 200
+    },
+    groups: {
+      Person: {
+        color: '#4BB4B4'
+      },
+      Email: {
+        color: '#FF7F7F'
+      },
+      Location: {
+        color: '#90EE90'
+      },
+      Phone: {
+        color: '#CBC3E3'
+      },
+      Area: {
+        color: 'pink'
+      },
+      Crime: {
+        color: '#ADD8E6'
+      },
+      PostCode: {
+        color: '#FFB6C1'
+      },
+      PhoneCall: {
+        color: '#CBC3E3'
+      },
+      Vehicle: {
+        color: '#D3D3D3'
+      },
+      Officer: {
+        color: '#FFD580'
+      },
+    },
+    // height: "500px"
+  };
+
+  const events = {
+    selectNode: function(event) {
+      var { nodes, edges } = event;
+      // addSeedNode(nodes[0])
+      // if (openDialog) {
+      //   handleClickClose();
+      // } else {
+      //   handleClickOpen();
+      // }
+      handleOpenOptions(true);
+    }
+  };
 
   return (
     <React.Fragment>
-      <Box className={clsx(classes.main, open && classes.mainShift)}>  {/*ref={canvasRef}> */}
-        <Graphin data={graphDisplayData} layout={{ type: 'concentric' }} fitView={true}>
-          <ClickSelect
-            onClick={(e) => addSeedNode(e.item._cfg.id)}
-          ></ClickSelect>
-          <NodeTooltip />
-        </Graphin>
+      <Box 
+        className={classes.main}
+        // sx={{height: '100%'}}
+      >  
+        <Graph
+          graph={graphDisplayData}
+          options={options}
+          events={events}
+          getNetwork={network => {
+            //  if you want access to vis.js network api you can set the state in a parent component using this property
+          }}
+        />
       </Box>
     </React.Fragment>
   )
@@ -181,6 +160,7 @@ function addNodeStyles(node, selectedNodes) {
   let labelValue = ''
   let iconValue
   let color = ''
+  node['group'] = node.label;
   if (node.label == 'Person') {
     labelValue = node.name + ' ' + node.surname
     iconValue = PersonIcon
@@ -223,29 +203,36 @@ function addNodeStyles(node, selectedNodes) {
     color = 'orange'
   }
 
-  node.style = {
-    label: {
-      value: labelValue,
-    },
-    icon: {
-      type: 'image',
-      value: iconValue,
-      size: [20, 20],
-    },
-    keyshape: {
-      fill: color,
-      stroke: color,
-      fillOpacity: 0.2,
-    },
-  }
+  // node.style = {
+  //   label: {
+  //     value: labelValue,
+  //   },
+  //   icon: {
+  //     type: 'image',
+  //     value: iconValue,
+  //     size: [20, 20],
+  //   },
+  //   keyshape: {
+  //     fill: color,
+  //     stroke: color,
+  //     fillOpacity: 0.2,
+  //   },
+  // }
 
   // add highlight to seed nodes
-  if (selectedNodes.includes(parseInt(node.id))) {
-    node.style.keyshape = {
-      ...node.style.keyshape,
-      lineWidth: 5,
-    }
-  }
+  // if (selectedNodes.includes(parseInt(node.id))) {
+  //   node.style.keyshape = {
+  //     ...node.style.keyshape,
+  //     lineWidth: 5,
+  //   }
+  // }
+  
+  node.label = labelValue;
+  // node['icon'] = {
+  //   face: 'Font Awesome 5 Free',
+  //   code: '\uf007',
+  //   weight: "bold"
+  // }
 }
 
 function addEdgeStyles(edge) {
