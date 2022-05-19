@@ -257,6 +257,9 @@ function NewAppContent() {
       setOpenDialog(false);
     };
 
+    // most recently clicked node
+    // const currSelectedNode = [611]
+    const [currSelectedNode, setCurrSelectedNode] = React.useState([]);
 
     return (
         <StyledEngineProvider injectFirst>
@@ -286,37 +289,7 @@ function NewAppContent() {
                             />
                         </Toolbar>
                     </AppBar>
-                    {/* {openOptions && <Grid container spacing={2} 
-                            columns={8} 
-                            display="flex" 
-                            alignItems="center"
-                            justifyContent="center"
-                            marginTop={'0px'}
-                      >
-                          <Button
-                            style={{
-                              backgroundColor: theme.palette.secondary.main,
-                              color: theme.palette.secondary.contrastText,
-                            }}
-                            onClick={() => {
-                              handleClickOpen()
-                            }}
-                          >
-                            Get Recommendations
-                          </Button>
-                      </Grid>
-                    }      */}
                     <main>
-                      {/* <GraphDisplay
-                        open={open}
-                        classes={classes}
-                        subgraphNodes={subgraphNodes}
-                        addSeedNode={addSeedNode}
-                        handleOpenOptions={setOpenOptions}
-                      ></GraphDisplay> */}
-                      {/* <Fab className={classes.recButton}> */}
-                        {/* <NodeInfoTable className={classes.recButton}></NodeInfoTable> */}
-                      {/* </Fab> */}
                       <div>
                         <div
                           style={{
@@ -327,13 +300,13 @@ function NewAppContent() {
                             zIndex: 1
                           }}
                         >
-                          {/* zIndex - I have a middle zIndex value */}
                           <GraphDisplay
                             open={open}
                             classes={classes}
                             subgraphNodes={subgraphNodes}
                             addSeedNode={addSeedNode}
                             handleOpenOptions={setOpenOptions}
+                            setCurrSelectedNode={setCurrSelectedNode}
                           ></GraphDisplay>
                         </div>
                         <div
@@ -346,10 +319,9 @@ function NewAppContent() {
                             zIndex: 3
                           }}
                         >
-                          {/* zIndex - I have the highest */}
                           <NodeInfoTable 
-                            className={classes.recButton}
                             apiHost={API_HOST}
+                            currSelectedNode={currSelectedNode}
                           ></NodeInfoTable>
                         </div>
                         <div

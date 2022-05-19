@@ -32,7 +32,7 @@ const styles = (theme) => ({
 
 function GraphDisplay(props) {
   // declare useState hooks
-  const { open, classes, subgraphNodes, addSeedNode, handleOpenOptions } = props
+  const { open, classes, subgraphNodes, addSeedNode, handleOpenOptions, setCurrSelectedNode } = props
   // const [subgraphNodes, setNodes] = useState([])
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -130,7 +130,7 @@ function GraphDisplay(props) {
       //   handleClickOpen();
       // }
       handleOpenOptions(true);
-      // changeInfoBox
+      setCurrSelectedNode(nodes)
     }
   };
 
