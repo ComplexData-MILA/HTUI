@@ -16,6 +16,7 @@ import NodeTooltip from './Tooltip'
 import { Box, Container } from '@mui/material'
 import classNames from 'classnames'
 import Graph from "react-graph-vis"; // new graph visualization
+import NodeInfoTable from './NodeInfoTable'
 
 const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:8000';
 console.log(`API hosted at ${API_HOST}.`)
@@ -129,6 +130,7 @@ function GraphDisplay(props) {
       //   handleClickOpen();
       // }
       handleOpenOptions(true);
+      // changeInfoBox
     }
   };
 
@@ -136,8 +138,7 @@ function GraphDisplay(props) {
     <React.Fragment>
       <Box 
         className={classes.main}
-        // sx={{height: '100%'}}
-      >  
+      > 
         <Graph
           graph={graphDisplayData}
           options={options}
@@ -145,8 +146,11 @@ function GraphDisplay(props) {
           getNetwork={network => {
             //  if you want access to vis.js network api you can set the state in a parent component using this property
           }}
-        />
+        >
+        </Graph>
+        {/* <NodeInfoTable className={classes.recButton}></NodeInfoTable> */}
       </Box>
+      
     </React.Fragment>
   )
 }

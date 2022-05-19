@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-
+import { useQuery } from "react-query"
 import clsx from 'clsx'
 import { makeStyles } from '@mui/styles'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles'
@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import GraphDisplay from './components/Graph'
 import CustomizedDialog from './components/RecDialog'
+import NodeInfoTable from './components/NodeInfoTable'
 
 import {
     CssBaseline,
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: 20,
       },
       recButton: {
-        position: 'fixed',
+        position: 'absolute',
         bottom: theme.spacing(3),
         right: theme.spacing(3),
         background: theme.palette.highlight.main,
@@ -216,14 +217,6 @@ const queryClient = new QueryClient()
 function NewAppContent() {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false)
-    const handleDrawerOpen = () => {
-      setOpen(true)
-      console.log(open)
-    }
-    const handleDrawerClose = () => {
-      setOpen(false)
-      console.log(open)
-    }
 
     // hook for the Get Recommendation floating options button
     const [openOptions, setOpenOptions] = useState(false);
@@ -264,6 +257,7 @@ function NewAppContent() {
       setOpenDialog(false);
     };
 
+
     return (
         <StyledEngineProvider injectFirst>
             <QueryClientProvider client={queryClient}>
@@ -292,7 +286,7 @@ function NewAppContent() {
                             />
                         </Toolbar>
                     </AppBar>
-                    {openOptions && <Grid container spacing={2} 
+                    {/* {openOptions && <Grid container spacing={2} 
                             columns={8} 
                             display="flex" 
                             alignItems="center"
@@ -311,56 +305,84 @@ function NewAppContent() {
                             Get Recommendations
                           </Button>
                       </Grid>
-                    }     
+                    }      */}
                     <main>
-                      <GraphDisplay
+                      {/* <GraphDisplay
                         open={open}
                         classes={classes}
                         subgraphNodes={subgraphNodes}
                         addSeedNode={addSeedNode}
                         handleOpenOptions={setOpenOptions}
-                      ></GraphDisplay>
-                      {/* <NewFab
-                        onClick={handleDrawerOpen}
-                        className={clsx(
-                          classes.recButton,
-                          open && classes.recButtonHidden
-                        )}
-                        variant="circular"
-                      >
-                        <Menu></Menu>
-                      </NewFab> */}
-                      {/* <div>
-                        <Drawer
-                          classes={{ paper: classes.paper }}
-                          sx={{
-                            width: drawerWidth,
-                            flexShrink: 0,
-                            '& .MuiDrawer-paper': {
-                              width: drawerWidth,
-                            },
+                      ></GraphDisplay> */}
+                      {/* <Fab className={classes.recButton}> */}
+                        {/* <NodeInfoTable className={classes.recButton}></NodeInfoTable> */}
+                      {/* </Fab> */}
+                      <div>
+                        <div
+                          style={{
+                            height: 0,
+                            // backgroundColor: "lightblue",
+                            position: "relative",
+                            top: 0,
+                            zIndex: 1
                           }}
-                          variant="persistent"
-                          anchor="right"
-                          open={open}
                         >
-                          <Box className={classes.drawerPadding}>
-                            <Divider />
-                            <Recommendations
-                              callback={addSeedNode}
-                              apiHost={API_HOST}
-                              classes={classes}
-                              theme={theme}
-                              seedNodes={subgraphNodes}
-                            />
-                          </Box>
-                          <div className={classes.drawerFooter}>
-                            <ColorButton onClick={handleDrawerClose} sx={{ml: '5px'}}>
-                              <ChevronRight />
-                            </ColorButton>
-                          </div>
-                        </Drawer>
-                      </div> */}
+                          {/* zIndex - I have a middle zIndex value */}
+                          <GraphDisplay
+                            open={open}
+                            classes={classes}
+                            subgraphNodes={subgraphNodes}
+                            addSeedNode={addSeedNode}
+                            handleOpenOptions={setOpenOptions}
+                          ></GraphDisplay>
+                        </div>
+                        <div
+                          style={{
+                            height: 0,
+                            // backgroundColor: "yellow",
+                            position: "relative",
+                            top: 10,
+                            left: 10,
+                            zIndex: 3
+                          }}
+                        >
+                          {/* zIndex - I have the highest */}
+                          <NodeInfoTable 
+                            className={classes.recButton}
+                            apiHost={API_HOST}
+                          ></NodeInfoTable>
+                        </div>
+                        <div
+                          style={{
+                            height: 0,
+                            backgroundColor: "lightgreen",
+                            position: "relative",
+                            top: 0,
+                            zIndex: 2
+                          }}
+                        >
+                          {openOptions && <Grid container spacing={2} 
+                            columns={8} 
+                            display="flex" 
+                            alignItems="center"
+                            justifyContent="center"
+                            marginTop={'0px'}
+                          >
+                              <Button
+                                style={{
+                                  backgroundColor: theme.palette.secondary.main,
+                                  color: theme.palette.secondary.contrastText,
+                                }}
+                                onClick={() => {
+                                  handleClickOpen()
+                                }}
+                              >
+                                Get Recommendations
+                              </Button>
+                          </Grid>
+                        } 
+                        </div>
+                      </div>
                     </main>
                     <CustomizedDialog 
                       openDialog={openDialog}
