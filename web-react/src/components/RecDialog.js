@@ -50,8 +50,15 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function CustomizedDialogs(props) {
-  const { openDialog, handleClickClose, handleClickOpen,
-    callback, apiHost, classes, theme, seedNodes
+  const { openDialog, 
+          handleClickClose, 
+          handleClickOpen,
+          callback, 
+          apiHost, 
+          classes, 
+          theme, 
+          seedNodes,
+          getLabel
   } = props;
 
   const [selectedRows, setSelected] = useState([])
@@ -80,6 +87,7 @@ export default function CustomizedDialogs(props) {
           theme={theme}
           seedNodes={seedNodes}
           setSelected={setSelected}
+          getLabel={getLabel}
         />
         </DialogContent>
         <DialogActions>

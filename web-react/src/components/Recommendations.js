@@ -40,7 +40,14 @@ const CssTextField = styled(TextField)({
 });
 
 export default function Recommendations(props) {
-  const {callback, apiHost, classes, theme, seedNodes, setSelected} = props
+  const { callback, 
+          apiHost, 
+          classes, 
+          theme, 
+          seedNodes, 
+          setSelected,
+          getLabel
+        } = props
   const [model, setModel] = useState('Random')
   const [recs, setRecs] = useState([])
   
@@ -121,7 +128,10 @@ export default function Recommendations(props) {
     const newArr = data.map(function(arr, idx) {
       const label = infoData[idx].labels[0]
       const properties = Object.values(infoData[idx].properties)
-      return {id: arr, label: label, property: properties[properties.length - 1]}
+      console.log(infoData[idx])
+      const displayVal = getLabel(infoData[idx].labels[0], infoData[idx].properties)
+      console.log(displayVal)
+      return {id:arr, group: label, node: displayVal}
     });
     // console.log(newArr)
     // setRecs(newArr)
@@ -141,7 +151,7 @@ export default function Recommendations(props) {
           // onCellClick={(event) => callback(event.id)}
           hideFooter 
           checkboxSelection
-          columns={[{ field: 'id' }, { field: 'label' }, {field: 'property'}]}
+          columns={[{ field: 'group' }, {field: 'node'}]}
           rows={isLoading ? [] : formatData(data)}
           onSelectionModelChange={elem => setSelected(elem)}
           components={{

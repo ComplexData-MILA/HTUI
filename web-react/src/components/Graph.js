@@ -32,7 +32,14 @@ const styles = (theme) => ({
 
 function GraphDisplay(props) {
   // declare useState hooks
-  const { open, classes, subgraphNodes, addSeedNode, handleOpenOptions, setCurrSelectedNode } = props
+  const { open, 
+          classes, 
+          subgraphNodes, 
+          addSeedNode, 
+          handleOpenOptions, 
+          setCurrSelectedNode,
+          getLabel
+         } = props
   // const [subgraphNodes, setNodes] = useState([])
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -69,7 +76,7 @@ function GraphDisplay(props) {
   console.log({ graph, error, isLoaded })
   let graphDisplayData = graph; // getSubgraph(subgraphNodes)
   graphDisplayData.nodes.forEach(function (node) {
-    addNodeStyles(node, subgraphNodes)
+    addNodeStyles(node, getLabel, subgraphNodes)
   })
   graphDisplayData.edges.forEach(addEdgeStyles)
   Utils.processEdges(graphDisplayData.edges, { poly: 50 })
@@ -87,7 +94,7 @@ function GraphDisplay(props) {
     },
     groups: {
       Person: {
-        color: '#4BB4B4'
+        color: '#40e0d0'
       },
       Email: {
         color: '#FF7F7F'
@@ -159,54 +166,13 @@ function GraphDisplay(props) {
 export default GraphDisplay
 
 // TODO: This needs to be a dictionary
-function addNodeStyles(node, selectedNodes) {
+function addNodeStyles(node, getLabel, selectedNodes) {
   // adding styles
   let labelValue = ''
-  let iconValue
-  let color = ''
-  node['group'] = node.label;
-  if (node.label == 'Person') {
-    labelValue = node.name + ' ' + node.surname
-    iconValue = PersonIcon
-    color = '#1fc9bd'
-  } else if (node.label == 'Email') {
-    labelValue = node.email_address
-    iconValue = EmailIcon
-    color = 'red'
-  } else if (node.label == 'Location') {
-    labelValue = node.address
-    iconValue = AddressIcon
-    color = 'green'
-  } else if (node.label == 'Phone') {
-    labelValue = node.phoneNo
-    iconValue = PhoneIcon
-    color = 'purple'
-  } else if (node.label == 'Area') {
-    labelValue = node.areaCode
-    iconValue = AreaIcon
-    color = 'pink'
-  } else if (node.label == 'Crime') { // doesn't quite work because Crime nodes have an ID field that is messing up Graphin
-    labelValue = 'crime: ' + node.type
-    iconValue = CrimeIcon
-    color = 'blue'
-  } else if (node.label == 'PostCode') {
-    labelValue = 'postcode: ' + node.code
-    iconValue = AreaIcon
-    color = 'pink'
-  } else if (node.label == 'PhoneCall') {
-    labelValue = 'Phone Call'
-    iconValue = PhoneCallIcon
-    color = 'purple'
-  } else if (node.label == 'Vehicle') {
-    labelValue = node.make + ' ' + node.model
-    iconValue = VehicleIcon
-    color = 'gray'
-  } else if (node.label == 'Officer') {
-    labelValue = node.name + ' ' + node.surname
-    iconValue = PersonIcon
-    color = 'orange'
-  }
+  node['group'] = node.labels[[0]];
+  node.label = getLabel(node.labels[0], node.properties);
 
+  /* start Graphin code, left here for reference */
   // node.style = {
   //   label: {
   //     value: labelValue,
@@ -230,8 +196,9 @@ function addNodeStyles(node, selectedNodes) {
   //     lineWidth: 5,
   //   }
   // }
+  /* end Graphin code */
   
-  node.label = labelValue;
+  /* an attempt to get the icons to work with visjs */
   // node['icon'] = {
   //   face: 'Font Awesome 5 Free',
   //   code: '\uf007',

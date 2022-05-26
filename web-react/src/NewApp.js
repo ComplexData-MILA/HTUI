@@ -214,6 +214,41 @@ const ColorButton = styled(IconButton)(({ theme }) => ({
 
 const queryClient = new QueryClient()
 
+// TODO: currently can't figure out icons for nodes, will try to, commented out for now
+function getNodeDisplayLabel(group, properties) {
+  if (group == 'Person') {
+    return properties.name + ' ' + properties.surname
+    // iconValue = PersonIcon
+  } else if (group == 'Email') {
+    return properties.email_address
+    // iconValue = EmailIcon
+  } else if (group == 'Location') {
+    return properties.address
+    // iconValue = AddressIcon
+  } else if (group == 'Phone') {
+    return properties.phoneNo
+    // iconValue = PhoneIcon
+  } else if (group == 'Area') {
+    return properties.areaCode
+    // iconValue = AreaIcon
+  } else if (group == 'Crime') { 
+    return 'crime: ' + properties.type
+    // iconValue = CrimeIcon
+  } else if (group == 'PostCode') {
+    return 'postcode: ' + properties.code
+    // iconValue = AreaIcon
+  } else if (group == 'PhoneCall') {
+    return 'Phone Call'
+    // iconValue = PhoneCallIcon
+  } else if (group == 'Vehicle') {
+    return properties.make + ' ' + properties.model
+    // iconValue = VehicleIcon
+  } else if (group == 'Officer') {
+    return properties.name + ' ' + properties.surname
+    // iconValue = PersonIcon
+  }
+}
+
 function NewAppContent() {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false)
@@ -307,6 +342,7 @@ function NewAppContent() {
                             addSeedNode={addSeedNode}
                             handleOpenOptions={setOpenOptions}
                             setCurrSelectedNode={setCurrSelectedNode}
+                            getLabel={getNodeDisplayLabel}
                           ></GraphDisplay>
                         </div>
                         <div
@@ -365,6 +401,7 @@ function NewAppContent() {
                       classes={classes}
                       theme={theme}
                       seedNodes={subgraphNodes}
+                      getLabel={getNodeDisplayLabel}
                     />
                 </div>
             </QueryClientProvider>
